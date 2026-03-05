@@ -1,0 +1,50 @@
+# ========================
+# Xcode
+# ========================
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcuserstate
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcscmblueprint
+*.xcodeproj/project.pbxproj.bak
+
+# ========================
+# Swift Package Manager
+# ========================
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# ========================
+# CocoaPods
+# ========================
+Pods/
+*.xcworkspace/
+!*.xcodeproj/*.xcworkspace/xcshareddata/
+
+# ========================
+# macOS
+# ========================
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ========================
+# Misc
+# ========================
+*.orig
+Untitled.swift

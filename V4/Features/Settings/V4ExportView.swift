@@ -1,0 +1,164 @@
+import SwiftUI
+import SwiftData
+import UniformTypeIdentifiers
+
+// MARK: - Transferable CSV wrapper
+
+/// Writes content to a temp file only when the user actually taps Share,
+/// giving the file a proper .csv name so Numbers/Excel open it directly.
+struct CSVFile: Transferable {
+  let content: String
+  let filename: String
+
+  static var transferRepresentation: some TransferRepresentation {
+    FileRepresentation(exportedContentType: .commaSeparatedText) { file in
+      let url = FileManager.default.temporaryDirectory
+        .appendingPathComponent(file.filename)
+      try Data(file.content.utf8).write(to: url)
+      return SentTransferredFile(url)
+    }
+  }
+}
+
+// MARK: - Export View
+
+struct V4ExportView: View {
+  @Query(sort: \STBooking.checkIn)  private var bookings:  [STBooking]
+  @Query(sort: \STExpense.date)     private var expenses:  [STExpense]
+
+  private static let isoDay: ISO8601DateFormatter = {
+    let f = ISO8601DateFormatter()
+    f.formatOptions = [.withFullDate]
+    return f
+  }()
+
+  var body: some View {
+    Form {
+      Section {
+        Text("Exports include all data currently stored on this device. Open the CSV in Numbers, Excel, or Google Sheets.")
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+      }
+
+      Section {
+        LabeledContent("Bookings", value: "\(bookings.count) rows")
+        ShareLink(
+          item: CSVFile(content: bookingsCSV, filename: "staytrackr_bookings.csv"),
+          preview: SharePreview(
+            "staytrackr_bookings.csv",
+            icon: Image(systemName: "tablecells")
+          )
+        ) {
+          Label("Export Bookings", systemImage: "square.and.arrow.up")
+            .foregroundStyle(V4Theme.Brand.primary)
+        }
+      } header: {
+        Text("Bookings")
+      } footer: {
+        Text("Columns: Property · Guest · Check-in · Check-out · Nights · Nightly Rate · Currency · Gross · Commission · Platform Fee · Net · Paid")
+          .font(.caption2)
+      }
+
+      Section {
+        LabeledContent("Expenses", value: "\(expenses.count) rows")
+        ShareLink(
+          item: CSVFile(content: expensesCSV, filename: "staytrackr_expenses.csv"),
+          preview: SharePreview(
+            "staytrackr_expenses.csv",
+            icon: Image(systemName: "tablecells")
+          )
+        ) {
+          Label("Export Expenses", systemImage: "square.and.arrow.up")
+            .foregroundStyle(V4Theme.Brand.primary)
+        }
+      } header: {
+        Text("Expenses")
+      } footer: {
+        Text("Columns: Property · Date · Category · Amount · Currency · Note")
+          .font(.caption2)
+      }
+
+      Section {
+        ShareLink(
+          item: CSVFile(content: combinedCSV, filename: "staytrackr_export.csv"),
+          preview: SharePreview(
+            "staytrackr_export.csv",
+            icon: Image(systemName: "tablecells")
+          )
+        ) {
+          Label("Export All (Single File)", systemImage: "doc.on.doc")
+            .foregroundStyle(V4Theme.Brand.primary)
+        }
+      } footer: {
+        Text("Bookings and Expenses in one file, separated by a blank row.")
+          .font(.caption2)
+      }
+    }
+    .navigationTitle("Export Data")
+    .navigationBarTitleDisplayMode(.inline)
+  }
+
+  // MARK: - CSV builders
+
+  private var bookingsCSV: String {
+    var rows = [
+      "Property,Guest,CheckIn,CheckOut,Nights,NightlyRate,Currency," +
+      "GrossTotal,CommissionPct,PlatformFeePct,NetRevenue,IsPaid"
+    ]
+    for b in bookings {
+      let nights = Calendar.current
+        .dateComponents([.day], from: b.checkIn, to: b.checkOut).day ?? 0
+      let gross      = Double(nights) * b.nightlyRate
+      let commission = gross * b.property.commissionPct
+      let platform   = gross * b.platformFeePct
+      let net        = gross - commission - platform
+
+      rows.append([
+        csvEscape("\(b.property.emoji) \(b.property.name)"),
+        csvEscape(b.guest.name),
+        Self.isoDay.string(from: b.checkIn),
+        Self.isoDay.string(from: b.checkOut),
+        "\(nights)",
+        fmt(b.nightlyRate),
+        b.property.currencyCode,
+        fmt(gross),
+        fmt(b.property.commissionPct * 100),
+        fmt(b.platformFeePct * 100),
+        fmt(net),
+        b.isPaid ? "Yes" : "No"
+      ].joined(separator: ","))
+    }
+    return rows.joined(separator: "\n")
+  }
+
+  private var expensesCSV: String {
+    var rows = ["Property,Date,Category,Amount,Currency,Note"]
+    for e in expenses {
+      rows.append([
+        csvEscape("\(e.property.emoji) \(e.property.name)"),
+        Self.isoDay.string(from: e.date),
+        e.category.rawValue,
+        fmt(e.amount),
+        e.currencyCode,
+        csvEscape(e.note ?? "")
+      ].joined(separator: ","))
+    }
+    return rows.joined(separator: "\n")
+  }
+
+  private var combinedCSV: String {
+    bookingsCSV + "\n\n" + expensesCSV
+  }
+
+  // MARK: - Helpers
+
+  private func fmt(_ value: Double) -> String {
+    String(format: "%.2f", value)
+  }
+
+  /// Wraps a field in quotes if it contains commas, quotes, or newlines.
+  private func csvEscape(_ s: String) -> String {
+    guard s.contains(",") || s.contains("\"") || s.contains("\n") else { return s }
+    return "\"" + s.replacingOccurrences(of: "\"", with: "\"\"") + "\""
+  }
+}

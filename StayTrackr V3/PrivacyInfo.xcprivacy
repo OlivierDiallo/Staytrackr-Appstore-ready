@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <!-- ── Tracking ─────────────────────────────────────────────────────── -->
+  <!-- StayTrackr does not track users across apps or websites.           -->
+  <key>NSPrivacyTracking</key>
+  <false/>
+
+  <key>NSPrivacyTrackingDomains</key>
+  <array/>
+
+  <!-- ── Data collection ──────────────────────────────────────────────── -->
+  <!-- All data is stored on-device via SwiftData. Nothing is uploaded    -->
+  <!-- to any server, shared with third parties, or used for advertising. -->
+  <key>NSPrivacyCollectedDataTypes</key>
+  <array/>
+
+  <!-- ── Required-reason APIs ─────────────────────────────────────────── -->
+  <key>NSPrivacyAccessedAPITypes</key>
+  <array>
+
+    <!-- UserDefaults — @AppStorage("v4_didSeed") seed-guard flag.        -->
+    <!-- Reason CA92.1: read/write info used only to support the app.     -->
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>CA92.1</string>
+      </array>
+    </dict>
+
+    <!-- File timestamps — FileManager temp-directory writes for CSV      -->
+    <!-- export (PrivacyInfo.xcprivacy, SwiftData store).                 -->
+    <!-- Reason C617.1: display accurate file info to the user.           -->
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>C617.1</string>
+      </array>
+    </dict>
+
+  </array>
+
+</dict>
+</plist>
