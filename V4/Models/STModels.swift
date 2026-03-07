@@ -16,6 +16,29 @@ enum STExpenseCategory: String, CaseIterable, Codable, Identifiable {
   var id: String { rawValue }
 }
 
+// MARK: - Booking Status
+
+/// Computed booking lifecycle state — derived from dates, not stored.
+enum STBookingStatus {
+  case upcoming, active, completed
+
+  var label: String {
+    switch self {
+    case .upcoming:  return "Upcoming"
+    case .active:    return "Active"
+    case .completed: return "Completed"
+    }
+  }
+
+  var systemImage: String {
+    switch self {
+    case .upcoming:  return "clock"
+    case .active:    return "person.fill"
+    case .completed: return "checkmark.circle"
+    }
+  }
+}
+
 // MARK: - Property
 
 @Model
@@ -35,8 +58,11 @@ final class STProperty {
   var isArchived: Bool
   var trackMortgage: Bool
 
-  // NEW: currency per property (e.g., "EUR", "CZK")
+  // Currency per property (e.g., "EUR", "CZK")
   var currencyCode: String
+
+  // Photo (stored as raw JPEG data, optional)
+  var photoData: Data?
 
   // Relationships
   @Relationship(deleteRule: .cascade, inverse: \STBooking.property)
@@ -59,7 +85,8 @@ final class STProperty {
     colorHex: String,
     isArchived: Bool,
     trackMortgage: Bool,
-    currencyCode: String = "EUR"
+    currencyCode: String = "EUR",
+    photoData: Data? = nil
   ) {
     self.id = id
     self.name = name
@@ -72,6 +99,7 @@ final class STProperty {
     self.isArchived = isArchived
     self.trackMortgage = trackMortgage
     self.currencyCode = currencyCode
+    self.photoData = photoData
   }
 }
 
@@ -121,6 +149,9 @@ final class STBooking {
   var platformFeePct: Double
   var isPaid: Bool
 
+  // Notes (host instructions, cleaning notes, etc.)
+  var note: String?
+
   init(
     id: UUID,
     property: STProperty,
@@ -129,7 +160,8 @@ final class STBooking {
     checkOut: Date,
     nightlyRate: Double,
     platformFeePct: Double,
-    isPaid: Bool
+    isPaid: Bool,
+    note: String? = nil
   ) {
     self.id = id
     self.property = property
@@ -139,6 +171,15 @@ final class STBooking {
     self.nightlyRate = nightlyRate
     self.platformFeePct = platformFeePct
     self.isPaid = isPaid
+    self.note = note
+  }
+
+  /// Computed lifecycle status — derived from dates, not stored.
+  var status: STBookingStatus {
+    let now = Date()
+    if checkIn > now  { return .upcoming }
+    if checkOut > now { return .active }
+    return .completed
   }
 }
 
@@ -157,7 +198,7 @@ final class STExpense {
   var category: STExpenseCategory
   var note: String?
 
-  // NEW: currency on each expense (defaults to property currency)
+  // Currency on each expense (defaults to property currency)
   var currencyCode: String
 
   init(

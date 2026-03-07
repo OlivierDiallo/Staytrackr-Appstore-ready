@@ -335,6 +335,7 @@ struct V4CalendarView: View {
   private func bookingRow(_ b: STBooking) -> some View {
     let nights = V4Finance.nights(b.checkIn, b.checkOut)
     let gross  = Double(nights) * b.nightlyRate
+    let status = b.status
 
     HStack(spacing: 10) {
       // Property color stripe
@@ -344,11 +345,14 @@ struct V4CalendarView: View {
         .padding(.vertical, 2)
 
       VStack(alignment: .leading, spacing: 4) {
-        // Top row: guest name + paid badge
-        HStack(alignment: .center) {
+        // Top row: guest name + status + paid badges
+        HStack(alignment: .center, spacing: 6) {
           Text(b.guest.name)
             .font(.subheadline.weight(.semibold))
           Spacer()
+          // Status badge
+          statusBadge(status)
+          // Paid badge
           Text(b.isPaid ? "Paid" : "Unpaid")
             .font(.caption2.weight(.semibold))
             .foregroundStyle(b.isPaid ? .white : V4Theme.Brand.primary)
@@ -367,6 +371,14 @@ struct V4CalendarView: View {
           .font(.caption)
           .foregroundStyle(.secondary)
 
+        // Notes (if present)
+        if let note = b.note, !note.isEmpty {
+          Text(note)
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .lineLimit(2)
+        }
+
         // Bottom row: dates + amount
         HStack {
           Text("\(b.checkIn.formatted(date: .abbreviated, time: .omitted)) → \(b.checkOut.formatted(date: .abbreviated, time: .omitted))")
@@ -379,6 +391,23 @@ struct V4CalendarView: View {
       }
     }
     .padding(.vertical, 4)
+  }
+
+  @ViewBuilder
+  private func statusBadge(_ status: STBookingStatus) -> some View {
+    let (label, color): (String, Color) = {
+      switch status {
+      case .upcoming:  return ("Upcoming", .blue)
+      case .active:    return ("Active",   V4Theme.Brand.primary)
+      case .completed: return ("Done",     .secondary)
+      }
+    }()
+    Text(label)
+      .font(.caption2.weight(.semibold))
+      .foregroundStyle(color)
+      .padding(.horizontal, 6)
+      .padding(.vertical, 3)
+      .background(color.opacity(0.12), in: Capsule())
   }
 
   // MARK: - Delete

@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct V4PropertyEditorSheet: View {
   enum Mode { case add, edit }
@@ -30,6 +31,10 @@ struct V4PropertyEditorSheet: View {
   @State private var mortgageAPR: Double = 0.04
   @State private var mortgageYears: Int = 20
 
+  // Photo
+  @State private var photoData: Data? = nil
+  @State private var photoItem: PhotosPickerItem? = nil
+
   private let currencyOptions = ["EUR", "CZK", "USD", "GBP", "CHF", "PLN", "SEK", "NOK", "DKK"]
   private let emojiOptions = ["🏖️","🏙️","🏠","🏡","🗝️","🌴","⛰️","🏢"]
   private let colorOptions: [String] = [
@@ -41,6 +46,47 @@ struct V4PropertyEditorSheet: View {
   var body: some View {
     NavigationStack {
       Form {
+
+        // ── Photo ──────────────────────────────────────────────────────
+        Section("Photo") {
+          PhotosPicker(selection: $photoItem, matching: .images) {
+            if let data = photoData, let uiImage = UIImage(data: data) {
+              Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: 160)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            } else {
+              Label("Choose Photo", systemImage: "photo.badge.plus")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 8)
+            }
+          }
+          .buttonStyle(.plain)
+
+          if photoData != nil {
+            Button("Remove Photo", role: .destructive) {
+              photoData = nil
+              photoItem = nil
+            }
+          }
+        }
+        .onChange(of: photoItem) { _, newItem in
+          Task {
+            if let data = try? await newItem?.loadTransferable(type: Data.self) {
+              // Compress to JPEG to keep storage small
+              if let uiImage = UIImage(data: data),
+                 let jpeg = uiImage.jpegData(compressionQuality: 0.7) {
+                photoData = jpeg
+              } else {
+                photoData = data
+              }
+            }
+          }
+        }
+
         Section("Basics") {
           TextField("Name", text: $name)
 
@@ -168,6 +214,7 @@ struct V4PropertyEditorSheet: View {
       trackMortgage = true
       mortgageAPR = 0.04
       mortgageYears = 20
+      photoData = nil
       return
     }
 
@@ -183,6 +230,8 @@ struct V4PropertyEditorSheet: View {
     trackMortgage = p.trackMortgage
     mortgageAPR = p.mortgageAPR
     mortgageYears = p.mortgageYears
+
+    photoData = p.photoData
   }
 
   private func save() {
@@ -202,7 +251,8 @@ struct V4PropertyEditorSheet: View {
         colorHex: colorHex,
         isArchived: isArchived,
         trackMortgage: trackMortgage,
-        currencyCode: currencyCode
+        currencyCode: currencyCode,
+        photoData: photoData
       )
       context.insert(p)
 
@@ -219,6 +269,8 @@ struct V4PropertyEditorSheet: View {
       p.trackMortgage = trackMortgage
       p.mortgageAPR = mortgageAPR
       p.mortgageYears = mortgageYears
+
+      p.photoData = photoData
     }
 
     try? context.save()

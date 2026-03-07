@@ -35,6 +35,7 @@ struct V4DashboardView: View {
 
             monthCard(month: monthAnchor, occupancyPct: totals.occupancyPct)
             financeCard(gross: totals.gross, expenses: totals.expenses, net: totals.net, currencyCode: prop.currencyCode)
+            ytdCard(property: prop)
             mortgageCard(property: prop)
             recentExpensesCard(property: prop)
 
@@ -53,6 +54,7 @@ struct V4DashboardView: View {
 
               monthCard(month: monthAnchor, occupancyPct: totals.occupancyPct)
               financeCard(gross: totals.gross, expenses: totals.expenses, net: totals.net, currencyCode: code)
+              ytdCard(property: nil)
               recentExpensesCard(property: nil)
             }
           }
@@ -165,6 +167,33 @@ struct V4DashboardView: View {
         metricRow(title: "Expenses", value: V4Currency.format(expenses, code: currencyCode), positive: false)
         Divider().opacity(0.4)
         metricRow(title: "Net", value: V4Currency.format(net, code: currencyCode), positive: net >= 0)
+      }
+    }
+  }
+
+  private func ytdCard(property: STProperty?) -> some View {
+    let cal = Calendar.current
+    let year = cal.component(.year, from: monthAnchor)
+    let ytd: (gross: Double, net: Double)
+    let currencyCode: String
+
+    if let prop = property {
+      ytd = ytdRollupSingleProperty(year: year, property: prop)
+      currencyCode = prop.currencyCode
+    } else {
+      ytd = ytdRollupAllPropertiesSingleCurrency(year: year)
+      currencyCode = properties.first?.currencyCode ?? "EUR"
+    }
+
+    return V4Card {
+      VStack(spacing: 12) {
+        HStack {
+          Text("\(year) Year to Date")
+            .font(.headline)
+          Spacer()
+        }
+        metricRow(title: "Revenue", value: V4Currency.format(ytd.gross, code: currencyCode), positive: true)
+        metricRow(title: "Net", value: V4Currency.format(ytd.net, code: currencyCode), positive: ytd.net >= 0)
       }
     }
   }
@@ -361,6 +390,56 @@ struct V4DashboardView: View {
     let occ = daysInMonth > 0 ? (occupiedNights / daysInMonth * 100) : 0
     let net = netBeforeExpenses - totalExpenses
     return (gross, totalExpenses, net, occ)
+  }
+
+  private func ytdRollupSingleProperty(year: Int, property: STProperty) -> (gross: Double, net: Double) {
+    let cal = Calendar.current
+    var comps = DateComponents(); comps.year = year; comps.month = 1; comps.day = 1
+    guard let start = cal.date(from: comps),
+          let end   = cal.date(byAdding: .year, value: 1, to: start) else { return (0, 0) }
+
+    var gross = 0.0
+    var net   = 0.0
+    for b in bookings where b.property.id == property.id {
+      let s = max(b.checkIn, start)
+      let e = min(b.checkOut, end)
+      if s < e {
+        let nights = Double(V4Finance.nights(s, e))
+        let g = nights * b.nightlyRate
+        gross += g
+        net   += V4Finance.netRevenue(gross: g, platform: b.platformFeePct, commission: property.commissionPct)
+      }
+    }
+    let exp = expenses
+      .filter { $0.property.id == property.id && $0.date >= start && $0.date < end }
+      .filter { $0.currencyCode == property.currencyCode }
+      .map(\.amount).reduce(0, +)
+    let recurring = property.recurringBills.filter(\.isActive).map(\.amount).reduce(0, +) * 12
+    return (gross, net - exp - recurring)
+  }
+
+  private func ytdRollupAllPropertiesSingleCurrency(year: Int) -> (gross: Double, net: Double) {
+    let cal = Calendar.current
+    var comps = DateComponents(); comps.year = year; comps.month = 1; comps.day = 1
+    guard let start = cal.date(from: comps),
+          let end   = cal.date(byAdding: .year, value: 1, to: start) else { return (0, 0) }
+
+    var gross = 0.0
+    var net   = 0.0
+    for p in properties {
+      for b in bookings where b.property.id == p.id {
+        let s = max(b.checkIn, start)
+        let e = min(b.checkOut, end)
+        if s < e {
+          let nights = Double(V4Finance.nights(s, e))
+          let g = nights * b.nightlyRate
+          gross += g
+          net   += V4Finance.netRevenue(gross: g, platform: b.platformFeePct, commission: p.commissionPct)
+        }
+      }
+    }
+    let exp = expenses.filter { $0.date >= start && $0.date < end }.map(\.amount).reduce(0, +)
+    return (gross, net - exp)
   }
 
   private func rollupForMonthAllPropertiesSingleCurrency(month: Date) -> (gross: Double, expenses: Double, net: Double, occupancyPct: Double) {

@@ -34,6 +34,7 @@ struct V4BookingEditorSheet: View {
   @State private var nightlyRateText: String = ""
   @State private var platformFeePct: Double = 0.14
   @State private var isPaid: Bool = false
+  @State private var noteText: String = ""
 
   @State private var showValidationAlert: Bool = false
   @State private var validationMessage: String = ""
@@ -67,8 +68,6 @@ struct V4BookingEditorSheet: View {
     return Double(nightsCount) * r
   }
 
-  /// Returns the first booking on `selectedProperty` whose dates overlap the
-  /// current check-in / check-out range (excluding the booking being edited).
   private var overlappingBooking: STBooking? {
     guard let p = selectedProperty, checkOut > checkIn else { return nil }
     let excludeID: UUID? = {
@@ -194,6 +193,15 @@ struct V4BookingEditorSheet: View {
           Toggle("Paid", isOn: $isPaid)
         }
 
+        Section("Notes") {
+          TextField(
+            "Host instructions, cleaning notes…",
+            text: $noteText,
+            axis: .vertical
+          )
+          .lineLimit(3...6)
+        }
+
         if case .edit(let booking) = mode {
           Section {
             Button(role: .destructive) {
@@ -241,6 +249,7 @@ struct V4BookingEditorSheet: View {
       nightlyRateText = ""
       platformFeePct = 0.14
       isPaid = false
+      noteText = ""
       if let initial = initialCheckIn {
         checkIn  = Calendar.current.startOfDay(for: initial)
         checkOut = Calendar.current.date(byAdding: .day, value: 1, to: checkIn) ?? checkIn
@@ -254,9 +263,9 @@ struct V4BookingEditorSheet: View {
       nightlyRateText = V4Format.plainNumber(b.nightlyRate)
       platformFeePct = b.platformFeePct
       isPaid = b.isPaid
+      noteText = b.note ?? ""
     }
 
-    // Safety: if dates got inverted somehow
     if checkOut <= checkIn {
       checkOut = Calendar.current.date(byAdding: .day, value: 1, to: checkIn) ?? checkIn
     }
@@ -283,6 +292,10 @@ struct V4BookingEditorSheet: View {
       return
     }
 
+    let cleanNote: String? = noteText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      ? nil
+      : noteText.trimmingCharacters(in: .whitespacesAndNewlines)
+
     switch mode {
     case .add:
       let new = STBooking(
@@ -293,7 +306,8 @@ struct V4BookingEditorSheet: View {
         checkOut: checkOut,
         nightlyRate: rate,
         platformFeePct: platformFeePct,
-        isPaid: isPaid
+        isPaid: isPaid,
+        note: cleanNote
       )
       context.insert(new)
 
@@ -305,6 +319,7 @@ struct V4BookingEditorSheet: View {
       b.nightlyRate = rate
       b.platformFeePct = platformFeePct
       b.isPaid = isPaid
+      b.note = cleanNote
     }
 
     do {
