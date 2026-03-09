@@ -12,23 +12,58 @@ struct StayTrackrV4App: App {
 
   private let container: ModelContainer
 
+  // All SwiftData model types in one place.
+  private static let modelTypes: [any PersistentModel.Type] = [
+    STProperty.self,
+    STGuest.self,
+    STBooking.self,
+    STExpense.self,
+    STRecurringBill.self,
+    STFXRate.self,
+    V4AppPreferences.self
+  ]
+
   init() {
+    // "StayTrackrV6" store name sidesteps any leftover version metadata
+    // written by the old V4MigrationPlan, which caused a "duplicate checksum"
+    // crash on launch.
+    let config = ModelConfiguration(
+      "StayTrackrV6",
+      schema: Schema(Self.modelTypes),
+      isStoredInMemoryOnly: false
+    )
     do {
-      // No explicit migration plan needed — SwiftData auto-migrates optional
-      // column additions (note, photoData) via its built-in lightweight migration.
       self.container = try ModelContainer(
-        for: STProperty.self,
-             STGuest.self,
-             STBooking.self,
-             STExpense.self,
-             STRecurringBill.self,
-             STFXRate.self,
-             V4AppPreferences.self
+        for: Schema(Self.modelTypes),
+        configurations: [config]
       )
     } catch {
-      fatalError("Failed to create SwiftData ModelContainer: \(error)")
+      // Store is unreadable — wipe it and recreate so the app never hard-crashes.
+      Self.deleteStore(named: "StayTrackrV6")
+      do {
+        self.container = try ModelContainer(
+          for: Schema(Self.modelTypes),
+          configurations: [config]
+        )
+      } catch {
+        fatalError("Failed to create SwiftData ModelContainer: \(error)")
+      }
     }
   }
+
+  // MARK: - Store recovery
+
+  private static func deleteStore(named name: String) {
+    guard let dir = FileManager.default
+      .urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+    else { return }
+    for ext in ["", "-wal", "-shm"] {
+      let url = dir.appendingPathComponent("\(name).store\(ext)")
+      try? FileManager.default.removeItem(at: url)
+    }
+  }
+
+  // MARK: - Scene
 
   var body: some Scene {
     WindowGroup {
@@ -42,7 +77,6 @@ struct StayTrackrV4App: App {
           await seedIfNeeded()
           #endif
           runMigrations()
-          // Request permission on first launch; no-op if already decided.
           await notifManager.requestAuthorization()
         }
     }
