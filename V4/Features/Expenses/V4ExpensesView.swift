@@ -242,8 +242,15 @@ struct V4ExpensesView: View {
     let code = effectiveCurrencyCode(for: e)
     return HStack {
       VStack(alignment: .leading, spacing: 3) {
-        Text(e.category.rawValue.capitalized)
-          .font(.subheadline.weight(.semibold))
+        HStack(spacing: 6) {
+          Text(e.category.rawValue.capitalized)
+            .font(.subheadline.weight(.semibold))
+          if e.receiptData != nil {
+            Image(systemName: "camera.fill")
+              .font(.caption2)
+              .foregroundStyle(V4Theme.Brand.primary)
+          }
+        }
         Text(e.property.name)
           .font(.caption)
           .foregroundStyle(.secondary)
@@ -268,6 +275,7 @@ struct V4ExpensesView: View {
   // MARK: - Delete
 
   private func deleteExpense(_ e: STExpense) {
+    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     context.delete(e)
     do { try context.save() }
     catch { print("Delete expense save failed: \(error)") }

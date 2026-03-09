@@ -11,30 +11,57 @@ struct V4RootView: View {
         V4OnboardingView()
       } else {
         V4PreferencesProvider { prefs in
-          TabView {
-            V4DashboardView(prefs: prefs)
-              .tabItem { Label("Dashboard", systemImage: "rectangle.grid.2x2.fill") }
-
-            V4CalendarView(prefs: prefs)
-              .tabItem { Label("Calendar", systemImage: "calendar") }
-
-            V4ExpensesView(prefs: prefs)
-              .tabItem { Label("Expenses", systemImage: "creditcard") }
-
-            V4TotalsView(prefs: prefs)
-              .tabItem { Label("Totals", systemImage: "chart.bar") }
-
-            V4GuestsView(prefs: prefs)
-              .tabItem { Label("Guests", systemImage: "person.2.fill") }
-
-            V4SettingsView(prefs: prefs)
-              .tabItem { Label("More", systemImage: "ellipsis") }
-          }
-          .tint(V4Theme.Brand.primary)
+          appTabs(prefs: prefs)
         }
       }
     }
     .preferredColorScheme(settings.preferredColorScheme)
+  }
+
+  // MARK: - Tab Structure
+
+  @ViewBuilder
+  private func appTabs(prefs: V4AppPreferences) -> some View {
+    if #available(iOS 18.0, *) {
+      TabView {
+        Tab("Dashboard", systemImage: "rectangle.grid.2x2.fill") {
+          V4DashboardView(prefs: prefs)
+        }
+        Tab("Calendar", systemImage: "calendar") {
+          V4CalendarView(prefs: prefs)
+        }
+        Tab("Expenses", systemImage: "creditcard") {
+          V4ExpensesView(prefs: prefs)
+        }
+        Tab("Totals", systemImage: "chart.bar") {
+          V4TotalsView(prefs: prefs)
+        }
+        Tab("Guests", systemImage: "person.2.fill") {
+          V4GuestsView(prefs: prefs)
+        }
+        Tab("More", systemImage: "ellipsis") {
+          V4SettingsView(prefs: prefs)
+        }
+      }
+      .tabViewStyle(.sidebarAdaptable)
+      .tint(V4Theme.Brand.primary)
+    } else {
+      TabView {
+        V4DashboardView(prefs: prefs)
+          .tabItem { Label("Dashboard", systemImage: "rectangle.grid.2x2.fill") }
+        V4CalendarView(prefs: prefs)
+          .tabItem { Label("Calendar", systemImage: "calendar") }
+        V4ExpensesView(prefs: prefs)
+          .tabItem { Label("Expenses", systemImage: "creditcard") }
+        V4TotalsView(prefs: prefs)
+          .tabItem { Label("Totals", systemImage: "chart.bar") }
+        V4GuestsView(prefs: prefs)
+          .tabItem { Label("Guests", systemImage: "person.2.fill") }
+        V4SettingsView(prefs: prefs)
+          .tabItem { Label("More", systemImage: "ellipsis") }
+      }
+      .tint(V4Theme.Brand.primary)
+    }
   }
 }
 

@@ -198,6 +198,9 @@ final class STExpense {
   var category: STExpenseCategory
   var note: String?
 
+  // Receipt photo (JPEG compressed, optional)
+  var receiptData: Data?
+
   // Currency on each expense (defaults to property currency)
   var currencyCode: String
 
@@ -208,6 +211,7 @@ final class STExpense {
     amount: Double,
     category: STExpenseCategory,
     note: String? = nil,
+    receiptData: Data? = nil,
     currencyCode: String? = nil
   ) {
     self.id = id
@@ -216,6 +220,7 @@ final class STExpense {
     self.amount = amount
     self.category = category
     self.note = note
+    self.receiptData = receiptData
     self.currencyCode = currencyCode ?? property.currencyCode
   }
 }

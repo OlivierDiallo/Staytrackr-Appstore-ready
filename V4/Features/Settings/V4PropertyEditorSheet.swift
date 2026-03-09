@@ -273,7 +273,12 @@ struct V4PropertyEditorSheet: View {
       p.photoData = photoData
     }
 
-    try? context.save()
+    do {
+      try context.save()
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
+    } catch {
+      print("Property save failed: \(error)")
+    }
     dismiss()
   }
 }

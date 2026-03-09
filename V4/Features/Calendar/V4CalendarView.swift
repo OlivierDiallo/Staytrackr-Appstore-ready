@@ -18,6 +18,7 @@ struct V4CalendarView: View {
   /// Drives the "create booking pre-filled with tapped date" sheet.
   @State private var showAddForDay = false
   @State private var pendingCheckInDate: Date? = nil
+  @State private var searchText: String = ""
 
   private let cal = Calendar.current
 
@@ -59,12 +60,13 @@ struct V4CalendarView: View {
     return Array(syms[offset...] + syms[..<offset])
   }
 
-  /// Bookings shown below the grid — filtered to selected day or whole displayed month
+  /// Bookings shown below the grid — filtered to selected day or whole displayed month, then by search
   private var bookingsToDisplay: [STBooking] {
+    let dateFiltered: [STBooking]
     if let day = selectedDay {
       let dayStart = cal.startOfDay(for: day)
       let dayEnd   = cal.date(byAdding: .day, value: 1, to: dayStart)!
-      return filteredBookings
+      dateFiltered = filteredBookings
         .filter { $0.checkIn < dayEnd && $0.checkOut > dayStart }
         .sorted { $0.checkIn < $1.checkIn }
     } else {
@@ -72,9 +74,16 @@ struct V4CalendarView: View {
         let start = cal.date(from: cal.dateComponents([.year, .month], from: displayedMonth)),
         let end   = cal.date(byAdding: .month, value: 1, to: start)
       else { return [] }
-      return filteredBookings
+      dateFiltered = filteredBookings
         .filter { $0.checkIn < end && $0.checkOut > start }
         .sorted { $0.checkIn < $1.checkIn }
+    }
+
+    guard !searchText.isEmpty else { return dateFiltered }
+    let q = searchText.lowercased()
+    return dateFiltered.filter {
+      $0.guest.name.lowercased().contains(q) ||
+      $0.property.name.lowercased().contains(q)
     }
   }
 
@@ -115,6 +124,7 @@ struct V4CalendarView: View {
                 }
                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                   Button {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     b.isPaid.toggle()
                     try? context.save()
                   } label: {
@@ -158,6 +168,7 @@ struct V4CalendarView: View {
         }
       }
       .listStyle(.insetGrouped)
+      .searchable(text: $searchText, prompt: "Search by guest or property")
       .navigationTitle("Calendar")
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
@@ -413,6 +424,7 @@ struct V4CalendarView: View {
   // MARK: - Delete
 
   private func deleteBooking(_ b: STBooking) {
+    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     context.delete(b)
     do { try context.save() }
     catch { print("Delete booking failed: \(error)") }

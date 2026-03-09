@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct V4ExpenseEditorSheet: View {
 
@@ -37,6 +38,10 @@ struct V4ExpenseEditorSheet: View {
 
   /// Optional override. If empty, we fall back to property currency.
   @State private var currencyCode: String = ""
+
+  // Receipt photo
+  @State private var receiptData: Data? = nil
+  @State private var receiptItem: PhotosPickerItem? = nil
 
   @State private var showValidationAlert: Bool = false
   @State private var validationMessage: String = ""
@@ -110,9 +115,49 @@ struct V4ExpenseEditorSheet: View {
             .lineLimit(3...6)
         }
 
+        // ── Receipt Photo ──────────────────────────────────────────────
+        Section("Receipt") {
+          PhotosPicker(selection: $receiptItem, matching: .images) {
+            if let data = receiptData, let uiImage = UIImage(data: data) {
+              Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: 160)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            } else {
+              Label("Attach Receipt Photo", systemImage: "camera.badge.plus")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 8)
+            }
+          }
+          .buttonStyle(.plain)
+
+          if receiptData != nil {
+            Button("Remove Receipt", role: .destructive) {
+              receiptData = nil
+              receiptItem = nil
+            }
+          }
+        }
+        .onChange(of: receiptItem) { _, newItem in
+          Task {
+            if let data = try? await newItem?.loadTransferable(type: Data.self) {
+              if let uiImage = UIImage(data: data),
+                 let jpeg = uiImage.jpegData(compressionQuality: 0.7) {
+                receiptData = jpeg
+              } else {
+                receiptData = data
+              }
+            }
+          }
+        }
+
         if case .edit(let e) = mode {
           Section {
             Button(role: .destructive) {
+              UIImpactFeedbackGenerator(style: .medium).impactOccurred()
               context.delete(e)
               try? context.save()
               dismiss()
@@ -151,7 +196,8 @@ struct V4ExpenseEditorSheet: View {
       category = .utilities
       amountText = ""
       note = ""
-      currencyCode = "" // empty => default to property currency
+      currencyCode = ""
+      receiptData = nil
 
     case .edit(let e):
       propertyID = e.property.id
@@ -159,7 +205,8 @@ struct V4ExpenseEditorSheet: View {
       category = e.category
       amountText = V4Format.plainNumber(e.amount)
       note = e.note ?? ""
-      currencyCode = e.currencyCode // keep original currency visible/editable
+      currencyCode = e.currencyCode
+      receiptData = e.receiptData
     }
   }
 
@@ -187,7 +234,9 @@ struct V4ExpenseEditorSheet: View {
         date: date,
         amount: amount,
         category: category,
-        note: finalNote, currencyCode: finalCurrency
+        note: finalNote,
+        receiptData: receiptData,
+        currencyCode: finalCurrency
       )
       context.insert(e)
 
@@ -198,10 +247,12 @@ struct V4ExpenseEditorSheet: View {
       e.category = category
       e.currencyCode = finalCurrency
       e.note = finalNote
+      e.receiptData = receiptData
     }
 
     do {
       try context.save()
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
       dismiss()
     } catch {
       fail("Save failed: \(error.localizedDescription)")

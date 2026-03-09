@@ -324,6 +324,7 @@ struct V4BookingEditorSheet: View {
 
     do {
       try context.save()
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
       dismiss()
     } catch {
       fail("Save failed: \(error.localizedDescription)")

@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import Charts
 
 struct V4DashboardView: View {
   let prefs: V4AppPreferences
@@ -36,6 +37,7 @@ struct V4DashboardView: View {
             monthCard(month: monthAnchor, occupancyPct: totals.occupancyPct)
             financeCard(gross: totals.gross, expenses: totals.expenses, net: totals.net, currencyCode: prop.currencyCode)
             ytdCard(property: prop)
+            revenueChartCard(property: prop)
             mortgageCard(property: prop)
             recentExpensesCard(property: prop)
 
@@ -55,6 +57,7 @@ struct V4DashboardView: View {
               monthCard(month: monthAnchor, occupancyPct: totals.occupancyPct)
               financeCard(gross: totals.gross, expenses: totals.expenses, net: totals.net, currencyCode: code)
               ytdCard(property: nil)
+              revenueChartCard(property: nil)
               recentExpensesCard(property: nil)
             }
           }
@@ -167,6 +170,71 @@ struct V4DashboardView: View {
         metricRow(title: "Expenses", value: V4Currency.format(expenses, code: currencyCode), positive: false)
         Divider().opacity(0.4)
         metricRow(title: "Net", value: V4Currency.format(net, code: currencyCode), positive: net >= 0)
+      }
+    }
+  }
+
+  // MARK: - Revenue Chart Card
+
+  private struct MonthBar: Identifiable {
+    let id = UUID()
+    let month: Date
+    let gross: Double
+  }
+
+  private func last6MonthsBars(property: STProperty?) -> [MonthBar] {
+    let cal = Calendar.current
+    return (0..<6).reversed().compactMap { offset -> MonthBar? in
+      guard let anchor = cal.date(byAdding: .month, value: -offset, to: monthAnchor),
+            let start  = cal.date(from: cal.dateComponents([.year, .month], from: anchor)),
+            let end    = cal.date(byAdding: .month, value: 1, to: start)
+      else { return nil }
+
+      var gross = 0.0
+      let source = property.map { p in bookings.filter { $0.property.id == p.id } } ?? Array(bookings)
+      for b in source {
+        let s = max(b.checkIn, start); let e = min(b.checkOut, end)
+        if s < e { gross += Double(V4Finance.nights(s, e)) * b.nightlyRate }
+      }
+      return MonthBar(month: start, gross: gross)
+    }
+  }
+
+  private func revenueChartCard(property: STProperty?) -> some View {
+    let bars = last6MonthsBars(property: property)
+    let currencyCode = property?.currencyCode ?? properties.first?.currencyCode ?? "EUR"
+    let maxVal = bars.map(\.gross).max() ?? 1
+
+    return V4Card {
+      VStack(alignment: .leading, spacing: 12) {
+        Text("Revenue — Last 6 Months")
+          .font(.headline)
+
+        Chart(bars) { bar in
+          BarMark(
+            x: .value("Month", bar.month, unit: .month),
+            y: .value("Revenue", bar.gross)
+          )
+          .foregroundStyle(V4Theme.Brand.primary.gradient)
+          .cornerRadius(4)
+        }
+        .chartXAxis {
+          AxisMarks(values: .stride(by: .month)) { val in
+            AxisValueLabel(format: .dateTime.month(.abbreviated))
+          }
+        }
+        .chartYAxis {
+          AxisMarks(position: .leading) { val in
+            AxisValueLabel {
+              if let d = val.as(Double.self) {
+                Text(V4Currency.format(d, code: currencyCode))
+                  .font(.system(size: 9))
+              }
+            }
+          }
+        }
+        .chartYScale(domain: 0...(maxVal * 1.2 + 1))
+        .frame(height: 160)
       }
     }
   }

@@ -247,6 +247,7 @@ struct V4GuestsView: View {
   // MARK: Delete
 
   private func deleteGuest(_ g: STGuest) {
+    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     context.delete(g)
     do { try context.save() }
     catch { print("Delete guest failed: \(error)") }
