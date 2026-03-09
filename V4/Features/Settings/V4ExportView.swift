@@ -26,6 +26,9 @@ struct V4ExportView: View {
   @Query(sort: \STBooking.checkIn)  private var bookings:  [STBooking]
   @Query(sort: \STExpense.date)     private var expenses:  [STExpense]
 
+  @Environment(STStoreManager.self) private var store
+  @State private var showPaywall = false
+
   private static let isoDay: ISO8601DateFormatter = {
     let f = ISO8601DateFormatter()
     f.formatOptions = [.withFullDate]
@@ -33,6 +36,23 @@ struct V4ExportView: View {
   }()
 
   var body: some View {
+    Group {
+      if store.isPremium {
+        exportForm
+      } else {
+        premiumLockedPlaceholder
+      }
+    }
+    .navigationTitle("Export Data")
+    .navigationBarTitleDisplayMode(.inline)
+    .sheet(isPresented: $showPaywall) {
+      V4PaywallView().environment(store)
+    }
+  }
+
+  // MARK: - Export Form (premium only)
+
+  private var exportForm: some View {
     Form {
       Section {
         Text("Exports include all data currently stored on this device. Open the CSV in Numbers, Excel, or Google Sheets.")
@@ -94,8 +114,39 @@ struct V4ExportView: View {
           .font(.caption2)
       }
     }
-    .navigationTitle("Export Data")
-    .navigationBarTitleDisplayMode(.inline)
+  }
+
+  // MARK: - Locked Placeholder (free tier)
+
+  private var premiumLockedPlaceholder: some View {
+    VStack(spacing: 24) {
+      Spacer()
+      Image(systemName: "arrow.down.doc.fill")
+        .font(.system(size: 52))
+        .foregroundStyle(V4Theme.Brand.primary.opacity(0.4))
+      VStack(spacing: 8) {
+        Text("CSV Export")
+          .font(.title3.weight(.semibold))
+        Text("Export your bookings and expenses to\nspreadsheets. Available with Premium.")
+          .font(.subheadline)
+          .foregroundStyle(.secondary)
+          .multilineTextAlignment(.center)
+          .padding(.horizontal, 24)
+      }
+      Button {
+        showPaywall = true
+      } label: {
+        Label("Unlock with Premium", systemImage: "lock.open.fill")
+          .font(.headline)
+          .foregroundStyle(.white)
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 14)
+          .background(V4Theme.Brand.primary,
+                      in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+          .padding(.horizontal, 40)
+      }
+      Spacer()
+    }
   }
 
   // MARK: - CSV builders

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		137C607CAC784F108475EFDA /* V4ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */; };
+		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
+		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
+		7E0975B8F73F483CA1EB7A8E /* StayTrackrPremium.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */; };
 		505AF2732EF2202700FC5DFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 505AF2722EF2202700FC5DFF /* Assets.xcassets */; };
 		505AF2872F0D697600FC5DFF /* StayTrackrV4App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */; };
 		505AF2882F0D6A9400FC5DFF /* STModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2742F088AD400FC5DFF /* STModels.swift */; };
@@ -50,6 +53,9 @@
 
 /* Begin PBXFileReference section */
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
+		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
+		16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StayTrackrPremium.storekit; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
 		505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayTrackrV4App.swift; sourceTree = "<group>"; };
@@ -145,8 +151,17 @@
 				505AF2A02F0D710300FC5DFF /* V4AppSettings.swift */,
 				505AF29E2F0D706000FC5DFF /* V4Seeder.swift */,
 				505AF29C2F0D6EF100FC5DFF /* V4AppPreferences.swift */,
+				B7C331B2DE384275AADC8C65 /* STStoreManager.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		BBA4182FF8E245029BBE3790 /* Premium */ = {
+			isa = PBXGroup;
+			children = (
+				91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */,
+			);
+			path = Premium;
 			sourceTree = "<group>";
 		};
 		505AF27A2F0D650200FC5DFF /* Features */ = {
@@ -156,6 +171,7 @@
 				505AF27E2F0D655600FC5DFF /* Calendar */,
 				505AF27F2F0D656200FC5DFF /* Expenses */,
 				505AF2802F0D656D00FC5DFF /* Guests */,
+				BBA4182FF8E245029BBE3790 /* Premium */,
 				505AF2812F0D657600FC5DFF /* Settings */,
 				505AF2822F0D658300FC5DFF /* Totals */,
 			);
@@ -318,6 +334,7 @@
 				505AF2722EF2202700FC5DFF /* Assets.xcassets */,
 				2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */,
 				C5704C85909B44449280C130 /* Localizable.xcstrings */,
+				16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */,
 			);
 			path = "StayTrackr V3";
 			sourceTree = "<group>";
@@ -389,6 +406,7 @@
 				505AF2732EF2202700FC5DFF /* Assets.xcassets in Resources */,
 				D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */,
 				A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */,
+				7E0975B8F73F483CA1EB7A8E /* StayTrackrPremium.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +453,8 @@
 				505AF2992F0D6E3E00FC5DFF /* V4GuestsView.swift in Sources */,
 				505AF2AF2F0D95A800FC5DFF /* V4Card.swift in Sources */,
 				86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */,
+				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
+				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

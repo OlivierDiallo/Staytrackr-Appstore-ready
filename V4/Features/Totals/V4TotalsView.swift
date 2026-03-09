@@ -15,6 +15,9 @@ struct V4TotalsView: View {
   let prefs: V4AppPreferences
 
   @Environment(V4AppSettings.self) private var settings
+  @Environment(STStoreManager.self) private var store
+
+  @State private var showPaywall = false
 
   @Query(sort: \STProperty.name) private var properties: [STProperty]
   @Query(sort: \STBooking.checkIn) private var bookings: [STBooking]
@@ -142,6 +145,9 @@ struct V4TotalsView: View {
           }
         }
       }
+      .sheet(isPresented: $showPaywall) {
+        V4PaywallView().environment(store)
+      }
     }
   }
 
@@ -177,16 +183,45 @@ struct V4TotalsView: View {
           Spacer()
         }
 
-        // Scope picker
-        Picker("Scope", selection: Binding(
-          get: { scope },
-          set: { prefs.totalsScopeRaw = $0.rawValue }
-        )) {
-          Text("Month").tag(TotalsScope.monthly)
-          Text("Year").tag(TotalsScope.yearly)
-          Text("All Time").tag(TotalsScope.allTime)
+        // Scope picker — Yearly & All Time are Premium-only
+        HStack(spacing: 0) {
+          ForEach(TotalsScope.allCases, id: \.self) { s in
+            let isSelected = scope == s
+            let isPremiumScope = (s == .yearly || s == .allTime)
+            let locked = isPremiumScope && !store.isPremium
+
+            Button {
+              if locked {
+                showPaywall = true
+              } else {
+                prefs.totalsScopeRaw = s.rawValue
+              }
+            } label: {
+              HStack(spacing: 4) {
+                Text(s == .monthly ? "Month" : s == .yearly ? "Year" : "All Time")
+                  .font(.subheadline.weight(isSelected ? .semibold : .regular))
+                if locked {
+                  Image(systemName: "lock.fill")
+                    .font(.system(size: 9))
+                    .foregroundStyle(V4Theme.Brand.primary)
+                }
+              }
+              .frame(maxWidth: .infinity)
+              .padding(.vertical, 7)
+              .background(
+                isSelected
+                  ? AnyShapeStyle(Color(.systemBackground))
+                  : AnyShapeStyle(Color.clear)
+              )
+              .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(isSelected ? Color.primary : Color.secondary)
+          }
         }
-        .pickerStyle(.segmented)
+        .padding(3)
+        .background(Color(.quaternarySystemFill),
+                    in: RoundedRectangle(cornerRadius: 11, style: .continuous))
 
         // Period navigation (hidden for All Time)
         if scope != .allTime {

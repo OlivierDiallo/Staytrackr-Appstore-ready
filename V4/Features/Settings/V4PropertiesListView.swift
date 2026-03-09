@@ -13,9 +13,11 @@ struct V4PropertiesListView: View {
   let prefs: V4AppPreferences
 
   @Environment(\.modelContext) private var context
+  @Environment(STStoreManager.self) private var store
   @Query(sort: \STProperty.name) private var properties: [STProperty]
 
   @State private var showingAdd = false
+  @State private var showPaywall = false
   @State private var propertyToDelete: STProperty?
   @State private var showDeleteConfirmation = false
 
@@ -79,11 +81,20 @@ struct V4PropertiesListView: View {
     .navigationTitle("Properties")
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
-        Button { showingAdd = true } label: { Image(systemName: "plus") }
+        Button {
+          if properties.count >= 1 && !store.isPremium {
+            showPaywall = true
+          } else {
+            showingAdd = true
+          }
+        } label: { Image(systemName: "plus") }
       }
     }
     .sheet(isPresented: $showingAdd) {
       V4PropertyEditorSheet(mode: .add, propertyToEdit: nil)
+    }
+    .sheet(isPresented: $showPaywall) {
+      V4PaywallView().environment(store)
     }
     .alert("Delete Property?", isPresented: $showDeleteConfirmation, presenting: propertyToDelete) { p in
       Button("Delete", role: .destructive) { confirmDelete(p) }

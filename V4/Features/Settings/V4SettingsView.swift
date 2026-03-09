@@ -7,12 +7,72 @@ struct V4SettingsView: View {
 
   @Environment(V4AppSettings.self) private var settings
   @Environment(V4NotificationManager.self) private var notifManager
+  @Environment(STStoreManager.self) private var store
+
+  @State private var showPaywall = false
 
   private let commonCurrencies = ["EUR","CZK","USD","GBP","CHF","PLN","SEK","NOK","DKK"]
 
   var body: some View {
     NavigationStack {
       Form {
+
+        // MARK: Premium Section
+        Section("StayTrackr Premium") {
+          if store.isPremium {
+            HStack(spacing: 12) {
+              ZStack {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                  .fill(V4Theme.Brand.primary.opacity(0.12))
+                  .frame(width: 40, height: 40)
+                Image(systemName: "checkmark.seal.fill")
+                  .font(.system(size: 20))
+                  .foregroundStyle(V4Theme.Brand.primary)
+              }
+              VStack(alignment: .leading, spacing: 2) {
+                Text("StayTrackr Premium")
+                  .font(.subheadline.weight(.semibold))
+                Text("Active subscription")
+                  .font(.caption)
+                  .foregroundStyle(V4Theme.Brand.primary)
+              }
+              Spacer()
+              if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+                Link("Manage", destination: url)
+                  .font(.subheadline)
+                  .foregroundStyle(V4Theme.Brand.primary)
+              }
+            }
+          } else {
+            Button {
+              showPaywall = true
+            } label: {
+              HStack(spacing: 12) {
+                ZStack {
+                  RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(V4Theme.Brand.primary.opacity(0.12))
+                    .frame(width: 40, height: 40)
+                  Image(systemName: "star.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(V4Theme.Brand.primary)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                  Text("Upgrade to Premium")
+                    .font(.subheadline.weight(.semibold))
+                  Text("Unlimited properties, charts, export & more")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
+            .buttonStyle(.plain)
+          }
+        }
+
         Section("Reporting Currency") {
           Picker("Currency", selection: Binding(
             get: { settings.reportingCurrencyCode },
@@ -78,6 +138,9 @@ struct V4SettingsView: View {
       }
       .navigationTitle("Settings")
     }
+    .sheet(isPresented: $showPaywall) {
+      V4PaywallView().environment(store)
+    }
   }
 
   // MARK: - Notifications Section
@@ -94,7 +157,6 @@ struct V4SettingsView: View {
 
       if settings.notificationsEnabled {
         if !notifManager.isAuthorized {
-          // User has not granted permission yet — nudge them.
           HStack(spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill")
               .foregroundStyle(.orange)
@@ -109,21 +171,47 @@ struct V4SettingsView: View {
           .padding(.vertical, 4)
         }
 
-        Picker("Arrival notice", selection: Binding(
-          get: { settings.arrivalNoticeHours },
-          set: { settings.arrivalNoticeHours = $0 }
-        )) {
-          ForEach(V4AppSettings.noticeOptions, id: \.hours) { opt in
-            Text(opt.label).tag(opt.hours)
+        // Arrival notice — locked for free users
+        HStack {
+          Picker("Arrival notice", selection: Binding(
+            get: { settings.arrivalNoticeHours },
+            set: { settings.arrivalNoticeHours = $0 }
+          )) {
+            ForEach(V4AppSettings.noticeOptions, id: \.hours) { opt in
+              Text(opt.label).tag(opt.hours)
+            }
+          }
+          .disabled(!store.isPremium)
+
+          if !store.isPremium {
+            Button { showPaywall = true } label: {
+              Image(systemName: "lock.fill")
+                .font(.caption)
+                .foregroundStyle(V4Theme.Brand.primary)
+            }
+            .buttonStyle(.plain)
           }
         }
 
-        Picker("Departure notice", selection: Binding(
-          get: { settings.departureNoticeHours },
-          set: { settings.departureNoticeHours = $0 }
-        )) {
-          ForEach(V4AppSettings.noticeOptions, id: \.hours) { opt in
-            Text(opt.label).tag(opt.hours)
+        // Departure notice — locked for free users
+        HStack {
+          Picker("Departure notice", selection: Binding(
+            get: { settings.departureNoticeHours },
+            set: { settings.departureNoticeHours = $0 }
+          )) {
+            ForEach(V4AppSettings.noticeOptions, id: \.hours) { opt in
+              Text(opt.label).tag(opt.hours)
+            }
+          }
+          .disabled(!store.isPremium)
+
+          if !store.isPremium {
+            Button { showPaywall = true } label: {
+              Image(systemName: "lock.fill")
+                .font(.caption)
+                .foregroundStyle(V4Theme.Brand.primary)
+            }
+            .buttonStyle(.plain)
           }
         }
       }

@@ -7,11 +7,13 @@ struct V4DashboardView: View {
 
   @Environment(V4AppSettings.self)          private var settings
   @Environment(V4NotificationManager.self)  private var notifManager
+  @Environment(STStoreManager.self)         private var store
   @Query(sort: \STProperty.name) private var properties: [STProperty]
   @Query(sort: \STBooking.checkIn) private var bookings: [STBooking]
   @Query(sort: \STExpense.date, order: .reverse) private var expenses: [STExpense]
 
   @State private var monthAnchor: Date = Date()
+  @State private var showPaywall = false
 
   private var selectedProperty: STProperty? {
     guard let id = prefs.selectedPropertyID else { return nil }
@@ -37,7 +39,7 @@ struct V4DashboardView: View {
             monthCard(month: monthAnchor, occupancyPct: totals.occupancyPct)
             financeCard(gross: totals.gross, expenses: totals.expenses, net: totals.net, currencyCode: prop.currencyCode)
             ytdCard(property: prop)
-            revenueChartCard(property: prop)
+            revenueChartCardOrGate(property: prop)
             mortgageCard(property: prop)
             recentExpensesCard(property: prop)
 
@@ -57,7 +59,7 @@ struct V4DashboardView: View {
               monthCard(month: monthAnchor, occupancyPct: totals.occupancyPct)
               financeCard(gross: totals.gross, expenses: totals.expenses, net: totals.net, currencyCode: code)
               ytdCard(property: nil)
-              revenueChartCard(property: nil)
+              revenueChartCardOrGate(property: nil)
               recentExpensesCard(property: nil)
             }
           }
@@ -85,6 +87,48 @@ struct V4DashboardView: View {
     }
     .onChange(of: settings.departureNoticeHours) { _, _ in
       notifManager.scheduleAll(bookings: bookings, settings: settings)
+    }
+    .sheet(isPresented: $showPaywall) {
+      V4PaywallView().environment(store)
+    }
+  }
+
+  // MARK: - Chart Gate
+
+  @ViewBuilder
+  private func revenueChartCardOrGate(property: STProperty?) -> some View {
+    if store.isPremium {
+      revenueChartCard(property: property)
+    } else {
+      revenueChartCard(property: property)
+        .blur(radius: 8)
+        .allowsHitTesting(false)
+        .overlay(alignment: .center) {
+          VStack(spacing: 10) {
+            Image(systemName: "lock.fill")
+              .font(.title2)
+              .foregroundStyle(.white)
+            Text("Revenue Charts")
+              .font(.headline)
+              .foregroundStyle(.white)
+            Button {
+              showPaywall = true
+            } label: {
+              Text("Premium")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 6)
+                .background(V4Theme.Brand.primary, in: Capsule())
+            }
+          }
+          .padding(20)
+          .background(.ultraThinMaterial,
+                      in: RoundedRectangle(cornerRadius: V4Theme.Spacing.cardRadius, style: .continuous))
+          .padding(.horizontal, 24)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { showPaywall = true }
     }
   }
 

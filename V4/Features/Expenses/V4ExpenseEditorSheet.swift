@@ -23,6 +23,7 @@ struct V4ExpenseEditorSheet: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.modelContext) private var context
   @Environment(V4AppSettings.self) private var settings
+  @Environment(STStoreManager.self) private var store
 
   @Query(sort: \STProperty.name) private var properties: [STProperty]
 
@@ -43,6 +44,7 @@ struct V4ExpenseEditorSheet: View {
   @State private var receiptData: Data? = nil
   @State private var receiptItem: PhotosPickerItem? = nil
 
+  @State private var showPaywall = false
   @State private var showValidationAlert: Bool = false
   @State private var validationMessage: String = ""
 
@@ -117,28 +119,46 @@ struct V4ExpenseEditorSheet: View {
 
         // ── Receipt Photo ──────────────────────────────────────────────
         Section("Receipt") {
-          PhotosPicker(selection: $receiptItem, matching: .images) {
-            if let data = receiptData, let uiImage = UIImage(data: data) {
-              Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity)
-                .frame(height: 160)
-                .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-            } else {
-              Label("Attach Receipt Photo", systemImage: "camera.badge.plus")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.vertical, 8)
+          if store.isPremium {
+            PhotosPicker(selection: $receiptItem, matching: .images) {
+              if let data = receiptData, let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                  .resizable()
+                  .scaledToFill()
+                  .frame(maxWidth: .infinity)
+                  .frame(height: 160)
+                  .clipped()
+                  .clipShape(RoundedRectangle(cornerRadius: 10))
+              } else {
+                Label("Attach Receipt Photo", systemImage: "camera.badge.plus")
+                  .frame(maxWidth: .infinity, alignment: .center)
+                  .padding(.vertical, 8)
+              }
             }
-          }
-          .buttonStyle(.plain)
+            .buttonStyle(.plain)
 
-          if receiptData != nil {
-            Button("Remove Receipt", role: .destructive) {
-              receiptData = nil
-              receiptItem = nil
+            if receiptData != nil {
+              Button("Remove Receipt", role: .destructive) {
+                receiptData = nil
+                receiptItem = nil
+              }
             }
+          } else {
+            Button {
+              showPaywall = true
+            } label: {
+              HStack {
+                Image(systemName: "lock.fill")
+                  .foregroundStyle(V4Theme.Brand.primary)
+                Text("Receipt photos — Premium feature")
+                  .foregroundStyle(.secondary)
+                Spacer()
+                Image(systemName: "chevron.right")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
+            .buttonStyle(.plain)
           }
         }
         .onChange(of: receiptItem) { _, newItem in
@@ -182,6 +202,9 @@ struct V4ExpenseEditorSheet: View {
         Button("OK", role: .cancel) { }
       } message: {
         Text(validationMessage)
+      }
+      .sheet(isPresented: $showPaywall) {
+        V4PaywallView().environment(store)
       }
     }
   }

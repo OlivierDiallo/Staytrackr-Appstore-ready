@@ -5,31 +5,69 @@ import SwiftData
 
 struct V4RecurringBillsView: View {
   @Environment(\.modelContext) private var context
+  @Environment(STStoreManager.self) private var store
 
   @Query(sort: \STProperty.name) private var properties: [STProperty]
   @Query(sort: \STRecurringBill.name) private var bills: [STRecurringBill]
 
   @State private var showAdd = false
+  @State private var showPaywall = false
   @State private var billToEdit: STRecurringBill?
   @State private var billToApply: STRecurringBill?
   @State private var showApplyAlert = false
 
   var body: some View {
-    List { listContent }
-      .navigationTitle("Recurring Bills")
-      .toolbar {
-        ToolbarItem(placement: .topBarTrailing) {
-          Button { showAdd = true } label: { Image(systemName: "plus") }
+    Group {
+      if store.isPremium {
+        List { listContent }
+          .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+              Button { showAdd = true } label: { Image(systemName: "plus") }
+            }
+          }
+          .sheet(isPresented: $showAdd) { V4RecurringBillEditorSheet(mode: .add) }
+          .sheet(item: $billToEdit) { V4RecurringBillEditorSheet(mode: .edit($0)) }
+          .alert("Add as Expense?", isPresented: $showApplyAlert, presenting: billToApply) { bill in
+            Button("Add Expense") { applyBill(bill) }
+            Button("Cancel", role: .cancel) { billToApply = nil }
+          } message: { bill in
+            Text(applyAlertMessage(for: bill))
+          }
+      } else {
+        VStack(spacing: 24) {
+          Spacer()
+          Image(systemName: "repeat.circle.fill")
+            .font(.system(size: 52))
+            .foregroundStyle(V4Theme.Brand.primary.opacity(0.4))
+          VStack(spacing: 8) {
+            Text("Recurring Bills")
+              .font(.title3.weight(.semibold))
+            Text("Set up monthly bills that auto-apply\nas expenses. Available with Premium.")
+              .font(.subheadline)
+              .foregroundStyle(.secondary)
+              .multilineTextAlignment(.center)
+              .padding(.horizontal, 24)
+          }
+          Button {
+            showPaywall = true
+          } label: {
+            Label("Unlock with Premium", systemImage: "lock.open.fill")
+              .font(.headline)
+              .foregroundStyle(.white)
+              .frame(maxWidth: .infinity)
+              .padding(.vertical, 14)
+              .background(V4Theme.Brand.primary,
+                          in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+              .padding(.horizontal, 40)
+          }
+          Spacer()
         }
       }
-      .sheet(isPresented: $showAdd) { V4RecurringBillEditorSheet(mode: .add) }
-      .sheet(item: $billToEdit) { V4RecurringBillEditorSheet(mode: .edit($0)) }
-      .alert("Add as Expense?", isPresented: $showApplyAlert, presenting: billToApply) { bill in
-        Button("Add Expense") { applyBill(bill) }
-        Button("Cancel", role: .cancel) { billToApply = nil }
-      } message: { bill in
-        Text(applyAlertMessage(for: bill))
-      }
+    }
+    .navigationTitle("Recurring Bills")
+    .sheet(isPresented: $showPaywall) {
+      V4PaywallView().environment(store)
+    }
   }
 
   @ViewBuilder
