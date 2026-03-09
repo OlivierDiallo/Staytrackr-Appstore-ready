@@ -14,12 +14,16 @@ struct StayTrackrV4App: App {
 
   init() {
     do {
-      let schema = Schema(versionedSchema: V4SchemaV2.self)
-      let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+      // No explicit migration plan needed — SwiftData auto-migrates optional
+      // column additions (note, photoData) via its built-in lightweight migration.
       self.container = try ModelContainer(
-        for: schema,
-        migrationPlan: V4MigrationPlan.self,
-        configurations: [config]
+        for: STProperty.self,
+             STGuest.self,
+             STBooking.self,
+             STExpense.self,
+             STRecurringBill.self,
+             STFXRate.self,
+             V4AppPreferences.self
       )
     } catch {
       fatalError("Failed to create SwiftData ModelContainer: \(error)")
