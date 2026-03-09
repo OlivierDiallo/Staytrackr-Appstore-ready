@@ -14,7 +14,7 @@ struct StayTrackrV4App: App {
 
   init() {
     do {
-      let schema = Schema(versionedSchema: V4SchemaV1.self)
+      let schema = Schema(versionedSchema: V4SchemaV2.self)
       let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
       self.container = try ModelContainer(
         for: schema,
