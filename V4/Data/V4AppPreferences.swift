@@ -12,7 +12,7 @@ import SwiftData
 
 @Model
 final class V4AppPreferences {
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   // Which property is selected in UI (nil = all properties)
   var selectedPropertyID: UUID?

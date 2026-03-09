@@ -24,34 +24,46 @@ struct StayTrackrV4App: App {
   ]
 
   init() {
-    // "StayTrackrV6" store name sidesteps any leftover version metadata
-    // written by the old V4MigrationPlan, which caused a "duplicate checksum"
-    // crash on launch.
-    let config = ModelConfiguration(
+    let schema = Schema(Self.modelTypes)
+
+    // 1. Try CloudKit-backed store (requires iCloud capability + container in Xcode).
+    //    Falls back gracefully if the device has no iCloud account or entitlement is missing.
+    let cloudConfig = ModelConfiguration(
       "StayTrackrV6",
-      schema: Schema(Self.modelTypes),
+      schema: schema,
+      isStoredInMemoryOnly: false,
+      cloudKitDatabase: .automatic
+    )
+
+    // 2. Local-only fallback (same store name so the file is shared).
+    let localConfig = ModelConfiguration(
+      "StayTrackrV6",
+      schema: schema,
       isStoredInMemoryOnly: false
     )
-    do {
-      self.container = try ModelContainer(
-        for: Schema(Self.modelTypes),
-        configurations: [config]
-      )
-    } catch {
-      // Store is unreadable — wipe it and recreate so the app never hard-crashes.
+
+    if let c = Self.makeContainer(schema: schema, config: cloudConfig) {
+      // CloudKit sync available.
+      container = c
+    } else if let c = Self.makeContainer(schema: schema, config: localConfig) {
+      // No CloudKit — fall back to local-only.
+      container = c
+    } else {
+      // Store is completely unreadable — wipe it and start fresh so the app never hard-crashes.
       Self.deleteStore(named: "StayTrackrV6")
-      do {
-        self.container = try ModelContainer(
-          for: Schema(Self.modelTypes),
-          configurations: [config]
-        )
-      } catch {
-        fatalError("Failed to create SwiftData ModelContainer: \(error)")
+      if let c = Self.makeContainer(schema: schema, config: localConfig) {
+        container = c
+      } else {
+        fatalError("Failed to create SwiftData ModelContainer after store wipe.")
       }
     }
   }
 
-  // MARK: - Store recovery
+  // MARK: - Helpers
+
+  private static func makeContainer(schema: Schema, config: ModelConfiguration) -> ModelContainer? {
+    try? ModelContainer(for: schema, configurations: [config])
+  }
 
   private static func deleteStore(named name: String) {
     guard let dir = FileManager.default

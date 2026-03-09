@@ -43,7 +43,7 @@ enum STBookingStatus {
 
 @Model
 final class STProperty {
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   // Basics
   var name: String
@@ -107,7 +107,7 @@ final class STProperty {
 
 @Model
 final class STGuest {
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   var name: String
   var email: String?
@@ -134,7 +134,7 @@ final class STGuest {
 
 @Model
 final class STBooking {
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   // Relationships
   var property: STProperty
@@ -187,7 +187,7 @@ final class STBooking {
 
 @Model
 final class STExpense {
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   // Relationships
   var property: STProperty
@@ -229,7 +229,7 @@ final class STExpense {
 
 @Model
 final class STRecurringBill {
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   // Relationship
   var property: STProperty

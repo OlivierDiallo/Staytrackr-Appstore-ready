@@ -10,7 +10,7 @@ import SwiftData
 @Model
 final class STFXRate {
 
-  @Attribute(.unique) var id: UUID
+  var id: UUID
 
   /// Base currency code, e.g. "EUR"
   var fromCode: String
