@@ -27,6 +27,9 @@ final class STStoreManager {
   /// True while a purchase or restore is in-flight.
   var isPurchasing: Bool = false
 
+  /// True when the user is eligible for a free introductory trial (checked after products load).
+  var isEligibleForTrial: Bool = false
+
   // MARK: - Init
 
   init() {
@@ -50,6 +53,7 @@ final class STStoreManager {
       products = fetched.sorted {
         (order.firstIndex(of: $0.id) ?? 99) < (order.firstIndex(of: $1.id) ?? 99)
       }
+      await checkTrialEligibility()
     } catch {
       // No StoreKit config in scheme, or network unavailable.
       // products stays empty; paywall shows a loading state.
@@ -129,6 +133,33 @@ final class STStoreManager {
 
   var monthlyProduct: Product? { products.first(where: { $0.id == Self.monthlyID }) }
   var annualProduct:  Product? { products.first(where: { $0.id == Self.annualID }) }
+
+  // MARK: - Trial
+
+  /// Checks whether the user is eligible for an introductory free trial.
+  /// Uses any product in the subscription group — eligibility is group-scoped in StoreKit.
+  @MainActor
+  func checkTrialEligibility() async {
+    guard let firstProduct = products.first else {
+      isEligibleForTrial = false
+      return
+    }
+    isEligibleForTrial = await firstProduct.subscription?.isEligibleForIntroOffer ?? false
+  }
+
+  /// Returns a human-readable trial label like "7 days free", or nil if the product has
+  /// no free-trial introductory offer.
+  func trialLabel(for product: Product) -> String? {
+    guard let offer = product.subscription?.introductoryOffer,
+          offer.paymentMode == .freeTrial else { return nil }
+    let count = offer.period.value
+    switch offer.period.unit {
+    case .week:  return count == 1 ? "1 week free"  : "\(count) weeks free"
+    case .day:   return count == 1 ? "1 day free"   : "\(count) days free"
+    case .month: return count == 1 ? "1 month free" : "\(count) months free"
+    default:     return "Free trial"
+    }
+  }
 
   /// Percentage saved buying annual vs. 12 × monthly, formatted as "33%".
   var annualSavingsPercent: String? {

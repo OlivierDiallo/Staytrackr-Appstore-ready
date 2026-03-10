@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		137C607CAC784F108475EFDA /* V4ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */; };
-		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
-		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
-		7E0975B8F73F483CA1EB7A8E /* StayTrackrPremium.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */; };
 		505AF2732EF2202700FC5DFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 505AF2722EF2202700FC5DFF /* Assets.xcassets */; };
 		505AF2872F0D697600FC5DFF /* StayTrackrV4App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */; };
 		505AF2882F0D6A9400FC5DFF /* STModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2742F088AD400FC5DFF /* STModels.swift */; };
@@ -41,21 +38,23 @@
 		505AF2CA2F1517D600FC5DFF /* V4PropertiesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C92F1517D400FC5DFF /* V4PropertiesListView.swift */; };
 		505AF2CC2F15182A00FC5DFF /* V4PropertyEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CB2F15181E00FC5DFF /* V4PropertyEditorSheet.swift */; };
 		505AF2CE2F151B6D00FC5DFF /* V4BookingEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CD2F151B6C00FC5DFF /* V4BookingEditorSheet.swift */; };
+		5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5094504E2F5F854E00C6C855 /* StoreKit.framework */; };
 		50E7A20E2F54747300A3D311 /* V4FXRatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20D2F54747000A3D311 /* V4FXRatesView.swift */; };
 		50E7A2102F54748E00A3D311 /* V4FXRateEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20F2F54748B00A3D311 /* V4FXRateEditorSheet.swift */; };
 		50E7A2132F548A4900A3D311 /* V4PreferencesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2AC2F0D7A0300FC5DFF /* V4PreferencesProvider.swift */; };
 		50E7A2152F548C1B00A3D311 /* STFXRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A2142F548C1300A3D311 /* STFXRate.swift */; };
 		6D348E87080546BD9066543D /* V4RecurringBillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */; };
+		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
+		7E0975B8F73F483CA1EB7A8E /* StayTrackrPremium.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
+		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
-		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
 		16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StayTrackrPremium.storekit; sourceTree = "<group>"; };
+		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
 		505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayTrackrV4App.swift; sourceTree = "<group>"; };
@@ -90,11 +89,15 @@
 		505AF2CD2F151B6C00FC5DFF /* V4BookingEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4BookingEditorSheet.swift; sourceTree = "<group>"; };
 		5076A6542EA2E03000FE143A /* StayTrackr V3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "StayTrackr V3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5076A6732EA2F40100FE143A /* Staytrackr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Staytrackr.swift; sourceTree = "<group>"; };
+		5094504E2F5F854E00C6C855 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		509450502F5F861D00C6C855 /* StayTrackrPremium.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StayTrackrPremium.storekit; sourceTree = "<group>"; };
 		50E7A20D2F54747000A3D311 /* V4FXRatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXRatesView.swift; sourceTree = "<group>"; };
 		50E7A20F2F54748B00A3D311 /* V4FXRateEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXRateEditorSheet.swift; sourceTree = "<group>"; };
 		50E7A2112F5474B000A3D311 /* V4AppSettin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AppSettin.swift; sourceTree = "<group>"; };
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
+		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
+		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,14 +158,6 @@
 				B7C331B2DE384275AADC8C65 /* STStoreManager.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		BBA4182FF8E245029BBE3790 /* Premium */ = {
-			isa = PBXGroup;
-			children = (
-				91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */,
-			);
-			path = Premium;
 			sourceTree = "<group>";
 		};
 		505AF27A2F0D650200FC5DFF /* Features */ = {
@@ -312,9 +308,11 @@
 		5076A64B2EA2E03000FE143A = {
 			isa = PBXGroup;
 			children = (
+				509450502F5F861D00C6C855 /* StayTrackrPremium.storekit */,
 				505AF2752F0D62BA00FC5DFF /* V4 */,
 				505AF2A22F0D731A00FC5DFF /* Core */,
 				5076A6722EA2F3F800FE143A /* StayTrackr V3 */,
+				5094504D2F5F854E00C6C855 /* Frameworks */,
 				5076A6552EA2E03000FE143A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -337,6 +335,22 @@
 				16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */,
 			);
 			path = "StayTrackr V3";
+			sourceTree = "<group>";
+		};
+		5094504D2F5F854E00C6C855 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5094504E2F5F854E00C6C855 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BBA4182FF8E245029BBE3790 /* Premium */ = {
+			isa = PBXGroup;
+			children = (
+				91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */,
+			);
+			path = Premium;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
