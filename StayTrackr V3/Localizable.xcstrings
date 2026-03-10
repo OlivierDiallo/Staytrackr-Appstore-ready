@@ -1570,7 +1570,7 @@
       }
     },
     "Edit Bill" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
