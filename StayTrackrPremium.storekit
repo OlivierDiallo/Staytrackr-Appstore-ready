@@ -2,11 +2,7 @@
   "appPolicies" : {
     "eula" : "",
     "policies" : [
-      {
-        "locale" : "en_US",
-        "policyText" : "",
-        "policyURL" : ""
-      }
+
     ]
   },
   "consumableProducts" : [
@@ -103,6 +99,7 @@
           "introductoryOffer" : {
             "displayPrice" : "0.00",
             "internalID" : "FREE_TRIAL_7_DAYS_MONTHLY",
+            "numberOfPeriods" : 1,
             "paymentMode" : "free",
             "subscriptionPeriod" : "P1W"
           },
@@ -136,6 +133,7 @@
           "introductoryOffer" : {
             "displayPrice" : "0.00",
             "internalID" : "FREE_TRIAL_7_DAYS_ANNUAL",
+            "numberOfPeriods" : 1,
             "paymentMode" : "free",
             "subscriptionPeriod" : "P1W"
           },
