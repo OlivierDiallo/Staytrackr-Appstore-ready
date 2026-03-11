@@ -24,6 +24,8 @@ struct V4ExpensesView: View {
     case allTime  = "All Time"
     case monthly  = "Month"
     case yearly   = "Year"
+
+    var label: LocalizedStringKey { LocalizedStringKey(rawValue) }
   }
 
   private var periodRange: (start: Date, end: Date)? {
@@ -42,7 +44,7 @@ struct V4ExpensesView: View {
 
   private var periodLabel: String {
     switch filterMode {
-    case .allTime: return "All Time"
+    case .allTime: return String(localized: "All Time")
     case .monthly: return referenceDate.formatted(.dateTime.month(.wide).year())
     case .yearly:  return referenceDate.formatted(.dateTime.year())
     }
@@ -133,7 +135,7 @@ struct V4ExpensesView: View {
         Section {
           Picker("Period", selection: $filterMode) {
             ForEach(ExpenseDateFilter.allCases, id: \.self) { mode in
-              Text(mode.rawValue).tag(mode)
+              Text(mode.label).tag(mode)
             }
           }
           .pickerStyle(.segmented)
@@ -243,7 +245,7 @@ struct V4ExpensesView: View {
     return HStack {
       VStack(alignment: .leading, spacing: 3) {
         HStack(spacing: 6) {
-          Text(e.category.rawValue.capitalized)
+          Text(e.category.displayName)
             .font(.subheadline.weight(.semibold))
           if e.receiptData != nil {
             Image(systemName: "camera.fill")

@@ -235,7 +235,7 @@ struct V4GuestsView: View {
           Text("\(count)")
             .font(.subheadline.weight(.bold))
             .foregroundStyle(V4Theme.Brand.primary)
-          Text("stay\(count == 1 ? "" : "s")")
+          Text(count == 1 ? "stay" : "stays")
             .font(.caption2)
             .foregroundStyle(.secondary)
         }

@@ -16,7 +16,7 @@ enum STExpenseCategory: String, CaseIterable, Codable, Identifiable {
   case cleaning, repairs, utilities, management, supplies, other
   var id: String { rawValue }
 
-  /// Localized display name — use instead of `.rawValue.capitalized`.
+  /// Localized display name for SwiftUI `Text` — use instead of `.rawValue.capitalized`.
   var displayName: LocalizedStringKey {
     switch self {
     case .cleaning:   return "Cleaning"
@@ -25,6 +25,18 @@ enum STExpenseCategory: String, CaseIterable, Codable, Identifiable {
     case .management: return "Management"
     case .supplies:   return "Supplies"
     case .other:      return "Other"
+    }
+  }
+
+  /// Localized name as a plain `String` — use in alert messages and other non-SwiftUI contexts.
+  var localizedName: String {
+    switch self {
+    case .cleaning:   return String(localized: "Cleaning")
+    case .repairs:    return String(localized: "Repairs")
+    case .utilities:  return String(localized: "Utilities")
+    case .management: return String(localized: "Management")
+    case .supplies:   return String(localized: "Supplies")
+    case .other:      return String(localized: "Other")
     }
   }
 }

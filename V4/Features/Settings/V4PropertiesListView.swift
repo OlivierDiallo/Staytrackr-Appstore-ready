@@ -201,7 +201,7 @@ struct V4PropertyDetailView: View {
                     V4Currency.format(monthlyMortgagePayment, code: property.currencyCode),
                     bold: true)
           detailRow("APR", String(format: "%.2f%%", property.mortgageAPR * 100))
-          detailRow("Term", "\(property.mortgageYears) years")
+          detailRow("Term", String(localized: "\(property.mortgageYears) years"))
           detailRow("Total interest",
                     V4Currency.format(totalInterestPaid, code: property.currencyCode),
                     color: .red)

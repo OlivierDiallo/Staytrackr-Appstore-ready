@@ -131,7 +131,7 @@ struct V4RecurringBillsView: View {
               .overlay(Capsule().strokeBorder(.secondary.opacity(0.5), lineWidth: 1))
           }
         }
-        Text("\(b.category.rawValue.capitalized) · Day \(b.dayOfMonth)")
+        (Text(b.category.displayName) + Text(" · ") + Text("Day \(b.dayOfMonth)"))
           .font(.caption)
           .foregroundStyle(.secondary)
         if let note = b.note, !note.isEmpty {
@@ -169,7 +169,7 @@ struct V4RecurringBillsView: View {
     )
     let dateStr = (cal.date(from: comps) ?? now).formatted(date: .abbreviated, time: .omitted)
     let amount = V4Currency.format(b.amount, code: b.property.currencyCode)
-    return "Create a \(b.category.rawValue) expense of \(amount) for \(b.property.emoji) \(b.property.name), dated \(dateStr)?"
+    return String(localized: "Create a \(b.category.localizedName) expense of \(amount) for \(b.property.emoji) \(b.property.name), dated \(dateStr)?")
   }
 
   private func applyBill(_ b: STRecurringBill) {
@@ -210,7 +210,7 @@ struct V4RecurringBillEditorSheet: View {
     case add
     case edit(STRecurringBill)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self { case .add: "Add Bill"; case .edit: "Edit Bill" }
     }
   }
@@ -257,7 +257,7 @@ struct V4RecurringBillEditorSheet: View {
 
           Picker("Category", selection: $category) {
             ForEach(STExpenseCategory.allCases) { c in
-              Text(c.rawValue.capitalized).tag(c)
+              Text(c.displayName).tag(c)
             }
           }
 
