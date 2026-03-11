@@ -119,7 +119,7 @@ struct V4ExpensesView: View {
           } label: {
             HStack(spacing: 8) {
               Text(selectedProperty?.emoji ?? "🏘️")
-              Text(selectedProperty?.name ?? "All Properties")
+              Text(selectedProperty.map { $0.name } ?? String(localized: "All Properties"))
                 .lineLimit(1)
               Spacer()
               Image(systemName: "chevron.up.chevron.down")

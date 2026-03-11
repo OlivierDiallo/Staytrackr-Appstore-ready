@@ -75,7 +75,7 @@ struct V4ExportView: View {
       } header: {
         Text("Bookings")
       } footer: {
-        Text("Columns: Property · Guest · Check-in · Check-out · Nights · Nightly Rate · Currency · Gross · Commission · Platform Fee · Net · Paid")
+        Text("Columns: Property · Guest · GuestEmail · GuestPhone · CheckIn · CheckOut · Nights · NightlyRate · Currency · GrossTotal · CommissionPct · PlatformFeePct · NetRevenue · IsPaid · Status · Note")
           .font(.caption2)
       }
 
@@ -153,9 +153,10 @@ struct V4ExportView: View {
 
   private var bookingsCSV: String {
     var rows = [
-      "Property,Guest,CheckIn,CheckOut,Nights,NightlyRate,Currency," +
-      "GrossTotal,CommissionPct,PlatformFeePct,NetRevenue,IsPaid"
+      "Property,Guest,GuestEmail,GuestPhone,CheckIn,CheckOut,Nights,NightlyRate,Currency," +
+      "GrossTotal,CommissionPct,PlatformFeePct,NetRevenue,IsPaid,Status,Note"
     ]
+    let now = Date()
     for b in bookings {
       let nights = Calendar.current
         .dateComponents([.day], from: b.checkIn, to: b.checkOut).day ?? 0
@@ -164,9 +165,21 @@ struct V4ExportView: View {
       let platform   = gross * b.platformFeePct
       let net        = gross - commission - platform
 
+      // Derive booking status label for CSV
+      let status: String
+      if now < b.checkIn {
+        status = "Upcoming"
+      } else if now <= b.checkOut {
+        status = "Active"
+      } else {
+        status = "Completed"
+      }
+
       rows.append([
         csvEscape("\(b.property.emoji) \(b.property.name)"),
         csvEscape(b.guest.name),
+        csvEscape(b.guest.email ?? ""),
+        csvEscape(b.guest.phone ?? ""),
         Self.isoDay.string(from: b.checkIn),
         Self.isoDay.string(from: b.checkOut),
         "\(nights)",
@@ -176,7 +189,9 @@ struct V4ExportView: View {
         fmt(b.property.commissionPct * 100),
         fmt(b.platformFeePct * 100),
         fmt(net),
-        b.isPaid ? "Yes" : "No"
+        b.isPaid ? "Yes" : "No",
+        status,
+        csvEscape(b.note ?? "")
       ].joined(separator: ","))
     }
     return rows.joined(separator: "\n")

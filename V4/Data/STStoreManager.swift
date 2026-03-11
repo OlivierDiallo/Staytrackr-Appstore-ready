@@ -19,7 +19,11 @@ final class STStoreManager {
 
   /// True when the user holds an active, verified entitlement.
   /// Derived exclusively from StoreKit — never from UserDefaults.
+  #if DEBUG
+  var isPremium: Bool = true
+  #else
   var isPremium: Bool = false
+  #endif
 
   /// Non-nil when a purchase or restore attempt fails.
   var purchaseError: String? = nil
@@ -168,6 +172,6 @@ final class STStoreManager {
     guard equivalent > 0 else { return nil }
     let pct = (equivalent - a.price) / equivalent * 100
     guard pct > 0 else { return nil }
-    return "\(Int(pct.rounded()))%"
+    return "\(Int(truncating: pct as NSDecimalNumber))%"
   }
 }

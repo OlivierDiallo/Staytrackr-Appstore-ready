@@ -45,7 +45,7 @@
 		50E7A2152F548C1B00A3D311 /* STFXRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A2142F548C1300A3D311 /* STFXRate.swift */; };
 		6D348E87080546BD9066543D /* V4RecurringBillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */; };
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
-		7E0975B8F73F483CA1EB7A8E /* StayTrackrPremium.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */; };
+		07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
@@ -53,7 +53,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StayTrackrPremium.storekit; sourceTree = "<group>"; };
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
@@ -97,6 +96,7 @@
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
 		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
+		0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4OnboardingTourView.swift; sourceTree = "<group>"; };
 		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
@@ -167,11 +167,20 @@
 				505AF27E2F0D655600FC5DFF /* Calendar */,
 				505AF27F2F0D656200FC5DFF /* Expenses */,
 				505AF2802F0D656D00FC5DFF /* Guests */,
+				496810A0DFED47B0AF08D8C5 /* Onboarding */,
 				BBA4182FF8E245029BBE3790 /* Premium */,
 				505AF2812F0D657600FC5DFF /* Settings */,
 				505AF2822F0D658300FC5DFF /* Totals */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		496810A0DFED47B0AF08D8C5 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		505AF27B2F0D650B00FC5DFF /* UI */ = {
@@ -332,7 +341,6 @@
 				505AF2722EF2202700FC5DFF /* Assets.xcassets */,
 				2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */,
 				C5704C85909B44449280C130 /* Localizable.xcstrings */,
-				16AE32BB08BF4F249A3702F2 /* StayTrackrPremium.storekit */,
 			);
 			path = "StayTrackr V3";
 			sourceTree = "<group>";
@@ -420,7 +428,6 @@
 				505AF2732EF2202700FC5DFF /* Assets.xcassets in Resources */,
 				D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */,
 				A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */,
-				7E0975B8F73F483CA1EB7A8E /* StayTrackrPremium.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +476,7 @@
 				86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */,
 				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
 				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
+				07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

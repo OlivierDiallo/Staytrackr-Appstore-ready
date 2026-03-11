@@ -338,7 +338,7 @@ struct V4PropertyDetailView: View {
     .padding(.bottom, 4)
   }
 
-  private func metricRow(title: String, value: String, color: Color) -> some View {
+  private func metricRow(title: LocalizedStringKey, value: String, color: Color) -> some View {
     HStack {
       Text(title).foregroundStyle(.secondary)
       Spacer()

@@ -152,7 +152,7 @@ struct V4DashboardView: View {
           } label: {
             HStack(spacing: 8) {
               Text(selectedProperty?.emoji ?? "🏘️")
-              Text(selectedProperty?.name ?? "All Properties")
+              Text(selectedProperty.map { $0.name } ?? String(localized: "All Properties"))
                 .lineLimit(1)
               Image(systemName: "chevron.up.chevron.down")
                 .font(.caption2)
@@ -441,7 +441,7 @@ struct V4DashboardView: View {
 
   // MARK: - Helpers
 
-  private func metricRow(title: String, value: String, positive: Bool) -> some View {
+  private func metricRow(title: LocalizedStringKey, value: String, positive: Bool) -> some View {
     HStack {
       Text(title)
         .foregroundStyle(.secondary)

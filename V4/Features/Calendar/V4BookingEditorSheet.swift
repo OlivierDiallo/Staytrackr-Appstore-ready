@@ -7,7 +7,7 @@ struct V4BookingEditorSheet: View {
     case add(initialProperty: STProperty?)
     case edit(booking: STBooking)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self {
       case .add: return "Add Booking"
       case .edit: return "Edit Booking"
@@ -137,7 +137,7 @@ struct V4BookingEditorSheet: View {
             HStack {
               Text("Duration")
               Spacer()
-              Text("\(nightsCount) night\(nightsCount == 1 ? "" : "s")")
+              Text("\(nightsCount) nights")
                 .foregroundStyle(.secondary)
             }
           }

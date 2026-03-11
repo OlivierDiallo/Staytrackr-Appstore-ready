@@ -5,10 +5,21 @@ struct V4RootView: View {
   @Query(sort: \STProperty.name) private var properties: [STProperty]
   @Environment(V4AppSettings.self) private var settings
 
+  /// Tracks whether the tour just finished during this session so we
+  /// can skip straight to the add-property screen without another check.
+  @State private var tourJustCompleted = false
+
   var body: some View {
     Group {
-      if properties.isEmpty {
+      // 1. First launch: show the walkthrough tour
+      if !settings.hasSeenOnboarding {
+        V4OnboardingTourView {
+          tourJustCompleted = true
+        }
+      // 2. No properties yet: show the "add your first property" screen
+      } else if properties.isEmpty || tourJustCompleted {
         V4OnboardingView()
+      // 3. Normal app
       } else {
         V4PreferencesProvider { prefs in
           appTabs(prefs: prefs)

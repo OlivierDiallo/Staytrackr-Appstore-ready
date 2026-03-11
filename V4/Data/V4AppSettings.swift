@@ -4,12 +4,14 @@ import SwiftUI
 
 @Observable
 final class V4AppSettings {
-  private static let reportingKey          = "v4_reportingCurrencyCode"
-  private static let colorSchemeKey        = "v4_colorScheme"
+  private static let reportingKey           = "v4_reportingCurrencyCode"
+  private static let colorSchemeKey         = "v4_colorScheme"
   private static let multiCurrencyBannerKey = "v4_showMultiCurrencyBanner"
-  private static let notifEnabledKey       = "v4_notificationsEnabled"
-  private static let arrivalNoticeKey      = "v4_arrivalNoticeHours"
-  private static let departureNoticeKey    = "v4_departureNoticeHours"
+  private static let notifEnabledKey        = "v4_notificationsEnabled"
+  private static let arrivalNoticeKey       = "v4_arrivalNoticeHours"
+  private static let departureNoticeKey     = "v4_departureNoticeHours"
+  private static let onboardingKey          = "v4_hasSeenOnboarding"
+  private static let appleUserIDKey         = "v4_appleUserID"
 
   // MARK: - Reporting currency
 
@@ -36,6 +38,20 @@ final class V4AppSettings {
   /// Controls the multi-currency info banner in the Dashboard.
   var showMultiCurrencyBanner: Bool {
     didSet { UserDefaults.standard.set(showMultiCurrencyBanner, forKey: Self.multiCurrencyBannerKey) }
+  }
+
+  // MARK: - Onboarding
+
+  /// Set to true after the user completes the first-launch tour.
+  var hasSeenOnboarding: Bool {
+    didSet { UserDefaults.standard.set(hasSeenOnboarding, forKey: Self.onboardingKey) }
+  }
+
+  // MARK: - Sign in with Apple
+
+  /// Stores the Apple User ID after a successful Sign in with Apple.
+  var appleUserID: String? {
+    didSet { UserDefaults.standard.set(appleUserID, forKey: Self.appleUserIDKey) }
   }
 
   // MARK: - Notifications
@@ -92,5 +108,12 @@ final class V4AppSettings {
 
     let departureDefault = UserDefaults.standard.object(forKey: Self.departureNoticeKey) as? Int
     self.departureNoticeHours = departureDefault ?? 2
+
+    // Onboarding (default: not seen)
+    let onboardingDefault = UserDefaults.standard.object(forKey: Self.onboardingKey) as? Bool
+    self.hasSeenOnboarding = onboardingDefault ?? false
+
+    // Sign in with Apple
+    self.appleUserID = UserDefaults.standard.string(forKey: Self.appleUserIDKey)
   }
 }
