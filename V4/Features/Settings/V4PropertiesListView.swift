@@ -103,10 +103,10 @@ struct V4PropertiesListView: View {
       let bookings = p.bookings.count
       let expenses = p.expenses.count
       let bills    = p.recurringBills.count
-      let parts    = [
-        bookings > 0 ? "\(bookings) booking\(bookings == 1 ? "" : "s")" : nil,
-        expenses > 0 ? "\(expenses) expense\(expenses == 1 ? "" : "s")" : nil,
-        bills    > 0 ? "\(bills) recurring bill\(bills == 1 ? "" : "s")" : nil
+      let parts: [String] = [
+        bookings > 0 ? String(localized: "\(bookings) bookings") : nil,
+        expenses > 0 ? String(localized: "\(expenses) expenses") : nil,
+        bills    > 0 ? String(localized: "\(bills) recurring bills") : nil
       ].compactMap { $0 }
 
       if parts.isEmpty {
@@ -347,7 +347,7 @@ struct V4PropertyDetailView: View {
   }
 
   /// Plain key-value row used in Mortgage and Return sections.
-  private func detailRow(_ label: String, _ value: String,
+  private func detailRow(_ label: LocalizedStringKey, _ value: String,
                           color: Color = .primary, bold: Bool = false) -> some View {
     HStack {
       Text(label).foregroundStyle(.secondary)
@@ -389,7 +389,7 @@ struct V4PropertyDetailView: View {
   private func expenseRow(_ e: STExpense) -> some View {
     HStack {
       VStack(alignment: .leading, spacing: 3) {
-        Text(e.category.rawValue.capitalized)
+        Text(e.category.displayName)
           .font(.subheadline.weight(.semibold))
         if let note = e.note, !note.isEmpty {
           Text(note)

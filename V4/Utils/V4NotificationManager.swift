@@ -118,7 +118,7 @@ final class V4NotificationManager {
 
     let content = UNMutableNotificationContent()
     content.title = arrivalTitle(noticeHours: noticeHours)
-    content.body  = "\(snap.guestName) arrives at \(snap.propertyEmoji) \(snap.propertyName)"
+    content.body  = String(localized: "\(snap.guestName) arrives at \(snap.propertyEmoji) \(snap.propertyName)")
     content.sound = .default
 
     let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate)
@@ -136,7 +136,7 @@ final class V4NotificationManager {
 
     let content = UNMutableNotificationContent()
     content.title = departureTitle(noticeHours: noticeHours)
-    content.body  = "\(snap.guestName) checks out from \(snap.propertyEmoji) \(snap.propertyName)"
+    content.body  = String(localized: "\(snap.guestName) checks out from \(snap.propertyEmoji) \(snap.propertyName)")
     content.sound = .default
 
     let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate)
@@ -160,21 +160,21 @@ final class V4NotificationManager {
 
   private func arrivalTitle(noticeHours: Int) -> String {
     switch noticeHours {
-    case 0...6:   return "Guest arriving today 🛎️"
-    case 7...30:  return "Guest arriving tomorrow 🛎️"
+    case 0...6:   return String(localized: "Guest arriving today 🛎️")
+    case 7...30:  return String(localized: "Guest arriving tomorrow 🛎️")
     default:
       let days = noticeHours / 24
-      return "Upcoming arrival in \(days) day\(days == 1 ? "" : "s") 🛎️"
+      return String(localized: "\(days) days until arrival 🛎️")
     }
   }
 
   private func departureTitle(noticeHours: Int) -> String {
     switch noticeHours {
-    case 0...6:   return "Check-out today 👋"
-    case 7...30:  return "Check-out tomorrow 👋"
+    case 0...6:   return String(localized: "Check-out today 👋")
+    case 7...30:  return String(localized: "Check-out tomorrow 👋")
     default:
       let days = noticeHours / 24
-      return "Upcoming check-out in \(days) day\(days == 1 ? "" : "s") 👋"
+      return String(localized: "\(days) days until check-out 👋")
     }
   }
 }

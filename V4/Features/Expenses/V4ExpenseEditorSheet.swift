@@ -10,7 +10,7 @@ struct V4ExpenseEditorSheet: View {
     case add(initialProperty: STProperty?)
     case edit(expense: STExpense)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self {
       case .add: return "Add Expense"
       case .edit: return "Edit Expense"

@@ -19,11 +19,7 @@ final class STStoreManager {
 
   /// True when the user holds an active, verified entitlement.
   /// Derived exclusively from StoreKit — never from UserDefaults.
-  #if DEBUG
-  var isPremium: Bool = true
-  #else
   var isPremium: Bool = false
-  #endif
 
   /// Non-nil when a purchase or restore attempt fails.
   var purchaseError: String? = nil

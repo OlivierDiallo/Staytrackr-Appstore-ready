@@ -16,7 +16,7 @@ struct V4PaywallView: View {
 
   private struct FeatureItem {
     let icon: String
-    let label: String
+    let label: LocalizedStringKey
     let isPremium: Bool
   }
 

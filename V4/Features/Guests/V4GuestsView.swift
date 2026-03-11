@@ -157,7 +157,7 @@ struct V4GuestsView: View {
           }
       }
     } footer: {
-      Text("\(guests.count) guest\(guests.count == 1 ? "" : "s") total")
+      Text("\(guests.count) guests total")
     }
   }
 
@@ -261,7 +261,7 @@ struct V4GuestEditorSheet: View {
     case add
     case edit(STGuest)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self { case .add: "Add Guest"; case .edit: "Edit Guest" }
     }
   }

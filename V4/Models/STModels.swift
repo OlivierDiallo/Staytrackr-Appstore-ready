@@ -8,12 +8,25 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 // MARK: - Expense Category
 
 enum STExpenseCategory: String, CaseIterable, Codable, Identifiable {
   case cleaning, repairs, utilities, management, supplies, other
   var id: String { rawValue }
+
+  /// Localized display name — use instead of `.rawValue.capitalized`.
+  var displayName: LocalizedStringKey {
+    switch self {
+    case .cleaning:   return "Cleaning"
+    case .repairs:    return "Repairs"
+    case .utilities:  return "Utilities"
+    case .management: return "Management"
+    case .supplies:   return "Supplies"
+    case .other:      return "Other"
+    }
+  }
 }
 
 // MARK: - Booking Status
@@ -22,7 +35,7 @@ enum STExpenseCategory: String, CaseIterable, Codable, Identifiable {
 enum STBookingStatus {
   case upcoming, active, completed
 
-  var label: String {
+  var label: LocalizedStringKey {
     switch self {
     case .upcoming:  return "Upcoming"
     case .active:    return "Active"
