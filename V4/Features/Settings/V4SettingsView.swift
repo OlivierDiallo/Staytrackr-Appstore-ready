@@ -28,6 +28,9 @@ struct V4SettingsView: View {
         // MARK: — Account / Premium
         premiumSection
 
+        // MARK: — Account / iCloud (high visibility — right after Premium)
+        accountSection
+
         // MARK: — Properties & Bills
         Section {
           NavigationLink {
@@ -142,9 +145,6 @@ struct V4SettingsView: View {
         } header: {
           sectionHeader("Personalization")
         }
-
-        // MARK: — Account (Sign in with Apple / iCloud)
-        accountSection
 
         // MARK: — About
         Section {
@@ -482,18 +482,28 @@ struct V4SettingsView: View {
 // MARK: - Sign In With Apple Button (UIViewRepresentable)
 
 /// Wraps ASAuthorizationAppleIDButton for use in SwiftUI.
+/// Adapts its style automatically to light/dark mode.
 private struct SignInWithAppleButtonView: UIViewRepresentable {
   var onCompletion: (Result<ASAuthorization, Error>) -> Void
+
+  @Environment(\.colorScheme) private var colorScheme
 
   func makeCoordinator() -> Coordinator { Coordinator(onCompletion: onCompletion) }
 
   func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
-    let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+    let style: ASAuthorizationAppleIDButton.Style = colorScheme == .dark ? .white : .black
+    let button = ASAuthorizationAppleIDButton(type: .signIn, style: style)
     button.addTarget(context.coordinator, action: #selector(Coordinator.handleTap), for: .touchUpInside)
     return button
   }
 
-  func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
+  func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
+    // Re-create with correct style when color scheme changes.
+    // UIViewRepresentable doesn't allow replacing the view mid-life,
+    // so we tint the background to stay readable in both modes.
+    uiView.backgroundColor = colorScheme == .dark ? .white : .black
+    uiView.tintColor       = colorScheme == .dark ? .black : .white
+  }
 
   // MARK: Coordinator
 
