@@ -84,7 +84,7 @@ struct V4ExpenseEditorSheet: View {
 
           Picker("Category", selection: $category) {
             ForEach(STExpenseCategory.allCases, id: \.self) { c in
-              Text(c.rawValue.capitalized).tag(c)
+              Text(c.displayName).tag(c)
             }
           }
 

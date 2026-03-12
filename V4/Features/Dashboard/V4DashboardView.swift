@@ -365,7 +365,7 @@ struct V4DashboardView: View {
           ForEach(recent, id: \.id) { e in
             HStack {
               VStack(alignment: .leading, spacing: 2) {
-                Text(e.category.rawValue.capitalized)
+                Text(e.category.displayName)
                   .font(.subheadline.weight(.semibold))
                 if let note = e.note, !note.isEmpty {
                   Text(note)
