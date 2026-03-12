@@ -7,7 +7,7 @@ struct V4BookingEditorSheet: View {
     case add(initialProperty: STProperty?)
     case edit(booking: STBooking)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self {
       case .add: return "Add Booking"
       case .edit: return "Edit Booking"
@@ -137,7 +137,7 @@ struct V4BookingEditorSheet: View {
             HStack {
               Text("Duration")
               Spacer()
-              Text("\(nightsCount) night\(nightsCount == 1 ? "" : "s")")
+              Text("\(nightsCount) nights")
                 .foregroundStyle(.secondary)
             }
           }
@@ -206,7 +206,8 @@ struct V4BookingEditorSheet: View {
           Section {
             Button(role: .destructive) {
               context.delete(booking)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete booking save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Booking")

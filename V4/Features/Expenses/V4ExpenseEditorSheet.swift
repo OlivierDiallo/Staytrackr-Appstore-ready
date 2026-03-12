@@ -10,7 +10,7 @@ struct V4ExpenseEditorSheet: View {
     case add(initialProperty: STProperty?)
     case edit(expense: STExpense)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self {
       case .add: return "Add Expense"
       case .edit: return "Edit Expense"
@@ -84,7 +84,7 @@ struct V4ExpenseEditorSheet: View {
 
           Picker("Category", selection: $category) {
             ForEach(STExpenseCategory.allCases, id: \.self) { c in
-              Text(c.rawValue.capitalized).tag(c)
+              Text(c.displayName).tag(c)
             }
           }
 
@@ -179,7 +179,8 @@ struct V4ExpenseEditorSheet: View {
             Button(role: .destructive) {
               UIImpactFeedbackGenerator(style: .medium).impactOccurred()
               context.delete(e)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete expense save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Expense")

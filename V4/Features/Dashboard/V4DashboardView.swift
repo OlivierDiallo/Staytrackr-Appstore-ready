@@ -32,6 +32,7 @@ struct V4DashboardView: View {
 
           headerCard
 
+
           // If user selected ONE property, we can compute a correct single-currency rollup.
           if let prop = selectedProperty {
             let totals = rollupForMonthSingleCurrency(month: monthAnchor, property: prop)
@@ -65,6 +66,10 @@ struct V4DashboardView: View {
           }
         }
         .padding(16)
+      }
+      .refreshable {
+        // Re-schedule notifications whenever the user pulls to refresh
+        notifManager.scheduleAll(bookings: bookings, settings: settings)
       }
       .navigationTitle("Dashboard")
       .toolbar {
@@ -108,6 +113,7 @@ struct V4DashboardView: View {
             Image(systemName: "lock.fill")
               .font(.title2)
               .foregroundStyle(.white)
+              .accessibilityHidden(true)
             Text("Revenue Charts")
               .font(.headline)
               .foregroundStyle(.white)
@@ -152,11 +158,12 @@ struct V4DashboardView: View {
           } label: {
             HStack(spacing: 8) {
               Text(selectedProperty?.emoji ?? "🏘️")
-              Text(selectedProperty?.name ?? "All Properties")
+              Text(selectedProperty.map { $0.name } ?? String(localized: "All Properties"))
                 .lineLimit(1)
               Image(systemName: "chevron.up.chevron.down")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -167,16 +174,32 @@ struct V4DashboardView: View {
         }
 
         HStack {
-          Button("Prev") {
+          Button {
             monthAnchor = Calendar.current.date(byAdding: .month, value: -1, to: monthAnchor) ?? monthAnchor
+          } label: {
+            Image(systemName: "chevron.left")
+              .font(.system(size: 14, weight: .semibold))
+              .frame(width: 32, height: 32)
+              .contentShape(Rectangle())
           }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Previous month")
+
           Spacer()
           Text(monthAnchor.formatted(.dateTime.month(.wide).year()))
             .font(.headline)
           Spacer()
-          Button("Next") {
+
+          Button {
             monthAnchor = Calendar.current.date(byAdding: .month, value: 1, to: monthAnchor) ?? monthAnchor
+          } label: {
+            Image(systemName: "chevron.right")
+              .font(.system(size: 14, weight: .semibold))
+              .frame(width: 32, height: 32)
+              .contentShape(Rectangle())
           }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Next month")
         }
       }
     }
@@ -358,7 +381,7 @@ struct V4DashboardView: View {
           ForEach(recent, id: \.id) { e in
             HStack {
               VStack(alignment: .leading, spacing: 2) {
-                Text(e.category.rawValue.capitalized)
+                Text(e.category.displayName)
                   .font(.subheadline.weight(.semibold))
                 if let note = e.note, !note.isEmpty {
                   Text(note)
@@ -441,7 +464,7 @@ struct V4DashboardView: View {
 
   // MARK: - Helpers
 
-  private func metricRow(title: String, value: String, positive: Bool) -> some View {
+  private func metricRow(title: LocalizedStringKey, value: String, positive: Bool) -> some View {
     HStack {
       Text(title)
         .foregroundStyle(.secondary)
@@ -462,8 +485,8 @@ struct V4DashboardView: View {
 
   private func rollupForMonthSingleCurrency(month: Date, property: STProperty) -> (gross: Double, expenses: Double, net: Double, occupancyPct: Double) {
     let cal = Calendar.current
-    let start = cal.date(from: cal.dateComponents([.year, .month], from: month))!
-    let end = cal.date(byAdding: .month, value: 1, to: start)!
+    guard let start = cal.date(from: cal.dateComponents([.year, .month], from: month)),
+          let end   = cal.date(byAdding: .month, value: 1, to: start) else { return (0, 0, 0, 0) }
 
     var gross = 0.0
     var netBeforeExpenses = 0.0
@@ -551,13 +574,17 @@ struct V4DashboardView: View {
       }
     }
     let exp = expenses.filter { $0.date >= start && $0.date < end }.map(\.amount).reduce(0, +)
-    return (gross, net - exp)
+    // Include active recurring bills annualised for each property (same logic as single-property YTD)
+    let recurring = properties.map { p in
+      p.recurringBills.filter(\.isActive).map(\.amount).reduce(0, +)
+    }.reduce(0, +) * 12
+    return (gross, net - exp - recurring)
   }
 
   private func rollupForMonthAllPropertiesSingleCurrency(month: Date) -> (gross: Double, expenses: Double, net: Double, occupancyPct: Double) {
     let cal = Calendar.current
-    let start = cal.date(from: cal.dateComponents([.year, .month], from: month))!
-    let end = cal.date(byAdding: .month, value: 1, to: start)!
+    guard let start = cal.date(from: cal.dateComponents([.year, .month], from: month)),
+          let end   = cal.date(byAdding: .month, value: 1, to: start) else { return (0, 0, 0, 0) }
 
     var gross = 0.0
     var netBeforeExpenses = 0.0

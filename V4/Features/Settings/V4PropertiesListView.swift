@@ -63,7 +63,8 @@ struct V4PropertiesListView: View {
                 if p.isArchived, prefs.selectedPropertyID == p.id {
                   prefs.selectedPropertyID = nil
                 }
-                try? context.save()
+                do { try context.save() }
+                catch { print("Archive toggle save failed: \(error)") }
               } label: {
                 Label(p.isArchived ? "Unarchive" : "Archive",
                       systemImage: p.isArchived ? "tray.and.arrow.up" : "tray.and.arrow.down")
@@ -88,6 +89,7 @@ struct V4PropertiesListView: View {
             showingAdd = true
           }
         } label: { Image(systemName: "plus") }
+          .accessibilityLabel("Add property")
       }
     }
     .sheet(isPresented: $showingAdd) {
@@ -103,10 +105,10 @@ struct V4PropertiesListView: View {
       let bookings = p.bookings.count
       let expenses = p.expenses.count
       let bills    = p.recurringBills.count
-      let parts    = [
-        bookings > 0 ? "\(bookings) booking\(bookings == 1 ? "" : "s")" : nil,
-        expenses > 0 ? "\(expenses) expense\(expenses == 1 ? "" : "s")" : nil,
-        bills    > 0 ? "\(bills) recurring bill\(bills == 1 ? "" : "s")" : nil
+      let parts: [String] = [
+        bookings > 0 ? String(localized: "\(bookings) bookings") : nil,
+        expenses > 0 ? String(localized: "\(expenses) expenses") : nil,
+        bills    > 0 ? String(localized: "\(bills) recurring bills") : nil
       ].compactMap { $0 }
 
       if parts.isEmpty {
@@ -120,7 +122,8 @@ struct V4PropertiesListView: View {
   private func confirmDelete(_ p: STProperty) {
     if prefs.selectedPropertyID == p.id { prefs.selectedPropertyID = nil }
     context.delete(p)
-    try? context.save()
+    do { try context.save() }
+    catch { print("Delete property save failed: \(error)") }
     propertyToDelete = nil
   }
 }
@@ -201,7 +204,7 @@ struct V4PropertyDetailView: View {
                     V4Currency.format(monthlyMortgagePayment, code: property.currencyCode),
                     bold: true)
           detailRow("APR", String(format: "%.2f%%", property.mortgageAPR * 100))
-          detailRow("Term", "\(property.mortgageYears) years")
+          detailRow("Term", String(localized: "\(property.mortgageYears) years"))
           detailRow("Total interest",
                     V4Currency.format(totalInterestPaid, code: property.currencyCode),
                     color: .red)
@@ -338,7 +341,7 @@ struct V4PropertyDetailView: View {
     .padding(.bottom, 4)
   }
 
-  private func metricRow(title: String, value: String, color: Color) -> some View {
+  private func metricRow(title: LocalizedStringKey, value: String, color: Color) -> some View {
     HStack {
       Text(title).foregroundStyle(.secondary)
       Spacer()
@@ -347,7 +350,7 @@ struct V4PropertyDetailView: View {
   }
 
   /// Plain key-value row used in Mortgage and Return sections.
-  private func detailRow(_ label: String, _ value: String,
+  private func detailRow(_ label: LocalizedStringKey, _ value: String,
                           color: Color = .primary, bold: Bool = false) -> some View {
     HStack {
       Text(label).foregroundStyle(.secondary)
@@ -389,7 +392,7 @@ struct V4PropertyDetailView: View {
   private func expenseRow(_ e: STExpense) -> some View {
     HStack {
       VStack(alignment: .leading, spacing: 3) {
-        Text(e.category.rawValue.capitalized)
+        Text(e.category.displayName)
           .font(.subheadline.weight(.semibold))
         if let note = e.note, !note.isEmpty {
           Text(note)

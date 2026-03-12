@@ -131,6 +131,7 @@ struct V4GuestsView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button { showAdd = true } label: { Image(systemName: "plus") }
+            .accessibilityLabel("Add guest")
         }
       }
       .sheet(isPresented: $showAdd) {
@@ -157,7 +158,7 @@ struct V4GuestsView: View {
           }
       }
     } footer: {
-      Text("\(guests.count) guest\(guests.count == 1 ? "" : "s") total")
+      Text("\(guests.count) guests total")
     }
   }
 
@@ -235,7 +236,7 @@ struct V4GuestsView: View {
           Text("\(count)")
             .font(.subheadline.weight(.bold))
             .foregroundStyle(V4Theme.Brand.primary)
-          Text("stay\(count == 1 ? "" : "s")")
+          Text(count == 1 ? "stay" : "stays")
             .font(.caption2)
             .foregroundStyle(.secondary)
         }
@@ -261,7 +262,7 @@ struct V4GuestEditorSheet: View {
     case add
     case edit(STGuest)
 
-    var title: String {
+    var title: LocalizedStringKey {
       switch self { case .add: "Add Guest"; case .edit: "Edit Guest" }
     }
   }
@@ -301,7 +302,8 @@ struct V4GuestEditorSheet: View {
           Section {
             Button(role: .destructive) {
               context.delete(g)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete guest save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Guest")

@@ -14,9 +14,10 @@ struct V4PaywallView: View {
 
   // MARK: - Feature Rows
 
-  private struct FeatureItem {
+  private struct FeatureItem: Identifiable {
+    let id = UUID()
     let icon: String
-    let label: String
+    let label: LocalizedStringKey
     let isPremium: Bool
   }
 
@@ -102,10 +103,17 @@ struct V4PaywallView: View {
       VStack(spacing: 6) {
         Text("StayTrackr Premium")
           .font(.title2.weight(.bold))
-        Text("Unlock every feature for your\nrental management workflow.")
-          .font(.subheadline)
-          .foregroundStyle(.secondary)
-          .multilineTextAlignment(.center)
+        if store.isEligibleForTrial {
+          Text("Try free for 7 days.\nUnlock every feature, cancel anytime.")
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+        } else {
+          Text("Unlock every feature for your\nrental management workflow.")
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+        }
       }
     }
   }
@@ -114,7 +122,7 @@ struct V4PaywallView: View {
 
   private var featureList: some View {
     VStack(alignment: .leading, spacing: 10) {
-      ForEach(features, id: \.label) { item in
+      ForEach(features) { item in
         HStack(spacing: 12) {
           Image(systemName: item.isPremium ? "checkmark.circle.fill" : "checkmark.circle")
             .font(.system(size: 18))
@@ -171,6 +179,8 @@ struct V4PaywallView: View {
     let isAnnual   = product.id == STStoreManager.annualID
     let savings    = isAnnual ? store.annualSavingsPercent : nil
 
+    let trialText = store.isEligibleForTrial ? store.trialLabel(for: product) : nil
+
     return Button {
       withAnimation(.easeInOut(duration: 0.15)) {
         selectedIndex = index
@@ -181,9 +191,18 @@ struct V4PaywallView: View {
           VStack(alignment: .leading, spacing: 4) {
             Text(isAnnual ? "Annual" : "Monthly")
               .font(.headline)
-            Text(product.displayPrice + (isAnnual ? " / year" : " / month"))
-              .font(.subheadline)
-              .foregroundStyle(.secondary)
+            if let trial = trialText {
+              Text(trial)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(V4Theme.Brand.primary)
+              Text("then " + product.displayPrice + (isAnnual ? " / year" : " / month"))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            } else {
+              Text(product.displayPrice + (isAnnual ? " / year" : " / month"))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            }
             if isAnnual, let savings {
               Text("Save \(savings) vs monthly")
                 .font(.caption.weight(.medium))
@@ -228,28 +247,46 @@ struct V4PaywallView: View {
     let selectedProduct: Product? = store.products.indices.contains(selectedIndex)
       ? store.products[selectedIndex]
       : nil
+    let hasTrial = store.isEligibleForTrial
+      && selectedProduct.flatMap { store.trialLabel(for: $0) } != nil
+    let buttonLabel: String = {
+      guard selectedProduct != nil else { return "Loading..." }
+      return hasTrial ? "Start Free Trial" : "Subscribe Now"
+    }()
+    let isAnnual = selectedProduct?.id == STStoreManager.annualID
+    let period   = isAnnual ? "year" : "month"
 
-    return Button {
-      guard let product = selectedProduct else { return }
-      Task { await store.purchase(product) }
-    } label: {
-      ZStack {
-        if store.isPurchasing {
-          ProgressView().tint(.white)
-        } else {
-          Text(selectedProduct != nil ? "Subscribe Now" : "Loading...")
-            .font(.headline)
-            .foregroundStyle(.white)
+    return VStack(spacing: 10) {
+      Button {
+        guard let product = selectedProduct else { return }
+        Task { await store.purchase(product) }
+      } label: {
+        ZStack {
+          if store.isPurchasing {
+            ProgressView().tint(.white)
+          } else {
+            Text(buttonLabel)
+              .font(.headline)
+              .foregroundStyle(.white)
+          }
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 54)
+        .background(
+          selectedProduct != nil ? V4Theme.Brand.primary : Color.secondary,
+          in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
       }
-      .frame(maxWidth: .infinity)
-      .frame(height: 54)
-      .background(
-        selectedProduct != nil ? V4Theme.Brand.primary : Color.secondary,
-        in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-      )
+      .disabled(selectedProduct == nil || store.isPurchasing)
+
+      // Trial disclaimer
+      if hasTrial, let product = selectedProduct {
+        Text("7 days free, then \(product.displayPrice) / \(period). Cancel anytime.")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          .multilineTextAlignment(.center)
+      }
     }
-    .disabled(selectedProduct == nil || store.isPurchasing)
   }
 
   // MARK: - Restore Button

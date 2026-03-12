@@ -24,25 +24,27 @@ struct V4ExpensesView: View {
     case allTime  = "All Time"
     case monthly  = "Month"
     case yearly   = "Year"
+
+    var label: LocalizedStringKey { LocalizedStringKey(rawValue) }
   }
 
   private var periodRange: (start: Date, end: Date)? {
     switch filterMode {
     case .allTime: return nil
     case .monthly:
-      let start = cal.date(from: cal.dateComponents([.year, .month], from: referenceDate))!
-      let end   = cal.date(byAdding: .month, value: 1, to: start)!
+      guard let start = cal.date(from: cal.dateComponents([.year, .month], from: referenceDate)),
+            let end   = cal.date(byAdding: .month, value: 1, to: start) else { return nil }
       return (start, end)
     case .yearly:
-      let start = cal.date(from: cal.dateComponents([.year], from: referenceDate))!
-      let end   = cal.date(byAdding: .year, value: 1, to: start)!
+      guard let start = cal.date(from: cal.dateComponents([.year], from: referenceDate)),
+            let end   = cal.date(byAdding: .year, value: 1, to: start) else { return nil }
       return (start, end)
     }
   }
 
   private var periodLabel: String {
     switch filterMode {
-    case .allTime: return "All Time"
+    case .allTime: return String(localized: "All Time")
     case .monthly: return referenceDate.formatted(.dateTime.month(.wide).year())
     case .yearly:  return referenceDate.formatted(.dateTime.year())
     }
@@ -119,12 +121,13 @@ struct V4ExpensesView: View {
           } label: {
             HStack(spacing: 8) {
               Text(selectedProperty?.emoji ?? "🏘️")
-              Text(selectedProperty?.name ?? "All Properties")
+              Text(selectedProperty.map { $0.name } ?? String(localized: "All Properties"))
                 .lineLimit(1)
               Spacer()
               Image(systemName: "chevron.up.chevron.down")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             }
           }
         }
@@ -133,7 +136,7 @@ struct V4ExpensesView: View {
         Section {
           Picker("Period", selection: $filterMode) {
             ForEach(ExpenseDateFilter.allCases, id: \.self) { mode in
-              Text(mode.rawValue).tag(mode)
+              Text(mode.label).tag(mode)
             }
           }
           .pickerStyle(.segmented)
@@ -150,6 +153,7 @@ struct V4ExpensesView: View {
                   .contentShape(Rectangle())
               }
               .buttonStyle(.plain)
+              .accessibilityLabel("Previous period")
 
               Spacer()
               Text(periodLabel)
@@ -165,6 +169,7 @@ struct V4ExpensesView: View {
                   .contentShape(Rectangle())
               }
               .buttonStyle(.plain)
+              .accessibilityLabel("Next period")
             }
           }
         }
@@ -194,8 +199,22 @@ struct V4ExpensesView: View {
         // Expenses list
         Section {
           if filteredExpenses.isEmpty {
-            Text(filterMode == .allTime ? "No expenses yet." : "No expenses in this period.")
-              .foregroundStyle(.secondary)
+            HStack(spacing: 14) {
+              Image(systemName: filterMode == .allTime ? "creditcard.slash" : "magnifyingglass")
+                .font(.title2)
+                .foregroundStyle(.secondary)
+              VStack(alignment: .leading, spacing: 3) {
+                Text(filterMode == .allTime ? "No expenses yet" : "No expenses")
+                  .font(.subheadline.weight(.medium))
+                Text(filterMode == .allTime
+                     ? "Tap + to log your first expense."
+                     : "No expenses recorded in this period.")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
+            .padding(.vertical, 8)
+            .listRowBackground(Color.clear)
           } else {
             ForEach(filteredExpenses) { e in
               Button {
@@ -214,6 +233,10 @@ struct V4ExpensesView: View {
           }
         }
       }
+      .refreshable {
+        // SwiftData @Query auto-updates; reset reference date to today on pull
+        withAnimation { referenceDate = .now }
+      }
       .navigationTitle("Expenses")
       .toolbar {
         if filterMode != .allTime {
@@ -225,6 +248,7 @@ struct V4ExpensesView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button { showAdd = true } label: { Image(systemName: "plus") }
+            .accessibilityLabel("Add expense")
         }
       }
       .sheet(isPresented: $showAdd) {
@@ -243,7 +267,7 @@ struct V4ExpensesView: View {
     return HStack {
       VStack(alignment: .leading, spacing: 3) {
         HStack(spacing: 6) {
-          Text(e.category.rawValue.capitalized)
+          Text(e.category.displayName)
             .font(.subheadline.weight(.semibold))
           if e.receiptData != nil {
             Image(systemName: "camera.fill")

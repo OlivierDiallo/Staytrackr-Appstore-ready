@@ -7,8 +7,15 @@ struct V4RootView: View {
 
   var body: some View {
     Group {
-      if properties.isEmpty {
+      // 1. First launch: show the walkthrough tour
+      if !settings.hasSeenOnboarding {
+        // finishTour() inside the tour sets hasSeenOnboarding = true,
+        // which triggers a re-render into branch 2 or 3 automatically.
+        V4OnboardingTourView { }
+      // 2. No properties yet: show the "add your first property" screen
+      } else if properties.isEmpty {
         V4OnboardingView()
+      // 3. Normal app
       } else {
         V4PreferencesProvider { prefs in
           appTabs(prefs: prefs)
@@ -39,6 +46,9 @@ struct V4RootView: View {
         Tab("Guests", systemImage: "person.2.fill") {
           V4GuestsView(prefs: prefs)
         }
+        Tab("Profile", systemImage: "person.crop.circle.fill") {
+          V4UserProfileView()
+        }
         Tab("More", systemImage: "ellipsis") {
           V4SettingsView(prefs: prefs)
         }
@@ -57,6 +67,8 @@ struct V4RootView: View {
           .tabItem { Label("Totals", systemImage: "chart.bar") }
         V4GuestsView(prefs: prefs)
           .tabItem { Label("Guests", systemImage: "person.2.fill") }
+        V4UserProfileView()
+          .tabItem { Label("Profile", systemImage: "person.crop.circle.fill") }
         V4SettingsView(prefs: prefs)
           .tabItem { Label("More", systemImage: "ellipsis") }
       }
