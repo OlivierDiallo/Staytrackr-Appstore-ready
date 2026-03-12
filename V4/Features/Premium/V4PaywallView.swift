@@ -14,7 +14,8 @@ struct V4PaywallView: View {
 
   // MARK: - Feature Rows
 
-  private struct FeatureItem {
+  private struct FeatureItem: Identifiable {
+    let id = UUID()
     let icon: String
     let label: LocalizedStringKey
     let isPremium: Bool
