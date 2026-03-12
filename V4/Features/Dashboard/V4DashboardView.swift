@@ -174,16 +174,32 @@ struct V4DashboardView: View {
         }
 
         HStack {
-          Button("Prev") {
+          Button {
             monthAnchor = Calendar.current.date(byAdding: .month, value: -1, to: monthAnchor) ?? monthAnchor
+          } label: {
+            Image(systemName: "chevron.left")
+              .font(.system(size: 14, weight: .semibold))
+              .frame(width: 32, height: 32)
+              .contentShape(Rectangle())
           }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Previous month")
+
           Spacer()
           Text(monthAnchor.formatted(.dateTime.month(.wide).year()))
             .font(.headline)
           Spacer()
-          Button("Next") {
+
+          Button {
             monthAnchor = Calendar.current.date(byAdding: .month, value: 1, to: monthAnchor) ?? monthAnchor
+          } label: {
+            Image(systemName: "chevron.right")
+              .font(.system(size: 14, weight: .semibold))
+              .frame(width: 32, height: 32)
+              .contentShape(Rectangle())
           }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Next month")
         }
       }
     }
