@@ -72,7 +72,7 @@ final class V4AppSettings {
   }
 
   /// Shared advance-notice options used in Settings pickers.
-  static let noticeOptions: [(hours: Int, label: String)] = [
+  static let noticeOptions: [(hours: Int, label: LocalizedStringKey)] = [
     (0,   "Morning of"),
     (2,   "2 hours before"),
     (6,   "6 hours before"),
