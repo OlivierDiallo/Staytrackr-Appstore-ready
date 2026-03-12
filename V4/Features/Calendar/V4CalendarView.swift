@@ -152,6 +152,7 @@ struct V4CalendarView: View {
                   .imageScale(.medium)
                   .foregroundStyle(V4Theme.Brand.primary)
               }
+              .accessibilityLabel("Add booking for this day")
               Button("Show All") {
                 withAnimation(.easeInOut(duration: 0.15)) { selectedDay = nil }
               }
@@ -186,6 +187,7 @@ struct V4CalendarView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button { showAdd = true } label: { Image(systemName: "plus") }
+            .accessibilityLabel("Add booking")
         }
       }
       .sheet(isPresented: $showAdd) {
@@ -233,6 +235,7 @@ struct V4CalendarView: View {
         Image(systemName: "chevron.up.chevron.down")
           .font(.caption2)
           .foregroundStyle(.secondary)
+          .accessibilityHidden(true)
       }
     }
   }
@@ -260,6 +263,7 @@ struct V4CalendarView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Previous month")
 
         Spacer()
 
@@ -280,6 +284,7 @@ struct V4CalendarView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Next month")
       }
       .padding(.horizontal, 12)
       .padding(.top, 10)

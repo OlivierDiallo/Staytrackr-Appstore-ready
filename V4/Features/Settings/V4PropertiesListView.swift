@@ -89,6 +89,7 @@ struct V4PropertiesListView: View {
             showingAdd = true
           }
         } label: { Image(systemName: "plus") }
+          .accessibilityLabel("Add property")
       }
     }
     .sheet(isPresented: $showingAdd) {

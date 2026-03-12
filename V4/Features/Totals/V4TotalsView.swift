@@ -175,6 +175,7 @@ struct V4TotalsView: View {
               Image(systemName: "chevron.up.chevron.down")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -235,6 +236,7 @@ struct V4TotalsView: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Previous period")
 
             Spacer()
 
@@ -252,6 +254,7 @@ struct V4TotalsView: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Next period")
           }
         }
       }

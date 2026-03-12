@@ -131,6 +131,7 @@ struct V4GuestsView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button { showAdd = true } label: { Image(systemName: "plus") }
+            .accessibilityLabel("Add guest")
         }
       }
       .sheet(isPresented: $showAdd) {

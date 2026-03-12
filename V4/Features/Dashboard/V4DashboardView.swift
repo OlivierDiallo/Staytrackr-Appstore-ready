@@ -113,6 +113,7 @@ struct V4DashboardView: View {
             Image(systemName: "lock.fill")
               .font(.title2)
               .foregroundStyle(.white)
+              .accessibilityHidden(true)
             Text("Revenue Charts")
               .font(.headline)
               .foregroundStyle(.white)
@@ -162,6 +163,7 @@ struct V4DashboardView: View {
               Image(systemName: "chevron.up.chevron.down")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)

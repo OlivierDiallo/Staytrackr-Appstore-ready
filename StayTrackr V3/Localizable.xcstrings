@@ -1048,6 +1048,52 @@
         }
       }
     },
+    "Add booking": {
+      "comment": "Accessibility label for the Add Booking toolbar button.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat rezervaci"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir reserva"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une réservation"
+          }
+        }
+      }
+    },
+    "Add booking for this day": {
+      "comment": "Accessibility label for the inline Add Booking button in the calendar section header.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat rezervaci na tento den"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir reserva para este día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une réservation pour ce jour"
+          }
+        }
+      }
+    },
     "Add Expense": {
       "localizations": {
         "cs": {
@@ -1066,6 +1112,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajouter la dépense"
+          }
+        }
+      }
+    },
+    "Add expense": {
+      "comment": "Accessibility label for the Add Expense toolbar button.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat výdaj"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir gasto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une dépense"
           }
         }
       }
@@ -1112,6 +1181,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajouter un client"
+          }
+        }
+      }
+    },
+    "Add guest": {
+      "comment": "Accessibility label for the Add Guest toolbar button.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat hosta"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir huésped"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un invité"
+          }
+        }
+      }
+    },
+    "Add property": {
+      "comment": "Accessibility label for the Add Property toolbar button.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat nemovitost"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir propiedad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une propriété"
           }
         }
       }
@@ -1272,6 +1387,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Annuel"
+          }
+        }
+      }
+    },
+    "Apple Account": {
+      "comment": "Label shown in the User Profile tab when the user is signed in with Apple.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Účet Apple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta de Apple"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compte Apple"
+          }
+        }
+      }
+    },
+    "Apple ID": {
+      "comment": "Label for the Apple ID row in the User Profile tab.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple ID"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple ID"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identifiant Apple"
           }
         }
       }
@@ -3827,6 +3988,52 @@
         }
       }
     },
+    "Next month": {
+      "comment": "Accessibility label for the forward-chevron button in the calendar month navigator.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Příští měsíc"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mes siguiente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mois suivant"
+          }
+        }
+      }
+    },
+    "Next period": {
+      "comment": "Accessibility label for the forward-chevron button in Expenses and Totals period navigators.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Další období"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Período siguiente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Période suivante"
+          }
+        }
+      }
+    },
     "Nightly rate": {
       "localizations": {
         "cs": {
@@ -4277,6 +4484,29 @@
         }
       }
     },
+    "Not signed in": {
+      "comment": "Subtitle shown in the User Profile tab when the user has not signed in with Apple.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nepřihlášen(a)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No ha iniciado sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non connecté"
+          }
+        }
+      }
+    },
     "Notifications": {
       "comment": "A section header for the notifications settings in the app.",
       "extractionState": "stale",
@@ -4646,6 +4876,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Préc."
+          }
+        }
+      }
+    },
+    "Previous month": {
+      "comment": "Accessibility label for the back-chevron button in the calendar month navigator.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Předchozí měsíc"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mes anterior"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mois précédent"
+          }
+        }
+      }
+    },
+    "Previous period": {
+      "comment": "Accessibility label for the back-chevron button in Expenses and Totals period navigators.",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Předchozí období"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Período anterior"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Période précédente"
           }
         }
       }

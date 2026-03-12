@@ -127,6 +127,7 @@ struct V4ExpensesView: View {
               Image(systemName: "chevron.up.chevron.down")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             }
           }
         }
@@ -152,6 +153,7 @@ struct V4ExpensesView: View {
                   .contentShape(Rectangle())
               }
               .buttonStyle(.plain)
+              .accessibilityLabel("Previous period")
 
               Spacer()
               Text(periodLabel)
@@ -167,6 +169,7 @@ struct V4ExpensesView: View {
                   .contentShape(Rectangle())
               }
               .buttonStyle(.plain)
+              .accessibilityLabel("Next period")
             }
           }
         }
@@ -245,6 +248,7 @@ struct V4ExpensesView: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
           Button { showAdd = true } label: { Image(systemName: "plus") }
+            .accessibilityLabel("Add expense")
         }
       }
       .sheet(isPresented: $showAdd) {
