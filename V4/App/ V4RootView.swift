@@ -46,6 +46,9 @@ struct V4RootView: View {
         Tab("Guests", systemImage: "person.2.fill") {
           V4GuestsView(prefs: prefs)
         }
+        Tab("Profile", systemImage: "person.crop.circle.fill") {
+          V4UserProfileView()
+        }
         Tab("More", systemImage: "ellipsis") {
           V4SettingsView(prefs: prefs)
         }
@@ -64,6 +67,8 @@ struct V4RootView: View {
           .tabItem { Label("Totals", systemImage: "chart.bar") }
         V4GuestsView(prefs: prefs)
           .tabItem { Label("Guests", systemImage: "person.2.fill") }
+        V4UserProfileView()
+          .tabItem { Label("Profile", systemImage: "person.crop.circle.fill") }
         V4SettingsView(prefs: prefs)
           .tabItem { Label("More", systemImage: "ellipsis") }
       }

@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import AuthenticationServices
 import UserNotifications
 
 // MARK: - Settings / More View
@@ -16,8 +15,6 @@ struct V4SettingsView: View {
   @State private var showRestoreAlert = false
   @State private var restoreAlertMessage = ""
   @State private var isRestoring = false
-  @State private var showSignInError = false
-  @State private var signInErrorMessage = ""
 
   private let commonCurrencies = ["EUR","CZK","USD","GBP","CHF","PLN","SEK","NOK","DKK"]
 
@@ -27,9 +24,6 @@ struct V4SettingsView: View {
 
         // MARK: — Account / Premium
         premiumSection
-
-        // MARK: — Account / iCloud (high visibility — right after Premium)
-        accountSection
 
         // MARK: — Properties & Bills
         Section {
@@ -172,11 +166,6 @@ struct V4SettingsView: View {
       Button("OK", role: .cancel) {}
     } message: {
       Text(restoreAlertMessage)
-    }
-    .alert("Sign In Error", isPresented: $showSignInError) {
-      Button("OK", role: .cancel) {}
-    } message: {
-      Text(signInErrorMessage)
     }
   }
 
@@ -337,103 +326,6 @@ struct V4SettingsView: View {
     }
   }
 
-  // MARK: - Account / Sign in with Apple Section
-
-  @ViewBuilder
-  private var accountSection: some View {
-    Section {
-      if let userID = settings.appleUserID {
-        HStack(spacing: 12) {
-          ZStack {
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-              .fill(Color(.systemFill))
-              .frame(width: 32, height: 32)
-            Image(systemName: "applelogo")
-              .font(.system(size: 16))
-              .foregroundStyle(.primary)
-          }
-          VStack(alignment: .leading, spacing: 2) {
-            Text("Signed in with Apple")
-              .font(.subheadline.weight(.medium))
-            Text("User ID: \(String(userID.prefix(12)))...")
-              .font(.caption2)
-              .foregroundStyle(.secondary)
-          }
-          Spacer()
-          Image(systemName: "checkmark.circle.fill")
-            .foregroundStyle(V4Theme.Brand.primary)
-        }
-        .padding(.vertical, 2)
-
-        // iCloud sync status
-        HStack(spacing: 12) {
-          ZStack {
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-              .fill(Color.blue.opacity(0.1))
-              .frame(width: 32, height: 32)
-            Image(systemName: "icloud.fill")
-              .font(.system(size: 16))
-              .foregroundStyle(.blue)
-          }
-          VStack(alignment: .leading, spacing: 2) {
-            Text("iCloud Sync")
-              .font(.subheadline.weight(.medium))
-            Text("Your data syncs automatically to iCloud.")
-              .font(.caption)
-              .foregroundStyle(.secondary)
-          }
-        }
-        .padding(.vertical, 2)
-
-        Button(role: .destructive) {
-          settings.appleUserID = nil
-        } label: {
-          Text("Sign Out")
-            .font(.subheadline)
-        }
-      } else {
-        VStack(alignment: .leading, spacing: 8) {
-          Text("Sync across your devices")
-            .font(.subheadline.weight(.medium))
-          Text("Sign in with Apple to keep your data backed up and in sync across all your devices via iCloud.")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-        }
-        .padding(.vertical, 4)
-
-        SignInWithAppleButtonView { result in
-          handleSignIn(result)
-        }
-        .frame(height: 44)
-        .padding(.vertical, 4)
-      }
-    } header: {
-      sectionHeader("Account & iCloud")
-    } footer: {
-      if settings.appleUserID == nil {
-        Text("Your data is already stored in iCloud when you have iCloud Drive enabled. Sign in with Apple lets StayTrackr identify your account securely across reinstalls.")
-          .font(.caption)
-      }
-    }
-  }
-
-  // MARK: - Sign In With Apple Handler
-
-  private func handleSignIn(_ result: Result<ASAuthorization, Error>) {
-    switch result {
-    case .success(let authorization):
-      if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
-        let userID = credential.user
-        settings.appleUserID = userID
-      }
-    case .failure(let error):
-      if (error as? ASAuthorizationError)?.code != .canceled {
-        signInErrorMessage = error.localizedDescription
-        showSignInError = true
-      }
-    }
-  }
-
   // MARK: - Restore Purchases
 
   private func restorePurchases() async {
@@ -479,67 +371,3 @@ struct V4SettingsView: View {
   }
 }
 
-// MARK: - Sign In With Apple Button (UIViewRepresentable)
-
-/// Wraps ASAuthorizationAppleIDButton for use in SwiftUI.
-/// Adapts its style automatically to light/dark mode.
-private struct SignInWithAppleButtonView: UIViewRepresentable {
-  var onCompletion: (Result<ASAuthorization, Error>) -> Void
-
-  @Environment(\.colorScheme) private var colorScheme
-
-  func makeCoordinator() -> Coordinator { Coordinator(onCompletion: onCompletion) }
-
-  func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
-    let style: ASAuthorizationAppleIDButton.Style = colorScheme == .dark ? .white : .black
-    let button = ASAuthorizationAppleIDButton(type: .signIn, style: style)
-    button.addTarget(context.coordinator, action: #selector(Coordinator.handleTap), for: .touchUpInside)
-    return button
-  }
-
-  func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
-    // Re-create with correct style when color scheme changes.
-    // UIViewRepresentable doesn't allow replacing the view mid-life,
-    // so we tint the background to stay readable in both modes.
-    uiView.backgroundColor = colorScheme == .dark ? .white : .black
-    uiView.tintColor       = colorScheme == .dark ? .black : .white
-  }
-
-  // MARK: Coordinator
-
-  final class Coordinator: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    var onCompletion: (Result<ASAuthorization, Error>) -> Void
-
-    init(onCompletion: @escaping (Result<ASAuthorization, Error>) -> Void) {
-      self.onCompletion = onCompletion
-    }
-
-    @objc func handleTap() {
-      let provider = ASAuthorizationAppleIDProvider()
-      let request = provider.createRequest()
-      request.requestedScopes = [.fullName, .email]
-
-      let controller = ASAuthorizationController(authorizationRequests: [request])
-      controller.delegate = self
-      controller.presentationContextProvider = self
-      controller.performRequests()
-    }
-
-    func authorizationController(controller: ASAuthorizationController,
-                                  didCompleteWithAuthorization authorization: ASAuthorization) {
-      onCompletion(.success(authorization))
-    }
-
-    func authorizationController(controller: ASAuthorizationController,
-                                  didCompleteWithError error: Error) {
-      onCompletion(.failure(error))
-    }
-
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-      UIApplication.shared.connectedScenes
-        .compactMap { $0 as? UIWindowScene }
-        .flatMap { $0.windows }
-        .first { $0.isKeyWindow } ?? ASPresentationAnchor()
-    }
-  }
-}

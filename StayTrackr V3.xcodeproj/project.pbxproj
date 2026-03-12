@@ -50,6 +50,7 @@
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
+		70E19F4A1717476AB1D393F4 /* V4UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F641A16A50943CAAB875415 /* V4UserProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,7 @@
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
+		0F641A16A50943CAAB875415 /* V4UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4UserProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 				BBA4182FF8E245029BBE3790 /* Premium */,
 				505AF2812F0D657600FC5DFF /* Settings */,
 				505AF2822F0D658300FC5DFF /* Totals */,
+				5B4D7B00AF6B485D80E61BFE /* User */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -210,6 +213,14 @@
 				505AF28B2F0D6DB000FC5DFF /* V4DashboardView.swift */,
 			);
 			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		5B4D7B00AF6B485D80E61BFE /* User */ = {
+			isa = PBXGroup;
+			children = (
+				0F641A16A50943CAAB875415 /* V4UserProfileView.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		505AF27E2F0D655600FC5DFF /* Calendar */ = {
@@ -477,6 +488,7 @@
 				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
 				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
 				07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */,
+				70E19F4A1717476AB1D393F4 /* V4UserProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
