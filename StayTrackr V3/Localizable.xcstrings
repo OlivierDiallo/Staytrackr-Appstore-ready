@@ -1374,29 +1374,6 @@
         }
       }
     },
-    "12 hours before" : {
-      "comment" : "Notification advance-notice picker option: 12 hours in advance.",
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "12 hodin předem"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "12 horas antes"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "12 heures avant"
-          }
-        }
-      }
-    },
     "2 days before" : {
       "comment" : "Notification advance-notice picker option: 2 days in advance.",
       "localizations" : {
@@ -1497,6 +1474,29 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "7 days free, then %1$@ / %2$@. Cancel anytime."
+          }
+        }
+      }
+    },
+    "12 hours before" : {
+      "comment" : "Notification advance-notice picker option: 12 hours in advance.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 hodin předem"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 horas antes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 heures avant"
           }
         }
       }
@@ -3684,6 +3684,7 @@
     },
     "Expense tracking" : {
       "comment" : "Onboarding feature row title for expense tracking.",
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -4418,6 +4419,7 @@
     },
     "Log and categorise costs per property with multi-currency support." : {
       "comment" : "Onboarding feature row subtitle for expense tracking.",
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -6539,6 +6541,7 @@
     },
     "Revenue totals" : {
       "comment" : "Onboarding feature row title for revenue totals.",
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -6710,6 +6713,7 @@
     },
     "See gross revenue, net income and occupancy by month, year or all-time." : {
       "comment" : "Onboarding feature row subtitle for revenue totals.",
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -7858,6 +7862,7 @@
     },
     "Visualise arrivals, departures and occupancy at a glance." : {
       "comment" : "Onboarding feature row subtitle for the visual booking calendar.",
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
