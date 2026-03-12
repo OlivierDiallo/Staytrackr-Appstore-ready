@@ -122,7 +122,7 @@ struct V4PaywallView: View {
 
   private var featureList: some View {
     VStack(alignment: .leading, spacing: 10) {
-      ForEach(features, id: \.label) { item in
+      ForEach(features) { item in
         HStack(spacing: 12) {
           Image(systemName: item.isPremium ? "checkmark.circle.fill" : "checkmark.circle")
             .font(.system(size: 18))
