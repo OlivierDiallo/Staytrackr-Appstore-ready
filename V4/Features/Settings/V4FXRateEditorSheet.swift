@@ -58,7 +58,8 @@ struct V4FXRateEditorSheet: View {
           Section {
             Button(role: .destructive) {
               context.delete(r)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete FX rate (sheet) save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Rate")

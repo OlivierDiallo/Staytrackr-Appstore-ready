@@ -301,7 +301,8 @@ struct V4GuestEditorSheet: View {
           Section {
             Button(role: .destructive) {
               context.delete(g)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete guest save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Guest")

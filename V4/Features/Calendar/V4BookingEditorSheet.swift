@@ -206,7 +206,8 @@ struct V4BookingEditorSheet: View {
           Section {
             Button(role: .destructive) {
               context.delete(booking)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete booking save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Booking")

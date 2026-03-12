@@ -107,7 +107,8 @@ struct V4RecurringBillsView: View {
       .swipeActions(edge: .leading, allowsFullSwipe: true) {
         Button {
           b.isActive.toggle()
-          try? context.save()
+          do { try context.save() }
+          catch { print("Toggle bill active save failed: \(error)") }
         } label: {
           Label(b.isActive ? "Disable" : "Enable",
                 systemImage: b.isActive ? "pause.circle" : "play.circle")
@@ -294,7 +295,8 @@ struct V4RecurringBillEditorSheet: View {
           Section {
             Button(role: .destructive) {
               context.delete(b)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete bill save failed: \(error)") }
               dismiss()
             } label: { Text("Delete Bill") }
           }

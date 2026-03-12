@@ -64,7 +64,8 @@ struct V4FXRatesView: View {
     for i in indexSet {
       context.delete(rates[i])
     }
-    try? context.save()
+    do { try context.save() }
+    catch { print("Delete FX rate save failed: \(error)") }
   }
 
   // MARK: - Editor
@@ -117,7 +118,8 @@ struct V4FXRatesView: View {
           Section {
             Button(role: .destructive) {
               context.delete(existing)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete FX rate (inline) save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Rate")

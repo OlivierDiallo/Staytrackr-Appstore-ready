@@ -146,11 +146,15 @@ struct V4SettingsView: View {
             Text(appVersion)
               .foregroundStyle(.secondary)
           }
-          Link(destination: URL(string: "https://olivierdiallo.com/staytrackr/privacy")!) {
-            settingsRow(icon: "hand.raised.fill", color: .gray, label: "Privacy Policy")
+          if let privacyURL = URL(string: "https://olivierdiallo.com/staytrackr/privacy") {
+            Link(destination: privacyURL) {
+              settingsRow(icon: "hand.raised.fill", color: .gray, label: "Privacy Policy")
+            }
           }
-          Link(destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!) {
-            settingsRow(icon: "doc.text.fill", color: .gray, label: "Terms of Use")
+          if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+            Link(destination: eulaURL) {
+              settingsRow(icon: "doc.text.fill", color: .gray, label: "Terms of Use")
+            }
           }
         } header: {
           sectionHeader("About")

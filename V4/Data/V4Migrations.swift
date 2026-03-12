@@ -24,6 +24,9 @@ enum V4Migrations {
       }
     }
 
-    if changed { try? context.save() }
+    if changed {
+      do { try context.save() }
+      catch { print("Migration save failed: \(error)") }
+    }
   }
 }

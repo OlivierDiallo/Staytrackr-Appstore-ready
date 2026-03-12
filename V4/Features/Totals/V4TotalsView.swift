@@ -37,12 +37,12 @@ struct V4TotalsView: View {
   private var periodRange: (start: Date, end: Date) {
     switch scope {
     case .monthly:
-      let start = cal.date(from: cal.dateComponents([.year, .month], from: referenceDate))!
-      let end   = cal.date(byAdding: .month, value: 1, to: start)!
+      guard let start = cal.date(from: cal.dateComponents([.year, .month], from: referenceDate)),
+            let end   = cal.date(byAdding: .month, value: 1, to: start) else { return (.distantPast, .distantFuture) }
       return (start, end)
     case .yearly:
-      let start = cal.date(from: cal.dateComponents([.year], from: referenceDate))!
-      let end   = cal.date(byAdding: .year, value: 1, to: start)!
+      guard let start = cal.date(from: cal.dateComponents([.year], from: referenceDate)),
+            let end   = cal.date(byAdding: .year, value: 1, to: start) else { return (.distantPast, .distantFuture) }
       return (start, end)
     case .allTime:
       return (.distantPast, .distantFuture)
@@ -268,38 +268,55 @@ struct V4TotalsView: View {
         Text(title)
           .font(.headline)
 
-        metricRow(title: "Revenue",  value: V4Currency.format(totals.gross,    code: currencyCode), positive: true)
-        metricRow(title: "Expenses", value: V4Currency.format(totals.expenses, code: currencyCode), positive: false)
-        Divider().opacity(0.35)
-        metricRow(title: "Net",      value: V4Currency.format(totals.net,      code: currencyCode), positive: totals.net >= 0)
-
-        Divider().opacity(0.25)
-
-        HStack {
-          Text("Bookings").foregroundStyle(.secondary)
-          Spacer()
-          Text("\(totals.bookingsCount)").font(.headline)
-        }
-
-        HStack {
-          Text("Nights").foregroundStyle(.secondary)
-          Spacer()
-          Text("\(totals.nights)").font(.headline)
-        }
-
-        if totals.bookingsCount > 0 {
-          HStack {
-            Text("Avg nightly rate").foregroundStyle(.secondary)
-            Spacer()
-            Text(V4Currency.format(totals.avgNightlyRate, code: currencyCode)).font(.headline)
+        if totals.bookingsCount == 0 && totals.expenses == 0 {
+          // Empty state for this period
+          HStack(spacing: 14) {
+            Image(systemName: "calendar.badge.minus")
+              .font(.title2)
+              .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 3) {
+              Text("No activity")
+                .font(.subheadline.weight(.medium))
+              Text("No bookings or expenses recorded in this period.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
           }
-        }
+          .padding(.vertical, 6)
+        } else {
+          metricRow(title: "Revenue",  value: V4Currency.format(totals.gross,    code: currencyCode), positive: true)
+          metricRow(title: "Expenses", value: V4Currency.format(totals.expenses, code: currencyCode), positive: false)
+          Divider().opacity(0.35)
+          metricRow(title: "Net",      value: V4Currency.format(totals.net,      code: currencyCode), positive: totals.net >= 0)
 
-        if totals.nights > 0 {
+          Divider().opacity(0.25)
+
           HStack {
-            Text("Occupancy").foregroundStyle(.secondary)
+            Text("Bookings").foregroundStyle(.secondary)
             Spacer()
-            Text(totals.occupancyLabel).font(.headline)
+            Text("\(totals.bookingsCount)").font(.headline)
+          }
+
+          HStack {
+            Text("Nights").foregroundStyle(.secondary)
+            Spacer()
+            Text("\(totals.nights)").font(.headline)
+          }
+
+          if totals.bookingsCount > 0 {
+            HStack {
+              Text("Avg nightly rate").foregroundStyle(.secondary)
+              Spacer()
+              Text(V4Currency.format(totals.avgNightlyRate, code: currencyCode)).font(.headline)
+            }
+          }
+
+          if totals.nights > 0 {
+            HStack {
+              Text("Occupancy").foregroundStyle(.secondary)
+              Spacer()
+              Text(totals.occupancyLabel).font(.headline)
+            }
           }
         }
       }

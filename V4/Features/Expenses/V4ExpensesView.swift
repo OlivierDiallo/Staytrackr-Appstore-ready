@@ -32,12 +32,12 @@ struct V4ExpensesView: View {
     switch filterMode {
     case .allTime: return nil
     case .monthly:
-      let start = cal.date(from: cal.dateComponents([.year, .month], from: referenceDate))!
-      let end   = cal.date(byAdding: .month, value: 1, to: start)!
+      guard let start = cal.date(from: cal.dateComponents([.year, .month], from: referenceDate)),
+            let end   = cal.date(byAdding: .month, value: 1, to: start) else { return nil }
       return (start, end)
     case .yearly:
-      let start = cal.date(from: cal.dateComponents([.year], from: referenceDate))!
-      let end   = cal.date(byAdding: .year, value: 1, to: start)!
+      guard let start = cal.date(from: cal.dateComponents([.year], from: referenceDate)),
+            let end   = cal.date(byAdding: .year, value: 1, to: start) else { return nil }
       return (start, end)
     }
   }
@@ -196,8 +196,22 @@ struct V4ExpensesView: View {
         // Expenses list
         Section {
           if filteredExpenses.isEmpty {
-            Text(filterMode == .allTime ? "No expenses yet." : "No expenses in this period.")
-              .foregroundStyle(.secondary)
+            HStack(spacing: 14) {
+              Image(systemName: filterMode == .allTime ? "creditcard.slash" : "magnifyingglass")
+                .font(.title2)
+                .foregroundStyle(.secondary)
+              VStack(alignment: .leading, spacing: 3) {
+                Text(filterMode == .allTime ? "No expenses yet" : "No expenses")
+                  .font(.subheadline.weight(.medium))
+                Text(filterMode == .allTime
+                     ? "Tap + to log your first expense."
+                     : "No expenses recorded in this period.")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
+            .padding(.vertical, 8)
+            .listRowBackground(Color.clear)
           } else {
             ForEach(filteredExpenses) { e in
               Button {
@@ -215,6 +229,10 @@ struct V4ExpensesView: View {
             }
           }
         }
+      }
+      .refreshable {
+        // SwiftData @Query auto-updates; reset reference date to today on pull
+        withAnimation { referenceDate = .now }
       }
       .navigationTitle("Expenses")
       .toolbar {

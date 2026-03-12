@@ -63,7 +63,8 @@ struct V4PropertiesListView: View {
                 if p.isArchived, prefs.selectedPropertyID == p.id {
                   prefs.selectedPropertyID = nil
                 }
-                try? context.save()
+                do { try context.save() }
+                catch { print("Archive toggle save failed: \(error)") }
               } label: {
                 Label(p.isArchived ? "Unarchive" : "Archive",
                       systemImage: p.isArchived ? "tray.and.arrow.up" : "tray.and.arrow.down")
@@ -120,7 +121,8 @@ struct V4PropertiesListView: View {
   private func confirmDelete(_ p: STProperty) {
     if prefs.selectedPropertyID == p.id { prefs.selectedPropertyID = nil }
     context.delete(p)
-    try? context.save()
+    do { try context.save() }
+    catch { print("Delete property save failed: \(error)") }
     propertyToDelete = nil
   }
 }

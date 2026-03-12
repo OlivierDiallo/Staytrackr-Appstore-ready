@@ -32,6 +32,7 @@ struct V4DashboardView: View {
 
           headerCard
 
+
           // If user selected ONE property, we can compute a correct single-currency rollup.
           if let prop = selectedProperty {
             let totals = rollupForMonthSingleCurrency(month: monthAnchor, property: prop)
@@ -65,6 +66,10 @@ struct V4DashboardView: View {
           }
         }
         .padding(16)
+      }
+      .refreshable {
+        // Re-schedule notifications whenever the user pulls to refresh
+        notifManager.scheduleAll(bookings: bookings, settings: settings)
       }
       .navigationTitle("Dashboard")
       .toolbar {
@@ -462,8 +467,8 @@ struct V4DashboardView: View {
 
   private func rollupForMonthSingleCurrency(month: Date, property: STProperty) -> (gross: Double, expenses: Double, net: Double, occupancyPct: Double) {
     let cal = Calendar.current
-    let start = cal.date(from: cal.dateComponents([.year, .month], from: month))!
-    let end = cal.date(byAdding: .month, value: 1, to: start)!
+    guard let start = cal.date(from: cal.dateComponents([.year, .month], from: month)),
+          let end   = cal.date(byAdding: .month, value: 1, to: start) else { return (0, 0, 0, 0) }
 
     var gross = 0.0
     var netBeforeExpenses = 0.0
@@ -551,13 +556,17 @@ struct V4DashboardView: View {
       }
     }
     let exp = expenses.filter { $0.date >= start && $0.date < end }.map(\.amount).reduce(0, +)
-    return (gross, net - exp)
+    // Include active recurring bills annualised for each property (same logic as single-property YTD)
+    let recurring = properties.map { p in
+      p.recurringBills.filter(\.isActive).map(\.amount).reduce(0, +)
+    }.reduce(0, +) * 12
+    return (gross, net - exp - recurring)
   }
 
   private func rollupForMonthAllPropertiesSingleCurrency(month: Date) -> (gross: Double, expenses: Double, net: Double, occupancyPct: Double) {
     let cal = Calendar.current
-    let start = cal.date(from: cal.dateComponents([.year, .month], from: month))!
-    let end = cal.date(byAdding: .month, value: 1, to: start)!
+    guard let start = cal.date(from: cal.dateComponents([.year, .month], from: month)),
+          let end   = cal.date(byAdding: .month, value: 1, to: start) else { return (0, 0, 0, 0) }
 
     var gross = 0.0
     var netBeforeExpenses = 0.0

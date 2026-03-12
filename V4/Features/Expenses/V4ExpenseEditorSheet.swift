@@ -179,7 +179,8 @@ struct V4ExpenseEditorSheet: View {
             Button(role: .destructive) {
               UIImpactFeedbackGenerator(style: .medium).impactOccurred()
               context.delete(e)
-              try? context.save()
+              do { try context.save() }
+              catch { print("Delete expense save failed: \(error)") }
               dismiss()
             } label: {
               Text("Delete Expense")

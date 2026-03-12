@@ -65,7 +65,7 @@ struct V4CalendarView: View {
     let dateFiltered: [STBooking]
     if let day = selectedDay {
       let dayStart = cal.startOfDay(for: day)
-      let dayEnd   = cal.date(byAdding: .day, value: 1, to: dayStart)!
+      let dayEnd   = cal.date(byAdding: .day, value: 1, to: dayStart) ?? dayStart.addingTimeInterval(86400)
       dateFiltered = filteredBookings
         .filter { $0.checkIn < dayEnd && $0.checkOut > dayStart }
         .sorted { $0.checkIn < $1.checkIn }
@@ -126,7 +126,8 @@ struct V4CalendarView: View {
                   Button {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     b.isPaid.toggle()
-                    try? context.save()
+                    do { try context.save() }
+                    catch { print("Toggle paid save failed: \(error)") }
                   } label: {
                     Label(
                       b.isPaid ? "Mark Unpaid" : "Mark Paid",
@@ -168,6 +169,10 @@ struct V4CalendarView: View {
         }
       }
       .listStyle(.insetGrouped)
+      .refreshable {
+        // SwiftData @Query auto-updates; pull-to-refresh resets day selection for a fresh view
+        withAnimation(.easeInOut(duration: 0.15)) { selectedDay = nil }
+      }
       .searchable(text: $searchText, prompt: "Search by guest or property")
       .navigationTitle("Calendar")
       .toolbar {
@@ -296,17 +301,20 @@ struct V4CalendarView: View {
         .padding(.horizontal, 8)
         .opacity(0.4)
 
-      // Day cells
+      // Day cells — use precomputed calDayMeta for O(1) per-cell lookup
+      let meta = calDayMeta
       LazyVGrid(columns: gridColumns, spacing: 2) {
         ForEach(Array(calendarDays.enumerated()), id: \.offset) { _, optDay in
           if let day = optDay {
+            let dayKey = cal.startOfDay(for: day)
+            let m = meta[dayKey] ?? CalDayMeta()
             DayCellView(
               day: day,
               isSelected: selectedDay.map { cal.isDate($0, inSameDayAs: day) } ?? false,
               isToday: cal.isDateInToday(day),
-              hasArrival: filteredBookings.contains { cal.isDate($0.checkIn, inSameDayAs: day) },
-              hasDeparture: filteredBookings.contains { cal.isDate($0.checkOut, inSameDayAs: day) },
-              occupantColor: occupantColor(on: day)
+              hasArrival: m.hasArrival,
+              hasDeparture: m.hasDeparture,
+              occupantColor: m.occupantColor
             )
             .onTapGesture {
               withAnimation(.easeInOut(duration: 0.15)) {
@@ -327,17 +335,46 @@ struct V4CalendarView: View {
     }
   }
 
-  // MARK: - Day Status Helpers
+  // MARK: - Day Meta (O(1) lookup built once per render instead of O(n) per cell)
 
-  /// Returns the property color for the booking that occupies the given night, if any.
-  private func occupantColor(on day: Date) -> Color? {
-    let dayStart = cal.startOfDay(for: day)
-    let dayEnd   = cal.date(byAdding: .day, value: 1, to: dayStart)!
-    guard let first = filteredBookings.first(where: {
-      cal.startOfDay(for: $0.checkIn) <= dayStart &&
-      cal.startOfDay(for: $0.checkOut) >= dayEnd
-    }) else { return nil }
-    return V4Color.hex(first.property.colorHex)
+  private struct CalDayMeta {
+    var hasArrival   = false
+    var hasDeparture = false
+    var occupantColor: Color? = nil
+  }
+
+  /// Builds a dictionary keyed on startOfDay(date) containing arrival/departure/occupant info.
+  /// Iterates `filteredBookings` once (O(M)) and fills days within the displayed month,
+  /// replacing the previous O(grid × M) per-cell approach.
+  private var calDayMeta: [Date: CalDayMeta] {
+    guard
+      let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: displayedMonth)),
+      let monthEnd   = cal.date(byAdding: .month, value: 1, to: monthStart)
+    else { return [:] }
+
+    var dict: [Date: CalDayMeta] = [:]
+
+    for b in filteredBookings {
+      let arrDay = cal.startOfDay(for: b.checkIn)
+      let depDay = cal.startOfDay(for: b.checkOut)
+
+      dict[arrDay, default: CalDayMeta()].hasArrival   = true
+      dict[depDay, default: CalDayMeta()].hasDeparture = true
+
+      // Fill occupant color for every day the booking is in-residence within the current month
+      let color     = V4Color.hex(b.property.colorHex)
+      let scanStart = max(arrDay,  monthStart)
+      let scanEnd   = min(depDay,  monthEnd)
+      var cursor    = scanStart
+      while cursor < scanEnd {
+        if dict[cursor]?.occupantColor == nil {
+          dict[cursor, default: CalDayMeta()].occupantColor = color
+        }
+        guard let next = cal.date(byAdding: .day, value: 1, to: cursor) else { break }
+        cursor = next
+      }
+    }
+    return dict
   }
 
   // MARK: - Booking Row
