@@ -3,9 +3,11 @@ import GoogleMobileAds
 
 // MARK: - V4AdBannerView
 //
-// UIViewRepresentable wrapping GADBannerView (320×50 standard banner).
+// UIViewRepresentable wrapping BannerView (320×50 standard banner).
 // Always loads with npa=1 (non-personalised ads) so no ATT dialog is required.
 // Rendered at the bottom of V4DashboardView only for free-tier users.
+//
+// Updated for Google Mobile Ads SDK v11 (GAD prefix removed from all types).
 
 struct V4AdBannerView: UIViewRepresentable {
 
@@ -15,8 +17,8 @@ struct V4AdBannerView: UIViewRepresentable {
 
   func makeCoordinator() -> Coordinator { Coordinator() }
 
-  func makeUIView(context: Context) -> GADBannerView {
-    let banner = GADBannerView(adSize: GADAdSizeBanner)
+  func makeUIView(context: Context) -> BannerView {
+    let banner = BannerView(adSize: AdSizeBanner)
     banner.adUnitID = adUnitID
     banner.rootViewController = topRootViewController()
     banner.delegate = context.coordinator
@@ -24,15 +26,15 @@ struct V4AdBannerView: UIViewRepresentable {
     return banner
   }
 
-  func updateUIView(_ uiView: GADBannerView, context: Context) {
+  func updateUIView(_ uiView: BannerView, context: Context) {
     // No-op: the banner manages its own ad refresh cycle.
   }
 
   // MARK: - Coordinator
 
-  final class Coordinator: NSObject, GADBannerViewDelegate {
+  final class Coordinator: NSObject, BannerViewDelegate {
     func bannerView(
-      _ bannerView: GADBannerView,
+      _ bannerView: BannerView,
       didFailToReceiveAdWithError error: Error
     ) {
       // Silently log — a missing ad is non-fatal; the 50pt frame collapses gracefully.
@@ -42,10 +44,10 @@ struct V4AdBannerView: UIViewRepresentable {
 
   // MARK: - Helpers
 
-  /// Creates a GADRequest tagged for non-personalised ads (npa=1).
-  private func makeNPARequest() -> GADRequest {
-    let request = GADRequest()
-    let extras  = GADExtras()
+  /// Creates a Request tagged for non-personalised ads (npa=1).
+  private func makeNPARequest() -> Request {
+    let request = Request()
+    let extras  = Extras()
     extras.additionalParameters = ["npa": "1"]
     request.register(extras)
     return request
