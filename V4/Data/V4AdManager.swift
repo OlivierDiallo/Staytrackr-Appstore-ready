@@ -22,12 +22,12 @@ final class V4AdManager {
   let bannerAdUnitID: String = "ca-app-pub-8115774269132947/2625704151"
   #endif
 
-  // MARK: - Lifecycle
+  // MARK: - Init
 
-  /// Call once at app launch (from StayTrackrV4App.task) to initialise the SDK.
-  /// NPA configuration is handled per-request in V4AdBannerView — no extra work needed here.
-  func start() {
-    // SDK v11: MobileAds.shared replaces GADMobileAds.sharedInstance()
+  init() {
+    // Initialise immediately so the SDK is ready before any BannerView renders.
+    // AdMob crashes if ads are loaded before start() is called — calling it here
+    // (rather than in a .task) guarantees it runs before the view hierarchy is built.
     MobileAds.shared.start(completionHandler: nil)
   }
 }

@@ -94,7 +94,6 @@ struct StayTrackrV4App: App {
           #endif
           runMigrations()
           await notifManager.requestAuthorization()
-          adManager.start()
         }
     }
   }
