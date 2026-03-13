@@ -8,6 +8,7 @@ struct V4DashboardView: View {
   @Environment(V4AppSettings.self)          private var settings
   @Environment(V4NotificationManager.self)  private var notifManager
   @Environment(STStoreManager.self)         private var store
+  @Environment(V4AdManager.self)            private var adManager
   @Query(sort: \STProperty.name) private var properties: [STProperty]
   @Query(sort: \STBooking.checkIn) private var bookings: [STBooking]
   @Query(sort: \STExpense.date, order: .reverse) private var expenses: [STExpense]
@@ -27,7 +28,8 @@ struct V4DashboardView: View {
 
   var body: some View {
     NavigationStack {
-      ScrollView {
+      VStack(spacing: 0) {
+        ScrollView {
         VStack(spacing: 16) {
 
           headerCard
@@ -66,10 +68,19 @@ struct V4DashboardView: View {
           }
         }
         .padding(16)
-      }
-      .refreshable {
-        // Re-schedule notifications whenever the user pulls to refresh
-        notifManager.scheduleAll(bookings: bookings, settings: settings)
+        }
+        .refreshable {
+          // Re-schedule notifications whenever the user pulls to refresh
+          notifManager.scheduleAll(bookings: bookings, settings: settings)
+        }
+
+        // Ad banner — only for free-tier users; hidden for Premium subscribers.
+        if !store.isPremium {
+          Divider()
+          V4AdBannerView(adUnitID: adManager.bannerAdUnitID)
+            .frame(height: 50)
+            .background(Color(.systemBackground))
+        }
       }
       .navigationTitle("Dashboard")
       .toolbar {

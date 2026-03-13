@@ -49,6 +49,8 @@
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
+		A1401B90F25F4D0680FC0875 /* V4AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DFD3DF1854E7EA14AD97C /* V4AdBannerView.swift */; };
+		96F978453CC2481D81778C68 /* V4AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22549DE17907463B9DE720F4 /* V4AdManager.swift */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -99,6 +101,8 @@
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
 		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
+		22549DE17907463B9DE720F4 /* V4AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AdManager.swift; sourceTree = "<group>"; };
+		B06DFD3DF1854E7EA14AD97C /* V4AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AdBannerView.swift; sourceTree = "<group>"; };
 		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
@@ -166,6 +170,7 @@
 				505AF29E2F0D706000FC5DFF /* V4Seeder.swift */,
 				505AF29C2F0D6EF100FC5DFF /* V4AppPreferences.swift */,
 				B7C331B2DE384275AADC8C65 /* STStoreManager.swift */,
+				22549DE17907463B9DE720F4 /* V4AdManager.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -269,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				505AF2AE2F0D959C00FC5DFF /* V4Card.swift */,
+				B06DFD3DF1854E7EA14AD97C /* V4AdBannerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -485,6 +491,8 @@
 				505AF2992F0D6E3E00FC5DFF /* V4GuestsView.swift in Sources */,
 				505AF2AF2F0D95A800FC5DFF /* V4Card.swift in Sources */,
 				86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */,
+				96F978453CC2481D81778C68 /* V4AdManager.swift in Sources */,
+				A1401B90F25F4D0680FC0875 /* V4AdBannerView.swift in Sources */,
 				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
 				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
 				07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */,
@@ -644,6 +652,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				INFOPLIST_KEY_GADApplicationIdentifier = "ca-app-pub-3940256099942544~1458002511";
 				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -682,6 +691,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				INFOPLIST_KEY_GADApplicationIdentifier = "ca-app-pub-REPLACE_WITH_REAL_APP_ID";
 				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
