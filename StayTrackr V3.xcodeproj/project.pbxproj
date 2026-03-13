@@ -40,6 +40,7 @@
 		505AF2CC2F15182A00FC5DFF /* V4PropertyEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CB2F15181E00FC5DFF /* V4PropertyEditorSheet.swift */; };
 		505AF2CE2F151B6D00FC5DFF /* V4BookingEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CD2F151B6C00FC5DFF /* V4BookingEditorSheet.swift */; };
 		5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5094504E2F5F854E00C6C855 /* StoreKit.framework */; };
+		509450542F63F18E00C6C855 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 509450532F63F18E00C6C855 /* GoogleMobileAds */; };
 		50E7A20E2F54747300A3D311 /* V4FXRatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20D2F54747000A3D311 /* V4FXRatesView.swift */; };
 		50E7A2102F54748E00A3D311 /* V4FXRateEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20F2F54748B00A3D311 /* V4FXRateEditorSheet.swift */; };
 		50E7A2132F548A4900A3D311 /* V4PreferencesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2AC2F0D7A0300FC5DFF /* V4PreferencesProvider.swift */; };
@@ -48,9 +49,9 @@
 		70E19F4A1717476AB1D393F4 /* V4UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F641A16A50943CAAB875415 /* V4UserProfileView.swift */; };
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
+		96F978453CC2481D81778C68 /* V4AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22549DE17907463B9DE720F4 /* V4AdManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
 		A1401B90F25F4D0680FC0875 /* V4AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DFD3DF1854E7EA14AD97C /* V4AdBannerView.swift */; };
-		96F978453CC2481D81778C68 /* V4AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22549DE17907463B9DE720F4 /* V4AdManager.swift */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 /* Begin PBXFileReference section */
 		0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4OnboardingTourView.swift; sourceTree = "<group>"; };
 		0F641A16A50943CAAB875415 /* V4UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4UserProfileView.swift; sourceTree = "<group>"; };
+		22549DE17907463B9DE720F4 /* V4AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AdManager.swift; sourceTree = "<group>"; };
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
@@ -101,7 +103,6 @@
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
 		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
-		22549DE17907463B9DE720F4 /* V4AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AdManager.swift; sourceTree = "<group>"; };
 		B06DFD3DF1854E7EA14AD97C /* V4AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AdBannerView.swift; sourceTree = "<group>"; };
 		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -114,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				509450542F63F18E00C6C855 /* GoogleMobileAds in Frameworks */,
 				5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,6 +397,7 @@
 			);
 			name = "StayTrackr V3";
 			packageProductDependencies = (
+				509450532F63F18E00C6C855 /* GoogleMobileAds */,
 			);
 			productName = "StayTrackr V3";
 			productReference = 5076A6542EA2E03000FE143A /* StayTrackr V3.app */;
@@ -427,6 +430,9 @@
 			);
 			mainGroup = 5076A64B2EA2E03000FE143A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5076A6552EA2E03000FE143A /* Products */;
 			projectDirPath = "";
@@ -640,6 +646,7 @@
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GADApplicationIdentifier = "ca-app-pub-8115774269132947~3076625717";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -652,7 +659,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				INFOPLIST_KEY_GADApplicationIdentifier = "ca-app-pub-3940256099942544~1458002511";
 				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -679,6 +685,7 @@
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_GADApplicationIdentifier = "ca-app-pub-8115774269132947~3076625717";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -691,7 +698,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				INFOPLIST_KEY_GADApplicationIdentifier = "ca-app-pub-REPLACE_WITH_REAL_APP_ID";
 				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -728,6 +734,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads?tab=readme-ov-file";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		509450532F63F18E00C6C855 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5076A64C2EA2E03000FE143A /* Project object */;
 }

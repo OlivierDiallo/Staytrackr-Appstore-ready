@@ -19,8 +19,7 @@ final class V4AdManager {
   /// Google's official test banner unit — safe to use in any Simulator/debug build.
   let bannerAdUnitID: String = "ca-app-pub-3940256099942544/2934735716"
   #else
-  /// ⚠️  Replace with your real banner ad unit ID from the AdMob console.
-  let bannerAdUnitID: String = "ca-app-pub-REPLACE_WITH_REAL/BANNER_UNIT_ID"
+  let bannerAdUnitID: String = "ca-app-pub-8115774269132947/2625704151"
   #endif
 
   // MARK: - Lifecycle
