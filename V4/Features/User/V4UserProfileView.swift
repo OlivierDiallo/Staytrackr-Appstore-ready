@@ -315,10 +315,12 @@ private struct SignInWithAppleButtonView: UIViewRepresentable {
     }
 
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-      UIApplication.shared.connectedScenes
+      // Avoids deprecated UIWindow() / ASPresentationAnchor() no-arg init (iOS 26).
+      // Sign In with Apple is only triggered from a visible UI, so a window always exists.
+      let allWindows = UIApplication.shared.connectedScenes
         .compactMap { $0 as? UIWindowScene }
         .flatMap { $0.windows }
-        .first { $0.isKeyWindow } ?? ASPresentationAnchor()
+      return allWindows.first(where: { $0.isKeyWindow }) ?? allWindows.first!
     }
   }
 }

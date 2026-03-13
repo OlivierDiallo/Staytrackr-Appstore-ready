@@ -165,7 +165,7 @@ struct V4CalendarView: View {
           if !bookingsToDisplay.isEmpty {
             let totalNights = bookingsToDisplay.reduce(0) { $0 + V4Finance.nights($1.checkIn, $1.checkOut) }
             let count = bookingsToDisplay.count
-            Text("\(count) bookings") + Text(" · ") + Text("\(totalNights) nights")
+            Text("\(count) bookings · \(totalNights) nights")
           }
         }
       }

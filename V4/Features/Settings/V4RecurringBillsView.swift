@@ -132,9 +132,12 @@ struct V4RecurringBillsView: View {
               .overlay(Capsule().strokeBorder(.secondary.opacity(0.5), lineWidth: 1))
           }
         }
-        (Text(b.category.displayName) + Text(" · ") + Text("Day \(b.dayOfMonth)"))
-          .font(.caption)
-          .foregroundStyle(.secondary)
+        HStack(spacing: 0) {
+          Text(b.category.displayName)
+          Text(" · Day \(b.dayOfMonth)")
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
         if let note = b.note, !note.isEmpty {
           Text(note)
             .font(.caption)
