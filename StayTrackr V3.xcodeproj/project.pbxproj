@@ -28,6 +28,7 @@
 		505AF2B12F0D95E700FC5DFF /* V4Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B02F0D95E100FC5DFF /* V4Color.swift */; };
 		505AF2B32F0D961600FC5DFF /* V4Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B22F0D95FF00FC5DFF /* V4Format.swift */; };
 		505AF2B52F0D965800FC5DFF /* V4Finance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B42F0D964E00FC5DFF /* V4Finance.swift */; };
+		3E98A74BEC6846FF83EAB30F /* V4ScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */; };
 		505AF2BA2F0DCD4F00FC5DFF /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B92F0DCD4B00FC5DFF /* Styles.swift */; };
 		505AF2BC2F0FC81C00FC5DFF /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BB2F0FC81100FC5DFF /* Currency.swift */; };
 		505AF2BE2F0FCA7B00FC5DFF /* V4ExpenseEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BD2F0FCA7700FC5DFF /* V4ExpenseEditorSheet.swift */; };
@@ -41,6 +42,8 @@
 		505AF2CE2F151B6D00FC5DFF /* V4BookingEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CD2F151B6C00FC5DFF /* V4BookingEditorSheet.swift */; };
 		5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5094504E2F5F854E00C6C855 /* StoreKit.framework */; };
 		509450542F63F18E00C6C855 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 509450532F63F18E00C6C855 /* GoogleMobileAds */; };
+		509450572F67742500C6C855 /* TelemetryClient in Frameworks */ = {isa = PBXBuildFile; productRef = 509450562F67742500C6C855 /* TelemetryClient */; };
+		509450592F67742500C6C855 /* TelemetryDeck in Frameworks */ = {isa = PBXBuildFile; productRef = 509450582F67742500C6C855 /* TelemetryDeck */; };
 		50E7A20E2F54747300A3D311 /* V4FXRatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20D2F54747000A3D311 /* V4FXRatesView.swift */; };
 		50E7A2102F54748E00A3D311 /* V4FXRateEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20F2F54748B00A3D311 /* V4FXRateEditorSheet.swift */; };
 		50E7A2132F548A4900A3D311 /* V4PreferencesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2AC2F0D7A0300FC5DFF /* V4PreferencesProvider.swift */; };
@@ -50,8 +53,8 @@
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
-		C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
+		C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +83,7 @@
 		505AF2B02F0D95E100FC5DFF /* V4Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Color.swift; sourceTree = "<group>"; };
 		505AF2B22F0D95FF00FC5DFF /* V4Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Format.swift; sourceTree = "<group>"; };
 		505AF2B42F0D964E00FC5DFF /* V4Finance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Finance.swift; sourceTree = "<group>"; };
+		19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ScreenshotView.swift; sourceTree = "<group>"; };
 		505AF2B92F0DCD4B00FC5DFF /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		505AF2BB2F0FC81100FC5DFF /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		505AF2BD2F0FCA7700FC5DFF /* V4ExpenseEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExpenseEditorSheet.swift; sourceTree = "<group>"; };
@@ -101,11 +105,11 @@
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
 		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
-		D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4TelemetryManager.swift; sourceTree = "<group>"; };
 		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
+		D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4TelemetryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +118,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				509450542F63F18E00C6C855 /* GoogleMobileAds in Frameworks */,
+				509450572F67742500C6C855 /* TelemetryClient in Frameworks */,
 				5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */,
+				509450592F67742500C6C855 /* TelemetryDeck in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,8 +202,17 @@
 			children = (
 				505AF2832F0D659B00FC5DFF /* Components */,
 				505AF2842F0D660000FC5DFF /* Styles */,
+				4EE4784AA1CF4F559B85C2DD /* Screenshots */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		4EE4784AA1CF4F559B85C2DD /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 		505AF27C2F0D651200FC5DFF /* Utils */ = {
@@ -395,6 +410,8 @@
 			name = "StayTrackr V3";
 			packageProductDependencies = (
 				509450532F63F18E00C6C855 /* GoogleMobileAds */,
+				509450562F67742500C6C855 /* TelemetryClient */,
+				509450582F67742500C6C855 /* TelemetryDeck */,
 			);
 			productName = "StayTrackr V3";
 			productReference = 5076A6542EA2E03000FE143A /* StayTrackr V3.app */;
@@ -429,6 +446,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5076A6552EA2E03000FE143A /* Products */;
@@ -484,6 +502,7 @@
 				505AF2B32F0D961600FC5DFF /* V4Format.swift in Sources */,
 				505AF2982F0D6E3800FC5DFF /* V4ExpensesView.swift in Sources */,
 				505AF2BA2F0DCD4F00FC5DFF /* Styles.swift in Sources */,
+				3E98A74BEC6846FF83EAB30F /* V4ScreenshotView.swift in Sources */,
 				505AF2C62F14F68E00FC5DFF /* V4Migrations.swift in Sources */,
 				505AF2C22F14F62500FC5DFF /* V4EditPropertyView.swift in Sources */,
 				50E7A20E2F54747300A3D311 /* V4FXRatesView.swift in Sources */,
@@ -738,6 +757,14 @@
 				minimumVersion = 13.1.0;
 			};
 		};
+		509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TelemetryDeck/SwiftSDK.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -745,6 +772,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
 			productName = GoogleMobileAds;
+		};
+		509450562F67742500C6C855 /* TelemetryClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
+			productName = TelemetryClient;
+		};
+		509450582F67742500C6C855 /* TelemetryDeck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
+			productName = TelemetryDeck;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
