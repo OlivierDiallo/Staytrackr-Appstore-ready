@@ -72,6 +72,9 @@ struct V4ExportView: View {
           Label("Export Bookings", systemImage: "square.and.arrow.up")
             .foregroundStyle(V4Theme.Brand.primary)
         }
+        .simultaneousGesture(TapGesture().onEnded {
+          V4TelemetryManager.signal(.exportUsed, parameters: ["type": "bookings"])
+        })
       } header: {
         Text("Bookings")
       } footer: {
@@ -91,6 +94,9 @@ struct V4ExportView: View {
           Label("Export Expenses", systemImage: "square.and.arrow.up")
             .foregroundStyle(V4Theme.Brand.primary)
         }
+        .simultaneousGesture(TapGesture().onEnded {
+          V4TelemetryManager.signal(.exportUsed, parameters: ["type": "expenses"])
+        })
       } header: {
         Text("Expenses")
       } footer: {
@@ -109,6 +115,9 @@ struct V4ExportView: View {
           Label("Export All (Single File)", systemImage: "doc.on.doc")
             .foregroundStyle(V4Theme.Brand.primary)
         }
+        .simultaneousGesture(TapGesture().onEnded {
+          V4TelemetryManager.signal(.exportUsed, parameters: ["type": "combined"])
+        })
       } footer: {
         Text("Bookings and Expenses in one file, separated by a blank row.")
           .font(.caption2)

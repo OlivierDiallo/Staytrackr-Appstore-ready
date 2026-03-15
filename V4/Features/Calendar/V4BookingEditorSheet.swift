@@ -326,6 +326,7 @@ struct V4BookingEditorSheet: View {
     do {
       try context.save()
       UINotificationFeedbackGenerator().notificationOccurred(.success)
+      if case .add = mode { V4TelemetryManager.signal(.bookingCreated) }
       dismiss()
     } catch {
       fail("Save failed: \(error.localizedDescription)")

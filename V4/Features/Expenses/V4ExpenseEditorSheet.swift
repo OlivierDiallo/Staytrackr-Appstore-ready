@@ -277,6 +277,7 @@ struct V4ExpenseEditorSheet: View {
     do {
       try context.save()
       UINotificationFeedbackGenerator().notificationOccurred(.success)
+      if case .add = mode { V4TelemetryManager.signal(.expenseCreated) }
       dismiss()
     } catch {
       fail("Save failed: \(error.localizedDescription)")

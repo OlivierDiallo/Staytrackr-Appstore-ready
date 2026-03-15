@@ -74,8 +74,12 @@ struct V4PaywallView: View {
       .onChange(of: store.purchaseError) { _, err in
         if err != nil { showError = true }
       }
+      .onAppear { V4TelemetryManager.signal(.paywallViewed) }
       .onChange(of: store.isPremium) { _, isPremium in
-        if isPremium { dismiss() }
+        if isPremium {
+          V4TelemetryManager.signal(.premiumPurchased)
+          dismiss()
+        }
       }
     }
   }
@@ -293,6 +297,7 @@ struct V4PaywallView: View {
 
   private var restoreButton: some View {
     Button {
+      V4TelemetryManager.signal(.premiumRestored)
       Task { await store.restorePurchases() }
     } label: {
       Text("Restore Purchases")

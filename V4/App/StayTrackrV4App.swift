@@ -58,6 +58,8 @@ struct StayTrackrV4App: App {
         fatalError("Failed to create SwiftData ModelContainer after store wipe.")
       }
     }
+    V4TelemetryManager.configure()
+    V4TelemetryManager.signal(.appLaunched)
   }
 
   // MARK: - Helpers

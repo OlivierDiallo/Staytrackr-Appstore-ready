@@ -33,24 +33,31 @@ struct V4RootView: View {
       TabView {
         Tab("Dashboard", systemImage: "rectangle.grid.2x2.fill") {
           V4DashboardView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabDashboard) }
         }
         Tab("Calendar", systemImage: "calendar") {
           V4CalendarView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabCalendar) }
         }
         Tab("Expenses", systemImage: "creditcard") {
           V4ExpensesView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabExpenses) }
         }
         Tab("Totals", systemImage: "chart.bar") {
           V4TotalsView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabTotals) }
         }
         Tab("Guests", systemImage: "person.2.fill") {
           V4GuestsView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabGuests) }
         }
         Tab("Profile", systemImage: "person.crop.circle.fill") {
           V4UserProfileView()
+            .onAppear { V4TelemetryManager.signal(.tabProfile) }
         }
         Tab("More", systemImage: "ellipsis") {
           V4SettingsView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabSettings) }
         }
       }
       .tabViewStyle(.sidebarAdaptable)
@@ -59,18 +66,25 @@ struct V4RootView: View {
       TabView {
         V4DashboardView(prefs: prefs)
           .tabItem { Label("Dashboard", systemImage: "rectangle.grid.2x2.fill") }
+          .onAppear { V4TelemetryManager.signal(.tabDashboard) }
         V4CalendarView(prefs: prefs)
           .tabItem { Label("Calendar", systemImage: "calendar") }
+          .onAppear { V4TelemetryManager.signal(.tabCalendar) }
         V4ExpensesView(prefs: prefs)
           .tabItem { Label("Expenses", systemImage: "creditcard") }
+          .onAppear { V4TelemetryManager.signal(.tabExpenses) }
         V4TotalsView(prefs: prefs)
           .tabItem { Label("Totals", systemImage: "chart.bar") }
+          .onAppear { V4TelemetryManager.signal(.tabTotals) }
         V4GuestsView(prefs: prefs)
           .tabItem { Label("Guests", systemImage: "person.2.fill") }
+          .onAppear { V4TelemetryManager.signal(.tabGuests) }
         V4UserProfileView()
           .tabItem { Label("Profile", systemImage: "person.crop.circle.fill") }
+          .onAppear { V4TelemetryManager.signal(.tabProfile) }
         V4SettingsView(prefs: prefs)
           .tabItem { Label("More", systemImage: "ellipsis") }
+          .onAppear { V4TelemetryManager.signal(.tabSettings) }
       }
       .tint(V4Theme.Brand.primary)
     }
