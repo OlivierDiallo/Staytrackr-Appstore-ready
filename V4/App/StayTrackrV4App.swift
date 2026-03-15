@@ -10,7 +10,6 @@ struct StayTrackrV4App: App {
   @State private var appState     = V4AppState()
   @State private var notifManager = V4NotificationManager()
   @State private var store        = STStoreManager()
-  @State private var adManager    = V4AdManager()
 
   private let container: ModelContainer
 
@@ -86,7 +85,6 @@ struct StayTrackrV4App: App {
         .environment(appState)
         .environment(notifManager)
         .environment(store)
-        .environment(adManager)
         .modelContainer(container)
         .task {
           #if DEBUG
