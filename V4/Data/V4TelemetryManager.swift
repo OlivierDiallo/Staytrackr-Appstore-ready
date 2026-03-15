@@ -20,7 +20,7 @@ enum V4TelemetryManager {
   // MARK: - App ID
 
   /// ⚠️  Replace with your TelemetryDeck App ID from the dashboard.
-  private static let appID = "YOUR_TELEMETRYDECK_APP_ID"
+  private static let appID = "8D8C3055-3CF3-49FF-867B-5B223EABA958"
 
   // MARK: - Configure
 
