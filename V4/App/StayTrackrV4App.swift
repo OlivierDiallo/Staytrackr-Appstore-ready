@@ -95,6 +95,11 @@ struct StayTrackrV4App: App {
           runMigrations()
           await notifManager.requestAuthorization()
         }
+        .onReceive(NotificationCenter.default.publisher(
+          for: UIApplication.willEnterForegroundNotification
+        )) { _ in
+          Task { await pollFlightsIfNeeded() }
+        }
     }
   }
 
@@ -104,6 +109,18 @@ struct StayTrackrV4App: App {
   private func runMigrations() {
     let context = ModelContext(container)
     V4Migrations.backfillExpenseCurrency(in: context)
+  }
+
+  // MARK: - Flight Polling
+
+  @MainActor
+  private func pollFlightsIfNeeded() async {
+    let ctx = ModelContext(container)
+    let desc = FetchDescriptor<STBooking>()
+    guard let bookings = try? ctx.fetch(desc) else { return }
+    for booking in bookings where V4FlightManager.shouldPoll(booking) {
+      await V4FlightManager.updateBooking(booking, context: ctx)
+    }
   }
 
   // MARK: - Seeder

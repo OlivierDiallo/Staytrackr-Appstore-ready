@@ -52,6 +52,7 @@
 		70E19F4A1717476AB1D393F4 /* V4UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F641A16A50943CAAB875415 /* V4UserProfileView.swift */; };
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
+		BB22CC33DD4455EE00FF1122 /* V4FlightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
 		C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */; };
@@ -63,6 +64,7 @@
 		0F641A16A50943CAAB875415 /* V4UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4UserProfileView.swift; sourceTree = "<group>"; };
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC33DD44EE5566FF1100AABB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
 		505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayTrackrV4App.swift; sourceTree = "<group>"; };
 		505AF2892F0D6CC000FC5DFF /*  V4RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " V4RootView.swift"; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
+		AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FlightManager.swift; sourceTree = "<group>"; };
 		D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4TelemetryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,6 +226,7 @@
 				505AF2B22F0D95FF00FC5DFF /* V4Format.swift */,
 				505AF2B02F0D95E100FC5DFF /* V4Color.swift */,
 				C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */,
+				AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -660,15 +664,8 @@
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "StayTrackr V3/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -698,15 +695,8 @@
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "StayTrackr V3/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

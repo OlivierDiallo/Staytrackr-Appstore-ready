@@ -432,6 +432,15 @@ struct V4CalendarView: View {
             .lineLimit(2)
         }
 
+        // Flight status chip (if present)
+        if let flightNum = b.flightNumber, !flightNum.isEmpty {
+          flightChip(
+            flightNum,
+            status: b.flightStatus,
+            delayMinutes: b.flightDelayMinutes ?? 0
+          )
+        }
+
         // Bottom row: dates + amount
         HStack {
           Text("\(b.checkIn.formatted(date: .abbreviated, time: .omitted)) → \(b.checkOut.formatted(date: .abbreviated, time: .omitted))")
@@ -461,6 +470,42 @@ struct V4CalendarView: View {
       .padding(.horizontal, 6)
       .padding(.vertical, 3)
       .background(color.opacity(0.12), in: Capsule())
+  }
+
+  @ViewBuilder
+  private func flightChip(_ number: String, status: String?, delayMinutes: Int) -> some View {
+    let cancelled = status == "cancelled"
+    let landed    = status == "landed"
+    let delayed   = delayMinutes > 0
+
+    let chipColor: Color = cancelled ? .red : landed ? .green : delayed ? .orange : .accentColor
+    let icon = cancelled ? "xmark.circle.fill" :
+               landed    ? "checkmark.circle.fill" :
+               delayed   ? "exclamationmark.triangle.fill" :
+                           "airplane"
+
+    HStack(spacing: 4) {
+      Image(systemName: icon)
+        .font(.caption2)
+      Text(number)
+        .font(.caption2.weight(.semibold))
+      if let st = status, !st.isEmpty, st != "scheduled" {
+        Text(".")
+          .font(.caption2)
+          .foregroundStyle(.secondary)
+        Text(st.capitalized)
+          .font(.caption2)
+      }
+      if delayed {
+        let h = delayMinutes / 60, m = delayMinutes % 60
+        Text(h > 0 ? "+\(h)h\(m)m" : "+\(m)m")
+          .font(.caption2.weight(.semibold))
+      }
+    }
+    .foregroundStyle(chipColor)
+    .padding(.horizontal, 7)
+    .padding(.vertical, 3)
+    .background(chipColor.opacity(0.10), in: Capsule())
   }
 
   // MARK: - Delete
