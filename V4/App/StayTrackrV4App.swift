@@ -36,11 +36,13 @@ struct StayTrackrV4App: App {
       cloudKitDatabase: .automatic
     )
 
-    // 2. Local-only fallback (same store name so the file is shared).
+    // 2. Local-only fallback — explicitly opt out of CloudKit so SwiftData skips
+    //    CloudKit schema validation even when iCloud entitlements are present.
     let localConfig = ModelConfiguration(
       "StayTrackrV6",
       schema: schema,
-      isStoredInMemoryOnly: false
+      isStoredInMemoryOnly: false,
+      cloudKitDatabase: .none
     )
 
     if let c = Self.makeContainer(schema: schema, config: cloudConfig) {
