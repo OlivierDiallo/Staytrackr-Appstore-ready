@@ -33,6 +33,7 @@
 		505AF2BC2F0FC81C00FC5DFF /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BB2F0FC81100FC5DFF /* Currency.swift */; };
 		505AF2BE2F0FCA7B00FC5DFF /* V4ExpenseEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BD2F0FCA7700FC5DFF /* V4ExpenseEditorSheet.swift */; };
 		505AF2C02F0FCAD900FC5DFF /* V4FX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BF2F0FCAD700FC5DFF /* V4FX.swift */; };
+		DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */; };
 		505AF2C22F14F62500FC5DFF /* V4EditPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C12F14F61500FC5DFF /* V4EditPropertyView.swift */; };
 		505AF2C42F14F66500FC5DFF /* V4AddPropertySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C32F14F66300FC5DFF /* V4AddPropertySheet.swift */; };
 		505AF2C62F14F68E00FC5DFF /* V4Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C52F14F68B00FC5DFF /* V4Migrations.swift */; };
@@ -90,6 +91,7 @@
 		505AF2BB2F0FC81100FC5DFF /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		505AF2BD2F0FCA7700FC5DFF /* V4ExpenseEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExpenseEditorSheet.swift; sourceTree = "<group>"; };
 		505AF2BF2F0FCAD700FC5DFF /* V4FX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FX.swift; sourceTree = "<group>"; };
+		EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXManager.swift; sourceTree = "<group>"; };
 		505AF2C12F14F61500FC5DFF /* V4EditPropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4EditPropertyView.swift; sourceTree = "<group>"; };
 		505AF2C32F14F66300FC5DFF /* V4AddPropertySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AddPropertySheet.swift; sourceTree = "<group>"; };
 		505AF2C52F14F68B00FC5DFF /* V4Migrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Migrations.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				505AF2C72F14FDE900FC5DFF /* PreferencesProvider.swift */,
 				505AF2C52F14F68B00FC5DFF /* V4Migrations.swift */,
 				505AF2BF2F0FCAD700FC5DFF /* V4FX.swift */,
+				EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */,
 				505AF2A02F0D710300FC5DFF /* V4AppSettings.swift */,
 				505AF29E2F0D706000FC5DFF /* V4Seeder.swift */,
 				505AF29C2F0D6EF100FC5DFF /* V4AppPreferences.swift */,
@@ -502,6 +505,7 @@
 				505AF29A2F0D6E4300FC5DFF /* V4SettingsView.swift in Sources */,
 				137C607CAC784F108475EFDA /* V4ExportView.swift in Sources */,
 				505AF2C02F0FCAD900FC5DFF /* V4FX.swift in Sources */,
+				DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */,
 				505AF2BC2F0FC81C00FC5DFF /* Currency.swift in Sources */,
 				505AF2B32F0D961600FC5DFF /* V4Format.swift in Sources */,
 				505AF2982F0D6E3800FC5DFF /* V4ExpensesView.swift in Sources */,
@@ -517,6 +521,7 @@
 				505AF2992F0D6E3E00FC5DFF /* V4GuestsView.swift in Sources */,
 				505AF2AF2F0D95A800FC5DFF /* V4Card.swift in Sources */,
 				86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */,
+				BB22CC33DD4455EE00FF1122 /* V4FlightManager.swift in Sources */,
 				C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */,
 				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
 				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
