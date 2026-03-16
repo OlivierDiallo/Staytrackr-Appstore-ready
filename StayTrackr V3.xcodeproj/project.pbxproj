@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */; };
 		137C607CAC784F108475EFDA /* V4ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */; };
+		3E98A74BEC6846FF83EAB30F /* V4ScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */; };
 		505AF2732EF2202700FC5DFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 505AF2722EF2202700FC5DFF /* Assets.xcassets */; };
 		505AF2872F0D697600FC5DFF /* StayTrackrV4App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */; };
 		505AF2882F0D6A9400FC5DFF /* STModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2742F088AD400FC5DFF /* STModels.swift */; };
@@ -28,12 +29,10 @@
 		505AF2B12F0D95E700FC5DFF /* V4Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B02F0D95E100FC5DFF /* V4Color.swift */; };
 		505AF2B32F0D961600FC5DFF /* V4Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B22F0D95FF00FC5DFF /* V4Format.swift */; };
 		505AF2B52F0D965800FC5DFF /* V4Finance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B42F0D964E00FC5DFF /* V4Finance.swift */; };
-		3E98A74BEC6846FF83EAB30F /* V4ScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */; };
 		505AF2BA2F0DCD4F00FC5DFF /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2B92F0DCD4B00FC5DFF /* Styles.swift */; };
 		505AF2BC2F0FC81C00FC5DFF /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BB2F0FC81100FC5DFF /* Currency.swift */; };
 		505AF2BE2F0FCA7B00FC5DFF /* V4ExpenseEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BD2F0FCA7700FC5DFF /* V4ExpenseEditorSheet.swift */; };
 		505AF2C02F0FCAD900FC5DFF /* V4FX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2BF2F0FCAD700FC5DFF /* V4FX.swift */; };
-		DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */; };
 		505AF2C22F14F62500FC5DFF /* V4EditPropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C12F14F61500FC5DFF /* V4EditPropertyView.swift */; };
 		505AF2C42F14F66500FC5DFF /* V4AddPropertySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C32F14F66300FC5DFF /* V4AddPropertySheet.swift */; };
 		505AF2C62F14F68E00FC5DFF /* V4Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2C52F14F68B00FC5DFF /* V4Migrations.swift */; };
@@ -42,7 +41,6 @@
 		505AF2CC2F15182A00FC5DFF /* V4PropertyEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CB2F15181E00FC5DFF /* V4PropertyEditorSheet.swift */; };
 		505AF2CE2F151B6D00FC5DFF /* V4BookingEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505AF2CD2F151B6C00FC5DFF /* V4BookingEditorSheet.swift */; };
 		5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5094504E2F5F854E00C6C855 /* StoreKit.framework */; };
-		509450542F63F18E00C6C855 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 509450532F63F18E00C6C855 /* GoogleMobileAds */; };
 		509450572F67742500C6C855 /* TelemetryClient in Frameworks */ = {isa = PBXBuildFile; productRef = 509450562F67742500C6C855 /* TelemetryClient */; };
 		509450592F67742500C6C855 /* TelemetryDeck in Frameworks */ = {isa = PBXBuildFile; productRef = 509450582F67742500C6C855 /* TelemetryDeck */; };
 		50E7A20E2F54747300A3D311 /* V4FXRatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E7A20D2F54747000A3D311 /* V4FXRatesView.swift */; };
@@ -53,20 +51,20 @@
 		70E19F4A1717476AB1D393F4 /* V4UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F641A16A50943CAAB875415 /* V4UserProfileView.swift */; };
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
-		BB22CC33DD4455EE00FF1122 /* V4FlightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
+		BB22CC33DD4455EE00FF1122 /* V4FlightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */; };
 		C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
+		DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4OnboardingTourView.swift; sourceTree = "<group>"; };
 		0F641A16A50943CAAB875415 /* V4UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4UserProfileView.swift; sourceTree = "<group>"; };
+		19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ScreenshotView.swift; sourceTree = "<group>"; };
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CC33DD44EE5566FF1100AABB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FF11AA22BB33CC44DD55EE66 /* StayTrackr V3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StayTrackr V3.entitlements"; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
 		505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayTrackrV4App.swift; sourceTree = "<group>"; };
 		505AF2892F0D6CC000FC5DFF /*  V4RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " V4RootView.swift"; sourceTree = "<group>"; };
@@ -87,12 +85,10 @@
 		505AF2B02F0D95E100FC5DFF /* V4Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Color.swift; sourceTree = "<group>"; };
 		505AF2B22F0D95FF00FC5DFF /* V4Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Format.swift; sourceTree = "<group>"; };
 		505AF2B42F0D964E00FC5DFF /* V4Finance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Finance.swift; sourceTree = "<group>"; };
-		19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ScreenshotView.swift; sourceTree = "<group>"; };
 		505AF2B92F0DCD4B00FC5DFF /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		505AF2BB2F0FC81100FC5DFF /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		505AF2BD2F0FCA7700FC5DFF /* V4ExpenseEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExpenseEditorSheet.swift; sourceTree = "<group>"; };
 		505AF2BF2F0FCAD700FC5DFF /* V4FX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FX.swift; sourceTree = "<group>"; };
-		EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXManager.swift; sourceTree = "<group>"; };
 		505AF2C12F14F61500FC5DFF /* V4EditPropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4EditPropertyView.swift; sourceTree = "<group>"; };
 		505AF2C32F14F66300FC5DFF /* V4AddPropertySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4AddPropertySheet.swift; sourceTree = "<group>"; };
 		505AF2C52F14F68B00FC5DFF /* V4Migrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4Migrations.swift; sourceTree = "<group>"; };
@@ -110,12 +106,14 @@
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
 		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
+		AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FlightManager.swift; sourceTree = "<group>"; };
 		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
 		C5704C85909B44449280C130 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
-		AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FlightManager.swift; sourceTree = "<group>"; };
 		D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4TelemetryManager.swift; sourceTree = "<group>"; };
+		EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXManager.swift; sourceTree = "<group>"; };
+		FF11AA22BB33CC44DD55EE66 /* StayTrackr V3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StayTrackr V3.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,7 +121,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				509450542F63F18E00C6C855 /* GoogleMobileAds in Frameworks */,
 				509450572F67742500C6C855 /* TelemetryClient in Frameworks */,
 				5094504F2F5F854E00C6C855 /* StoreKit.framework in Frameworks */,
 				509450592F67742500C6C855 /* TelemetryDeck in Frameworks */,
@@ -139,6 +136,14 @@
 				0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		4EE4784AA1CF4F559B85C2DD /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 		505AF2752F0D62BA00FC5DFF /* V4 */ = {
@@ -212,14 +217,6 @@
 				4EE4784AA1CF4F559B85C2DD /* Screenshots */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		4EE4784AA1CF4F559B85C2DD /* Screenshots */ = {
-			isa = PBXGroup;
-			children = (
-				19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */,
-			);
-			path = Screenshots;
 			sourceTree = "<group>";
 		};
 		505AF27C2F0D651200FC5DFF /* Utils */ = {
@@ -418,7 +415,6 @@
 			);
 			name = "StayTrackr V3";
 			packageProductDependencies = (
-				509450532F63F18E00C6C855 /* GoogleMobileAds */,
 				509450562F67742500C6C855 /* TelemetryClient */,
 				509450582F67742500C6C855 /* TelemetryDeck */,
 			);
@@ -454,7 +450,6 @@
 			mainGroup = 5076A64B2EA2E03000FE143A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -589,7 +584,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -649,7 +644,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -669,7 +664,7 @@
 				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 5.1;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -678,7 +673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0;
+				MARKETING_VERSION = 5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -701,7 +696,7 @@
 				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 5.1;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -710,7 +705,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0;
+				MARKETING_VERSION = 5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -748,14 +743,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads?tab=readme-ov-file";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 13.1.0;
-			};
-		};
 		509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TelemetryDeck/SwiftSDK.git";
@@ -767,11 +754,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		509450532F63F18E00C6C855 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 509450522F63F18E00C6C855 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
-		};
 		509450562F67742500C6C855 /* TelemetryClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 509450552F67742500C6C855 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
