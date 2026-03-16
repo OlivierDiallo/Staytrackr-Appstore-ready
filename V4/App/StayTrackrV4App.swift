@@ -82,7 +82,7 @@ struct StayTrackrV4App: App {
 
   var body: some Scene {
     WindowGroup {
-      V4RootView()
+        V4RootView()
         .environment(settings)
         .environment(appState)
         .environment(notifManager)

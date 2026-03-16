@@ -15,7 +15,7 @@ import SwiftUI
 struct V4ScreenshotView: View {
 
   @State private var scene: Scene = .dashboard
-  private let showPicker = true   // ← set to false before final screenshots
+  @State private var showPicker = true
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -49,18 +49,28 @@ struct V4ScreenshotView: View {
         Spacer()
       }
 
-      // Scene picker (remove before final shots)
-      if showPicker {
-        Picker("Scene", selection: $scene) {
-          ForEach(Scene.allCases) { s in
-            Text(s.pickerLabel).tag(s)
+      // Scene picker — tap the eye button to hide for clean screenshots
+      VStack(spacing: 0) {
+        if showPicker {
+          Picker("Scene", selection: $scene) {
+            ForEach(Scene.allCases) { s in
+              Text(s.pickerLabel).tag(s)
+            }
           }
+          .pickerStyle(.segmented)
+          .padding(.horizontal, 12)
+          .padding(.top, 10)
         }
-        .pickerStyle(.segmented)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial)
+        Button {
+          showPicker.toggle()
+        } label: {
+          Image(systemName: showPicker ? "eye.slash" : "eye")
+            .font(.system(size: 14, weight: .medium))
+            .foregroundStyle(.white.opacity(0.6))
+            .padding(8)
+        }
       }
+      .background(.ultraThinMaterial.opacity(showPicker ? 1 : 0))
     }
   }
 }
