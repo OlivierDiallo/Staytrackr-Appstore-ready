@@ -66,6 +66,7 @@
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		505AF2722EF2202700FC5DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC33DD44EE5566FF1100AABB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF11AA22BB33CC44DD55EE66 /* StayTrackr V3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StayTrackr V3.entitlements"; sourceTree = "<group>"; };
 		505AF2742F088AD400FC5DFF /* STModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STModels.swift; sourceTree = "<group>"; };
 		505AF2862F0D696900FC5DFF /* StayTrackrV4App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayTrackrV4App.swift; sourceTree = "<group>"; };
 		505AF2892F0D6CC000FC5DFF /*  V4RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " V4RootView.swift"; sourceTree = "<group>"; };
@@ -371,6 +372,7 @@
 				505AF2722EF2202700FC5DFF /* Assets.xcassets */,
 				2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */,
 				C5704C85909B44449280C130 /* Localizable.xcstrings */,
+				FF11AA22BB33CC44DD55EE66 /* StayTrackr V3.entitlements */,
 			);
 			path = "StayTrackr V3";
 			sourceTree = "<group>";
@@ -664,6 +666,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
@@ -695,6 +698,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
