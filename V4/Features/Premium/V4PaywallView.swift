@@ -199,13 +199,25 @@ struct V4PaywallView: View {
               Text(trial)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(V4Theme.Brand.primary)
-              Text("then " + product.displayPrice + (isAnnual ? " / year" : " / month"))
-                .font(.caption)
-                .foregroundStyle(.secondary)
+              if isAnnual {
+                Text("then \(product.displayPrice) / year")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              } else {
+                Text("then \(product.displayPrice) / month")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
             } else {
-              Text(product.displayPrice + (isAnnual ? " / year" : " / month"))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+              if isAnnual {
+                Text("\(product.displayPrice) / year")
+                  .font(.subheadline)
+                  .foregroundStyle(.secondary)
+              } else {
+                Text("\(product.displayPrice) / month")
+                  .font(.subheadline)
+                  .foregroundStyle(.secondary)
+              }
             }
             if isAnnual, let savings {
               Text("Save \(savings) vs monthly")
@@ -258,7 +270,6 @@ struct V4PaywallView: View {
       return hasTrial ? "Start Free Trial" : "Subscribe Now"
     }()
     let isAnnual = selectedProduct?.id == STStoreManager.annualID
-    let period   = isAnnual ? "year" : "month"
 
     return VStack(spacing: 10) {
       Button {
@@ -285,10 +296,17 @@ struct V4PaywallView: View {
 
       // Trial disclaimer
       if hasTrial, let product = selectedProduct {
-        Text("7 days free, then \(product.displayPrice) / \(period). Cancel anytime.")
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          .multilineTextAlignment(.center)
+        if isAnnual {
+          Text("7 days free, then \(product.displayPrice) / year. Cancel anytime.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+        } else {
+          Text("7 days free, then \(product.displayPrice) / month. Cancel anytime.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+        }
       }
     }
   }

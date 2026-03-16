@@ -93,7 +93,7 @@ final class STStoreManager {
           await tx.finish()
           await updatePremiumStatus()
         } else {
-          purchaseError = "Purchase could not be verified. Please try again."
+          purchaseError = String(localized: "Purchase could not be verified. Please try again.")
         }
       case .pending:
         // Ask-to-Buy or deferred — will arrive via Transaction.updates.
@@ -122,7 +122,7 @@ final class STStoreManager {
       try await AppStore.sync()
       await updatePremiumStatus()
       if !isPremium {
-        purchaseError = "No active subscription found."
+        purchaseError = String(localized: "No active subscription found.")
       }
     } catch {
       purchaseError = error.localizedDescription
@@ -154,10 +154,10 @@ final class STStoreManager {
           offer.paymentMode == .freeTrial else { return nil }
     let count = offer.period.value
     switch offer.period.unit {
-    case .week:  return count == 1 ? "1 week free"  : "\(count) weeks free"
-    case .day:   return count == 1 ? "1 day free"   : "\(count) days free"
-    case .month: return count == 1 ? "1 month free" : "\(count) months free"
-    default:     return "Free trial"
+    case .week:  return count == 1 ? String(localized: "1 week free")  : String(localized: "\(count) weeks free")
+    case .day:   return count == 1 ? String(localized: "1 day free")   : String(localized: "\(count) days free")
+    case .month: return count == 1 ? String(localized: "1 month free") : String(localized: "\(count) months free")
+    default:     return String(localized: "Free trial")
     }
   }
 
