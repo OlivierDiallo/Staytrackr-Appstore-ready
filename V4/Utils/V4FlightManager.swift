@@ -52,7 +52,7 @@ enum V4FlightManager {
     // IMPORTANT: Replace with your AviationStack access key.
     // Free plan: 100 calls/month via HTTP only.
     // Standard plan ($29.99/mo): 10,000 calls/month via HTTPS.
-    private static let apiKey = "YOUR_AVIATIONSTACK_KEY"
+    private static let apiKey = "199daa4d33023cc11774215515d895f7"
 
     // Free tier = HTTP (requires NSAppTransportSecurity exception in Info.plist).
     // Paid tier = change to "https".
