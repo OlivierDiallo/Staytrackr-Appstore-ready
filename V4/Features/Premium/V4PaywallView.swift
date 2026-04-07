@@ -273,40 +273,62 @@ struct V4PaywallView: View {
     let isAnnual = selectedProduct?.id == STStoreManager.annualID
 
     return VStack(spacing: 10) {
-      Button {
-        guard let product = selectedProduct else { return }
-        Task { await store.purchase(product) }
-      } label: {
-        ZStack {
-          if store.isPurchasing {
-            ProgressView().tint(.white)
-          } else {
-            Text(buttonLabel)
+      // ── Load failed state ────────────────────────────────────────────
+      if store.loadFailed {
+        VStack(spacing: 8) {
+          Text("Could not load prices. Check your connection and try again.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+          Button {
+            Task { await store.loadProducts() }
+          } label: {
+            Text("Retry")
               .font(.headline)
               .foregroundStyle(.white)
+              .frame(maxWidth: .infinity)
+              .frame(height: 54)
+              .background(V4Theme.Brand.primary,
+                          in: RoundedRectangle(cornerRadius: 16, style: .continuous))
           }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 54)
-        .background(
-          selectedProduct != nil ? V4Theme.Brand.primary : Color.secondary,
-          in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-      }
-      .disabled(selectedProduct == nil || store.isPurchasing)
+      } else {
+        // ── Normal purchase button ───────────────────────────────────────
+        Button {
+          guard let product = selectedProduct else { return }
+          Task { await store.purchase(product) }
+        } label: {
+          ZStack {
+            if store.isLoadingProducts || store.isPurchasing {
+              ProgressView().tint(.white)
+            } else {
+              Text(buttonLabel)
+                .font(.headline)
+                .foregroundStyle(.white)
+            }
+          }
+          .frame(maxWidth: .infinity)
+          .frame(height: 54)
+          .background(
+            selectedProduct != nil ? V4Theme.Brand.primary : Color.secondary,
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+          )
+        }
+        .disabled(selectedProduct == nil || store.isPurchasing || store.isLoadingProducts)
 
-      // Trial disclaimer
-      if hasTrial, let product = selectedProduct {
-        if isAnnual {
-          Text("7 days free, then \(product.displayPrice) / year. Cancel anytime.")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
-        } else {
-          Text("7 days free, then \(product.displayPrice) / month. Cancel anytime.")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
+        // Trial disclaimer
+        if hasTrial, let product = selectedProduct {
+          if isAnnual {
+            Text("7 days free, then \(product.displayPrice) / year. Cancel anytime.")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+              .multilineTextAlignment(.center)
+          } else {
+            Text("7 days free, then \(product.displayPrice) / month. Cancel anytime.")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+              .multilineTextAlignment(.center)
+          }
         }
       }
     }

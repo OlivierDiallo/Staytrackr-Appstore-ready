@@ -30,6 +30,12 @@ final class STStoreManager {
   /// True when the user is eligible for a free introductory trial (checked after products load).
   var isEligibleForTrial: Bool = false
 
+  /// True while the initial product fetch is in progress.
+  var isLoadingProducts: Bool = false
+
+  /// True when product fetch has completed but returned no products (e.g. Paid Apps Agreement not active).
+  var loadFailed: Bool = false
+
   // MARK: - Init
 
   init() {
@@ -47,17 +53,20 @@ final class STStoreManager {
 
   @MainActor
   func loadProducts() async {
+    isLoadingProducts = true
+    loadFailed = false
+    defer { isLoadingProducts = false }
     do {
       let fetched = try await Product.products(for: [Self.monthlyID, Self.annualID])
       let order = [Self.monthlyID, Self.annualID]
       products = fetched.sorted {
         (order.firstIndex(of: $0.id) ?? 99) < (order.firstIndex(of: $1.id) ?? 99)
       }
+      loadFailed = products.isEmpty   // products empty = agreement not active / not configured
       await checkTrialEligibility()
     } catch {
-      // No StoreKit config in scheme, or network unavailable.
-      // products stays empty; paywall shows a loading state.
       print("[STStoreManager] loadProducts failed: \(error)")
+      loadFailed = true
     }
   }
 
