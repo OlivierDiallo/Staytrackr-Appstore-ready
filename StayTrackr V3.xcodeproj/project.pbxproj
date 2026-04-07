@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */; };
+		AA11BB22CC33DD44EE55FF77 /* V4PersonalizedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF66 /* V4PersonalizedOnboardingView.swift */; };
 		137C607CAC784F108475EFDA /* V4ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */; };
 		3E98A74BEC6846FF83EAB30F /* V4ScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */; };
 		505AF2732EF2202700FC5DFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 505AF2722EF2202700FC5DFF /* Assets.xcassets */; };
@@ -61,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4OnboardingTourView.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE55FF66 /* V4PersonalizedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PersonalizedOnboardingView.swift; sourceTree = "<group>"; };
 		0F641A16A50943CAAB875415 /* V4UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4UserProfileView.swift; sourceTree = "<group>"; };
 		19E06C5A4082443A89B5C10E /* V4ScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ScreenshotView.swift; sourceTree = "<group>"; };
 		2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file.xcprivacy; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				0E12DC1562B14FB5BD978676 /* V4OnboardingTourView.swift */,
+				AA11BB22CC33DD44EE55FF66 /* V4PersonalizedOnboardingView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
 				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
 				07294425D068400A972254D5 /* V4OnboardingTourView.swift in Sources */,
+				AA11BB22CC33DD44EE55FF77 /* V4PersonalizedOnboardingView.swift in Sources */,
 				70E19F4A1717476AB1D393F4 /* V4UserProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -664,26 +668,31 @@
 				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5.1;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "StayTrackr V3/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = StayTrackr;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -696,26 +705,31 @@
 				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5.1;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "StayTrackr V3/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = StayTrackr;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olivierdiallo.staytrackrv3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

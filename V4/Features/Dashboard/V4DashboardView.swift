@@ -66,6 +66,8 @@ struct V4DashboardView: View {
           }
         }
         .padding(16)
+        .frame(maxWidth: 700)
+        .frame(maxWidth: .infinity)
       }
       .refreshable {
         // Re-schedule notifications whenever the user pulls to refresh

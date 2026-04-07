@@ -9,9 +9,7 @@ struct V4RootView: View {
     Group {
       // 1. First launch: show the walkthrough tour
       if !settings.hasSeenOnboarding {
-        // finishTour() inside the tour sets hasSeenOnboarding = true,
-        // which triggers a re-render into branch 2 or 3 automatically.
-        V4OnboardingTourView { }
+        V4PersonalizedOnboardingView()
       // 2. No properties yet: show the "add your first property" screen
       } else if properties.isEmpty {
         V4OnboardingView()
@@ -47,13 +45,13 @@ struct V4RootView: View {
           V4TotalsView(prefs: prefs)
             .onAppear { V4TelemetryManager.signal(.tabTotals) }
         }
-        Tab("Guests", systemImage: "person.2.fill") {
-          V4GuestsView(prefs: prefs)
-            .onAppear { V4TelemetryManager.signal(.tabGuests) }
-        }
         Tab("Profile", systemImage: "person.crop.circle.fill") {
           V4UserProfileView()
             .onAppear { V4TelemetryManager.signal(.tabProfile) }
+        }
+        Tab("Guests", systemImage: "person.2.fill") {
+          V4GuestsView(prefs: prefs)
+            .onAppear { V4TelemetryManager.signal(.tabGuests) }
         }
         Tab("More", systemImage: "ellipsis") {
           V4SettingsView(prefs: prefs)
@@ -76,12 +74,12 @@ struct V4RootView: View {
         V4TotalsView(prefs: prefs)
           .tabItem { Label("Totals", systemImage: "chart.bar") }
           .onAppear { V4TelemetryManager.signal(.tabTotals) }
-        V4GuestsView(prefs: prefs)
-          .tabItem { Label("Guests", systemImage: "person.2.fill") }
-          .onAppear { V4TelemetryManager.signal(.tabGuests) }
         V4UserProfileView()
           .tabItem { Label("Profile", systemImage: "person.crop.circle.fill") }
           .onAppear { V4TelemetryManager.signal(.tabProfile) }
+        V4GuestsView(prefs: prefs)
+          .tabItem { Label("Guests", systemImage: "person.2.fill") }
+          .onAppear { V4TelemetryManager.signal(.tabGuests) }
         V4SettingsView(prefs: prefs)
           .tabItem { Label("More", systemImage: "ellipsis") }
           .onAppear { V4TelemetryManager.signal(.tabSettings) }

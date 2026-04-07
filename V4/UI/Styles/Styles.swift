@@ -6,7 +6,7 @@ enum V4Theme {
   }
 
   enum Surface {
-    static let cardBackground: AnyShapeStyle = AnyShapeStyle(.ultraThinMaterial)
+    static let cardBackground: AnyShapeStyle = AnyShapeStyle(Color(.secondarySystemGroupedBackground))
   }
 
   enum Spacing {

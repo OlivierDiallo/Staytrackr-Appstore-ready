@@ -25,7 +25,7 @@ struct V4PaywallView: View {
     .init(icon: "house.fill",                label: "1 property",                        isPremium: false),
     .init(icon: "calendar",                  label: "Booking calendar",                  isPremium: false),
     .init(icon: "creditcard",                label: "Expense tracking & guests",          isPremium: false),
-    .init(icon: "house.fill",                label: "Unlimited properties",              isPremium: true),
+    .init(icon: "house.fill",                label: "Up to 20 properties",              isPremium: true),
     .init(icon: "arrow.down.doc.fill",       label: "CSV export",                        isPremium: true),
     .init(icon: "chart.bar.fill",            label: "Revenue charts",                    isPremium: true),
     .init(icon: "icloud.fill",               label: "iCloud sync",                       isPremium: true),
@@ -48,6 +48,7 @@ struct V4PaywallView: View {
           purchaseButton
           restoreButton
           dismissLink
+          legalLinks
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -332,6 +333,28 @@ struct V4PaywallView: View {
       Text("Continue with Free")
         .font(.footnote)
         .foregroundStyle(.secondary)
+    }
+  }
+
+  // MARK: - Legal Links
+
+  private var legalLinks: some View {
+    VStack(spacing: 6) {
+      Text("Subscription renews automatically. Cancel anytime in App Store settings.")
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+        .multilineTextAlignment(.center)
+      HStack(spacing: 12) {
+        if let privacyURL = URL(string: "https://getstaytracker.com/privacy") {
+          Link("Privacy Policy", destination: privacyURL)
+        }
+        Text("·").foregroundStyle(.secondary)
+        if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+          Link("Terms of Use", destination: eulaURL)
+        }
+      }
+      .font(.caption2)
+      .foregroundStyle(V4Theme.Brand.primary)
     }
   }
 }
