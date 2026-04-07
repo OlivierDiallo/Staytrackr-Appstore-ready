@@ -194,28 +194,28 @@ struct V4PaywallView: View {
       ZStack(alignment: .topTrailing) {
         HStack {
           VStack(alignment: .leading, spacing: 4) {
-            Text(isAnnual ? "Annual" : "Monthly")
+            Text(isAnnual ? "Annual — 1-year subscription" : "Monthly — 1-month subscription")
               .font(.headline)
             if let trial = trialText {
               Text(trial)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(V4Theme.Brand.primary)
               if isAnnual {
-                Text("then \(product.displayPrice) / year")
+                Text("then \(product.displayPrice) billed yearly")
                   .font(.caption)
                   .foregroundStyle(.secondary)
               } else {
-                Text("then \(product.displayPrice) / month")
+                Text("then \(product.displayPrice) billed monthly")
                   .font(.caption)
                   .foregroundStyle(.secondary)
               }
             } else {
               if isAnnual {
-                Text("\(product.displayPrice) / year")
+                Text("\(product.displayPrice) billed yearly")
                   .font(.subheadline)
                   .foregroundStyle(.secondary)
               } else {
-                Text("\(product.displayPrice) / month")
+                Text("\(product.displayPrice) billed monthly")
                   .font(.subheadline)
                   .foregroundStyle(.secondary)
               }
@@ -339,8 +339,8 @@ struct V4PaywallView: View {
   // MARK: - Legal Links
 
   private var legalLinks: some View {
-    VStack(spacing: 6) {
-      Text("Subscription renews automatically. Cancel anytime in App Store settings.")
+    VStack(spacing: 8) {
+      Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel your subscription in App Store Settings.")
         .font(.caption2)
         .foregroundStyle(.secondary)
         .multilineTextAlignment(.center)
@@ -350,7 +350,7 @@ struct V4PaywallView: View {
         }
         Text("·").foregroundStyle(.secondary)
         if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
-          Link("Terms of Use", destination: eulaURL)
+          Link("Terms of Use (EULA)", destination: eulaURL)
         }
       }
       .font(.caption2)
