@@ -51,7 +51,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "StayTrackrPremium.storekit">
+         identifier = "$(SRCROOT)/StayTrackrPremium.storekit">
       </StoreKitConfigurationFileReference>
       <AdditionalOptions>
       </AdditionalOptions>
