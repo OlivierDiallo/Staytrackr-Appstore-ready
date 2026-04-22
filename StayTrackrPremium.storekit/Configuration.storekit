@@ -23,9 +23,9 @@
 
   ],
   "settings" : {
-    "_appstoreConnectManagedByXcode" : false,
+    "_appstoreConnectManagedByXcode" : true,
     "_askToBuyEnabled" : true,
-    "_billingGracePeriodEnabled" : false,
+    "_billingGracePeriodEnabled" : true,
     "_billingIssuesEnabled" : false,
     "_billingRetryEnabled" : true,
     "_deletedOriginalApplicationUsername" : false,
@@ -37,38 +37,74 @@
     "_storefront" : "USA",
     "_storeKitErrors" : [
       {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "Load Products"
       },
       {
+        "current" : {
+          "index" : 1,
+          "type" : "purchase"
+        },
         "enabled" : false,
         "name" : "Purchase"
       },
       {
+        "current" : {
+          "index" : 0,
+          "type" : "verification"
+        },
         "enabled" : false,
         "name" : "Verification"
       },
       {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "App Store Sync"
       },
       {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "Subscription Status"
       },
       {
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "App Transaction"
       },
       {
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "Manage Subscriptions Sheet"
       },
       {
+        "current" : {
+          "index" : 0,
+          "type" : "refund request"
+        },
         "enabled" : false,
         "name" : "Refund Request Sheet"
       },
       {
+        "current" : {
+          "index" : 4,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "Offer Code Redeem Sheet"
       }
@@ -82,9 +118,24 @@
       "id" : "STAYTRACKR_PREMIUM_GROUP",
       "localizations" : [
         {
-          "description" : "Full access to all StayTrackr premium features.",
+          "description" : "Full access to all StayTrackr premium rental management features.",
           "displayName" : "StayTrackr Premium",
           "locale" : "en_US"
+        },
+        {
+          "description" : "Accès complet à toutes les fonctionnalités premium de gestion locative StayTrackr.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "fr"
+        },
+        {
+          "description" : "Plný přístup ke všem prémiovým funkcím správy pronájmů StayTrackr.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "cs"
+        },
+        {
+          "description" : "Acceso completo a todas las funciones premium de gestión de alquileres de StayTrackr.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "es_ES"
         }
       ],
       "name" : "StayTrackr Premium",
@@ -120,12 +171,28 @@
           ],
           "localizations" : [
             {
-              "description" : "Monthly subscription to StayTrackr Premium.",
+              "description" : "Unlock up to 20 properties, CSV export, revenue charts, recurring bills, custom notifications, and FX rates.",
               "displayName" : "Monthly",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Débloquez jusqu'à 20 propriétés, export CSV, graphiques de revenus, factures récurrentes, notifications personnalisées et taux de change.",
+              "displayName" : "Mensuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Odemkněte až 20 nemovitostí, export CSV, grafy příjmů, opakující se účty, vlastní upozornění a správu směnných kurzů.",
+              "displayName" : "Měsíční",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Desbloquea hasta 20 propiedades, exportación CSV, gráficos de ingresos, facturas recurrentes, notificaciones personalizadas y tipos de cambio.",
+              "displayName" : "Mensual",
+              "locale" : "es_ES"
             }
           ],
-          "productID" : "com.olivierdiallo.staytrackrv3.premium.monthly",
+          "productID" : "com.olivierdiallo.staytrackrv3.premium.monthlyy",
+          "promotionalImageID" : "012A8F92",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Premium Monthly",
           "subscriptionGroupID" : "STAYTRACKR_PREMIUM_GROUP",
@@ -165,12 +232,28 @@
           ],
           "localizations" : [
             {
-              "description" : "Annual subscription to StayTrackr Premium.",
+              "description" : "Unlock up to 20 properties, CSV export, revenue charts, recurring bills, custom notifications, and FX rates. Best value.",
               "displayName" : "Annual",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Débloquez jusqu'à 20 propriétés, export CSV, graphiques de revenus, factures récurrentes, notifications personnalisées et taux de change. Meilleur rapport qualité-prix.",
+              "displayName" : "Annuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Odemkněte až 20 nemovitostí, export CSV, grafy příjmů, opakující se účty, vlastní upozornění a správu směnných kurzů. Nejlepší hodnota.",
+              "displayName" : "Roční",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Desbloquea hasta 20 propiedades, exportación CSV, gráficos de ingresos, facturas recurrentes, notificaciones personalizadas y tipos de cambio. Mejor valor.",
+              "displayName" : "Anual",
+              "locale" : "es_ES"
             }
           ],
-          "productID" : "com.olivierdiallo.staytrackrv3.premium.annual",
+          "productID" : "com.olivierdiallo.staytrackrv3.premium.annual.v1",
+          "promotionalImageID" : "012A8F92",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Premium Annual",
           "subscriptionGroupID" : "STAYTRACKR_PREMIUM_GROUP",

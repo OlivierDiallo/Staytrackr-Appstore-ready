@@ -9,8 +9,8 @@ final class STStoreManager {
 
   // MARK: - Product IDs
 
-  static let monthlyID = "com.olivierdiallo.staytrackrv3.premium.monthly"
-  static let annualID  = "com.olivierdiallo.staytrackrv3.premium.annual"
+  static let monthlyID = "com.olivierdiallo.staytrackrv3.premium.monthlyy"
+  static let annualID  = "com.olivierdiallo.staytrackrv3.premium.annual.v1"
 
   // MARK: - State
 
@@ -51,29 +51,52 @@ final class STStoreManager {
 
   // MARK: - Load Products
 
+  /// Maximum number of automatic retries when product fetch returns empty or throws.
+  private static let maxRetries = 3
+  /// Delay in seconds between retries (doubles each attempt).
+  private static let baseRetryDelay: UInt64 = 2_000_000_000 // 2 seconds in nanoseconds
+
   @MainActor
   func loadProducts() async {
     isLoadingProducts = true
     loadFailed = false
     defer { isLoadingProducts = false }
-    do {
-      let fetched = try await Product.products(for: [Self.monthlyID, Self.annualID])
-      let order = [Self.monthlyID, Self.annualID]
-      products = fetched.sorted {
-        (order.firstIndex(of: $0.id) ?? 99) < (order.firstIndex(of: $1.id) ?? 99)
+
+    let ids: Set<String> = [Self.monthlyID, Self.annualID]
+    let order = [Self.monthlyID, Self.annualID]
+
+    for attempt in 0 ..< Self.maxRetries {
+      do {
+        let fetched = try await Product.products(for: ids)
+        if !fetched.isEmpty {
+          products = fetched.sorted {
+            (order.firstIndex(of: $0.id) ?? 99) < (order.firstIndex(of: $1.id) ?? 99)
+          }
+          loadFailed = false
+          print("[STStoreManager] Loaded \(products.count) product(s) on attempt \(attempt + 1)")
+          await checkTrialEligibility()
+          return
+        }
+        print("[STStoreManager] Attempt \(attempt + 1): products empty, retrying...")
+      } catch {
+        print("[STStoreManager] Attempt \(attempt + 1) failed: \(error)")
       }
-      loadFailed = products.isEmpty   // products empty = agreement not active / not configured
-      await checkTrialEligibility()
-    } catch {
-      print("[STStoreManager] loadProducts failed: \(error)")
-      loadFailed = true
+
+      // Exponential back-off: 2s, 4s, 8s …
+      let delay = Self.baseRetryDelay << attempt
+      try? await Task.sleep(nanoseconds: delay)
     }
+
+    // All retries exhausted.
+    print("[STStoreManager] All \(Self.maxRetries) attempts failed. Product IDs requested: \(ids)")
+    loadFailed = true
   }
 
   // MARK: - Premium Status
 
   @MainActor
   func updatePremiumStatus() async {
+    // Step 1: Check current entitlements (covers active subscriptions and free trials).
     var active = false
     for await result in Transaction.currentEntitlements {
       if case .verified(let tx) = result,
@@ -83,7 +106,44 @@ final class STStoreManager {
         break
       }
     }
+
+    // Step 2: If no active entitlement, check subscription status for
+    // billing retry / grace period — the user should keep access.
+    if !active {
+      active = await isInBillingRetryOrGracePeriod()
+    }
+
     isPremium = active
+  }
+
+  /// Returns `true` when the subscription is in billing retry or a grace period.
+  /// Apple recommends keeping the user's access during these states so they don't
+  /// lose data or functionality while Apple retries the charge.
+  @MainActor
+  private func isInBillingRetryOrGracePeriod() async -> Bool {
+    let ids = [Self.monthlyID, Self.annualID]
+    for id in ids {
+      guard let product = products.first(where: { $0.id == id }),
+            let subscription = product.subscription else { continue }
+      do {
+        let statuses = try await subscription.status
+        for status in statuses {
+          switch status.state {
+          case .inBillingRetryPeriod, .inGracePeriod:
+            // Verify the transaction is legit before granting access.
+            if case .verified = status.transaction {
+              print("[STStoreManager] \(id): granting access during \(status.state)")
+              return true
+            }
+          default:
+            continue
+          }
+        }
+      } catch {
+        print("[STStoreManager] Failed to check status for \(id): \(error)")
+      }
+    }
+    return false
   }
 
   // MARK: - Purchase
@@ -170,13 +230,14 @@ final class STStoreManager {
     }
   }
 
-  /// Percentage saved buying annual vs. 12 × monthly, formatted as "33%".
+  /// Percentage saved buying annual vs. 12 × monthly, formatted as "37%".
   var annualSavingsPercent: String? {
     guard let m = monthlyProduct, let a = annualProduct else { return nil }
-    let equivalent = m.price * 12
-    guard equivalent > 0 else { return nil }
-    let pct = (equivalent - a.price) / equivalent * 100
+    let monthlyEquivalent = NSDecimalNumber(decimal: m.price).doubleValue * 12.0
+    let annualPrice = NSDecimalNumber(decimal: a.price).doubleValue
+    guard monthlyEquivalent > 0 else { return nil }
+    let pct = ((monthlyEquivalent - annualPrice) / monthlyEquivalent) * 100.0
     guard pct > 0 else { return nil }
-    return "\(Int(truncating: pct as NSDecimalNumber))%"
+    return "\(Int(pct.rounded()))%"
   }
 }

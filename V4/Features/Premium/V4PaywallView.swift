@@ -75,7 +75,13 @@ struct V4PaywallView: View {
       .onChange(of: store.purchaseError) { _, err in
         if err != nil { showError = true }
       }
-      .onAppear { V4TelemetryManager.signal(.paywallViewed) }
+      .onAppear {
+        V4TelemetryManager.signal(.paywallViewed)
+        // Retry loading if products are empty when paywall appears
+        if store.products.isEmpty && !store.isLoadingProducts {
+          Task { await store.loadProducts() }
+        }
+      }
       .onChange(of: store.isPremium) { _, isPremium in
         if isPremium {
           V4TelemetryManager.signal(.premiumPurchased)

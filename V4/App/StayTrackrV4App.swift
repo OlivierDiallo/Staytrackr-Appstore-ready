@@ -24,6 +24,9 @@ struct StayTrackrV4App: App {
     V4AppPreferences.self
   ]
 
+  /// `true` when the container was created with CloudKit sync enabled.
+  private let isCloudSyncEnabled: Bool
+
   init() {
     let schema = Schema(Self.modelTypes)
 
@@ -46,16 +49,20 @@ struct StayTrackrV4App: App {
     )
 
     if let c = Self.makeContainer(schema: schema, config: cloudConfig) {
-      // CloudKit sync available.
       container = c
+      isCloudSyncEnabled = true
+      print("[StayTrackr] ✅ ModelContainer created WITH CloudKit sync")
     } else if let c = Self.makeContainer(schema: schema, config: localConfig) {
-      // No CloudKit — fall back to local-only.
       container = c
+      isCloudSyncEnabled = false
+      print("[StayTrackr] ⚠️ CloudKit failed — using LOCAL-ONLY store")
     } else {
       // Store is completely unreadable — wipe it and start fresh so the app never hard-crashes.
       Self.deleteStore(named: "StayTrackrV6")
       if let c = Self.makeContainer(schema: schema, config: localConfig) {
         container = c
+        isCloudSyncEnabled = false
+        print("[StayTrackr] ⚠️ Store wiped — using LOCAL-ONLY store")
       } else {
         fatalError("Failed to create SwiftData ModelContainer after store wipe.")
       }
@@ -67,7 +74,12 @@ struct StayTrackrV4App: App {
   // MARK: - Helpers
 
   private static func makeContainer(schema: Schema, config: ModelConfiguration) -> ModelContainer? {
-    try? ModelContainer(for: schema, configurations: [config])
+    do {
+      return try ModelContainer(for: schema, configurations: [config])
+    } catch {
+      print("[StayTrackr] ModelContainer failed (cloudKit=\(config.cloudKitDatabase)): \(error)")
+      return nil
+    }
   }
 
   private static func deleteStore(named name: String) {
