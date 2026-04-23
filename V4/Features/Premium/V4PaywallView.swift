@@ -373,7 +373,7 @@ struct V4PaywallView: View {
         .foregroundStyle(.secondary)
         .multilineTextAlignment(.center)
       HStack(spacing: 12) {
-        if let privacyURL = URL(string: "https://getstaytracker.com/privacy") {
+        if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
           Link("Privacy Policy", destination: privacyURL)
         }
         Text("·").foregroundStyle(.secondary)

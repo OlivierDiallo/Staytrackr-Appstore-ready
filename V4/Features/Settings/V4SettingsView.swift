@@ -157,12 +157,12 @@ struct V4SettingsView: View {
             Text(appVersion)
               .foregroundStyle(.secondary)
           }
-          if let websiteURL = URL(string: "https://getstaytracker.com") {
+          if let websiteURL = URL(string: "https://getstaytrackr.com") {
             Link(destination: websiteURL) {
               settingsRow(icon: "globe", color: .blue, label: "Website")
             }
           }
-          if let privacyURL = URL(string: "https://getstaytracker.com/privacy") {
+          if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
             Link(destination: privacyURL) {
               settingsRow(icon: "hand.raised.fill", color: .gray, label: "Privacy Policy")
             }
