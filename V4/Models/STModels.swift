@@ -177,6 +177,13 @@ final class STBooking {
   // Notes (host instructions, cleaning notes, etc.)
   var note: String?
 
+  // Flight tracking (Premium feature — polled from AviationStack)
+  var flightNumber: String?          // e.g. "BA456"
+  var flightStatus: String?          // "scheduled"|"active"|"landed"|"cancelled"|"incident"|"diverted"
+  var flightDelayMinutes: Int?       // minutes of delay (positive = late)
+  var estimatedArrival: Date?        // updated when polled
+  var flightLastChecked: Date?       // throttle: don't poll more than once per 30 min
+
   init(
     id: UUID,
     property: STProperty,

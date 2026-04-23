@@ -17,6 +17,7 @@ struct V4BookingEditorSheet: View {
 
   @Environment(\.dismiss) private var dismiss
   @Environment(V4AppSettings.self) private var settings
+  @Environment(STStoreManager.self) private var store
   @Environment(\.modelContext) private var context
 
   @Query(sort: \STProperty.name) private var properties: [STProperty]
@@ -35,6 +36,12 @@ struct V4BookingEditorSheet: View {
   @State private var platformFeePct: Double = 0.14
   @State private var isPaid: Bool = false
   @State private var noteText: String = ""
+
+  // Flight tracking
+  @State private var flightNumberText: String = ""
+  @State private var isCheckingFlight: Bool = false
+  @State private var flightInfo: V4FlightInfo? = nil
+  @State private var flightErrorMessage: String? = nil
 
   @State private var showValidationAlert: Bool = false
   @State private var validationMessage: String = ""
@@ -202,6 +209,55 @@ struct V4BookingEditorSheet: View {
           .lineLimit(3...6)
         }
 
+        Section {
+          HStack(spacing: 10) {
+            Image(systemName: "airplane")
+              .foregroundStyle(.secondary)
+            TextField("BA456", text: $flightNumberText)
+              .textInputAutocapitalization(.characters)
+              .autocorrectionDisabled()
+              .onChange(of: flightNumberText) { _, _ in
+                flightInfo = nil
+                flightErrorMessage = nil
+              }
+          }
+
+          if !flightNumberText.trimmingCharacters(in: .whitespaces).isEmpty {
+            if isCheckingFlight {
+              HStack(spacing: 8) {
+                ProgressView().scaleEffect(0.8)
+                Text("Checking flight status...")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            } else if let info = flightInfo {
+              flightStatusInline(info)
+            } else if let err = flightErrorMessage {
+              Label(err, systemImage: "exclamationmark.triangle")
+                .font(.caption)
+                .foregroundStyle(.orange)
+            }
+
+            Button {
+              Task { await checkFlightStatus() }
+            } label: {
+              Label("Check Flight Status", systemImage: "airplane.circle")
+            }
+            .disabled(isCheckingFlight || !store.isPremium)
+
+            if !store.isPremium {
+              Text("Flight tracking is a Premium feature.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+          }
+        } header: {
+          Text("Guest Flight (optional)")
+        } footer: {
+          Text("Enter an IATA flight number to track delays and cancellations.")
+            .font(.caption)
+        }
+
         if case .edit(let booking) = mode {
           Section {
             Button(role: .destructive) {
@@ -251,6 +307,9 @@ struct V4BookingEditorSheet: View {
       platformFeePct = 0.14
       isPaid = false
       noteText = ""
+      flightNumberText = ""
+      flightInfo = nil
+      flightErrorMessage = nil
       if let initial = initialCheckIn {
         checkIn  = Calendar.current.startOfDay(for: initial)
         checkOut = Calendar.current.date(byAdding: .day, value: 1, to: checkIn) ?? checkIn
@@ -265,6 +324,7 @@ struct V4BookingEditorSheet: View {
       platformFeePct = b.platformFeePct
       isPaid = b.isPaid
       noteText = b.note ?? ""
+      flightNumberText = b.flightNumber ?? ""
     }
 
     if checkOut <= checkIn {
@@ -297,6 +357,10 @@ struct V4BookingEditorSheet: View {
       ? nil
       : noteText.trimmingCharacters(in: .whitespacesAndNewlines)
 
+    let cleanFlight: String? = flightNumberText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      ? nil
+      : flightNumberText.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
     switch mode {
     case .add:
       let new = STBooking(
@@ -311,6 +375,7 @@ struct V4BookingEditorSheet: View {
         note: cleanNote
       )
       context.insert(new)
+      new.flightNumber = cleanFlight
 
     case .edit(let b):
       b.property = p
@@ -321,6 +386,7 @@ struct V4BookingEditorSheet: View {
       b.platformFeePct = platformFeePct
       b.isPaid = isPaid
       b.note = cleanNote
+      b.flightNumber = cleanFlight
     }
 
     do {
@@ -331,6 +397,57 @@ struct V4BookingEditorSheet: View {
     } catch {
       fail("Save failed: \(error.localizedDescription)")
     }
+  }
+
+  // MARK: - Flight
+
+  private func checkFlightStatus() async {
+    let number = flightNumberText.trimmingCharacters(in: .whitespaces)
+    guard !number.isEmpty else { return }
+    isCheckingFlight = true
+    flightErrorMessage = nil
+    flightInfo = nil
+    do {
+      let info = try await V4FlightManager.checkFlight(number)
+      flightInfo = info
+    } catch {
+      flightErrorMessage = error.localizedDescription
+    }
+    isCheckingFlight = false
+  }
+
+  @ViewBuilder
+  private func flightStatusInline(_ info: V4FlightInfo) -> some View {
+    HStack(spacing: 8) {
+      Image(systemName: info.isCancelled ? "xmark.circle.fill" :
+                        info.isLanded    ? "checkmark.circle.fill" :
+                        info.isDelayed   ? "exclamationmark.triangle.fill" :
+                                           "airplane.circle.fill")
+        .foregroundStyle(info.isCancelled ? Color.red :
+                         info.isLanded    ? Color.green :
+                         info.isDelayed   ? Color.orange :
+                                            Color.accentColor)
+      VStack(alignment: .leading, spacing: 2) {
+        HStack(spacing: 6) {
+          Text(info.flightNumber).font(.caption.weight(.semibold))
+          Text(info.statusLabel).font(.caption).foregroundStyle(.secondary)
+          if info.isDelayed {
+            Text(info.delayLabel)
+              .font(.caption2.weight(.semibold))
+              .foregroundStyle(.orange)
+              .padding(.horizontal, 5)
+              .padding(.vertical, 2)
+              .background(Color.orange.opacity(0.12), in: Capsule())
+          }
+        }
+        if !info.origin.isEmpty || !info.destination.isEmpty {
+          Text("\(info.origin) -> \(info.destination)")
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+        }
+      }
+    }
+    .padding(.vertical, 2)
   }
 
   private func fail(_ msg: String) {

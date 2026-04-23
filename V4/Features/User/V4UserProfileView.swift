@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import AuthenticationServices
 
 // MARK: - User Profile Tab
@@ -6,10 +7,12 @@ import AuthenticationServices
 struct V4UserProfileView: View {
   @Environment(V4AppSettings.self) private var settings
   @Environment(STStoreManager.self) private var store
+  @Environment(\.modelContext) private var context
 
   @State private var showPaywall = false
   @State private var showSignInError = false
   @State private var signInErrorMessage = ""
+  @State private var showDeleteConfirm = false
 
   var body: some View {
     NavigationStack {
@@ -36,6 +39,29 @@ struct V4UserProfileView: View {
     } message: {
       Text(signInErrorMessage)
     }
+    .confirmationDialog("Delete Account & Data", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+      Button("Delete All Data", role: .destructive) {
+        deleteAccount()
+      }
+      Button("Cancel", role: .cancel) {}
+    } message: {
+      Text("This will permanently delete all your properties, bookings, expenses and guests. This action cannot be undone.")
+    }
+  }
+
+  // MARK: - Account Deletion
+
+  private func deleteAccount() {
+    try? context.delete(model: STProperty.self)
+    try? context.delete(model: STBooking.self)
+    try? context.delete(model: STGuest.self)
+    try? context.delete(model: STExpense.self)
+    try? context.delete(model: STRecurringBill.self)
+    try? context.delete(model: STFXRate.self)
+    try? context.delete(model: V4AppPreferences.self)
+    try? context.save()
+    settings.appleUserID = nil
+    settings.hasSeenOnboarding = false
   }
 
   // MARK: - Profile Header
@@ -124,6 +150,19 @@ struct V4UserProfileView: View {
           HStack(spacing: 12) {
             iconBadge(systemName: "rectangle.portrait.and.arrow.right", fill: Color.red.opacity(0.1), tint: .red)
             Text("Sign Out")
+              .font(.subheadline)
+              .foregroundStyle(.red)
+          }
+        }
+        .buttonStyle(.plain)
+
+        // Delete account
+        Button(role: .destructive) {
+          showDeleteConfirm = true
+        } label: {
+          HStack(spacing: 12) {
+            iconBadge(systemName: "trash.fill", fill: Color.red.opacity(0.1), tint: .red)
+            Text("Delete Account & Data")
               .font(.subheadline)
               .foregroundStyle(.red)
           }

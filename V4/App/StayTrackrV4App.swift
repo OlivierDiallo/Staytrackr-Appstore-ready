@@ -24,6 +24,9 @@ struct StayTrackrV4App: App {
     V4AppPreferences.self
   ]
 
+  /// `true` when the container was created with CloudKit sync enabled.
+  private let isCloudSyncEnabled: Bool
+
   init() {
     let schema = Schema(Self.modelTypes)
 
@@ -36,24 +39,30 @@ struct StayTrackrV4App: App {
       cloudKitDatabase: .automatic
     )
 
-    // 2. Local-only fallback (same store name so the file is shared).
+    // 2. Local-only fallback — explicitly opt out of CloudKit so SwiftData skips
+    //    CloudKit schema validation even when iCloud entitlements are present.
     let localConfig = ModelConfiguration(
       "StayTrackrV6",
       schema: schema,
-      isStoredInMemoryOnly: false
+      isStoredInMemoryOnly: false,
+      cloudKitDatabase: .none
     )
 
     if let c = Self.makeContainer(schema: schema, config: cloudConfig) {
-      // CloudKit sync available.
       container = c
+      isCloudSyncEnabled = true
+      print("[StayTrackr] ✅ ModelContainer created WITH CloudKit sync")
     } else if let c = Self.makeContainer(schema: schema, config: localConfig) {
-      // No CloudKit — fall back to local-only.
       container = c
+      isCloudSyncEnabled = false
+      print("[StayTrackr] ⚠️ CloudKit failed — using LOCAL-ONLY store")
     } else {
       // Store is completely unreadable — wipe it and start fresh so the app never hard-crashes.
       Self.deleteStore(named: "StayTrackrV6")
       if let c = Self.makeContainer(schema: schema, config: localConfig) {
         container = c
+        isCloudSyncEnabled = false
+        print("[StayTrackr] ⚠️ Store wiped — using LOCAL-ONLY store")
       } else {
         fatalError("Failed to create SwiftData ModelContainer after store wipe.")
       }
@@ -65,7 +74,12 @@ struct StayTrackrV4App: App {
   // MARK: - Helpers
 
   private static func makeContainer(schema: Schema, config: ModelConfiguration) -> ModelContainer? {
-    try? ModelContainer(for: schema, configurations: [config])
+    do {
+      return try ModelContainer(for: schema, configurations: [config])
+    } catch {
+      print("[StayTrackr] ModelContainer failed (cloudKit=\(config.cloudKitDatabase)): \(error)")
+      return nil
+    }
   }
 
   private static func deleteStore(named name: String) {
@@ -82,7 +96,7 @@ struct StayTrackrV4App: App {
 
   var body: some Scene {
     WindowGroup {
-      V4RootView()
+        V4RootView()
         .environment(settings)
         .environment(appState)
         .environment(notifManager)
@@ -95,6 +109,11 @@ struct StayTrackrV4App: App {
           runMigrations()
           await notifManager.requestAuthorization()
         }
+        .onReceive(NotificationCenter.default.publisher(
+          for: UIApplication.willEnterForegroundNotification
+        )) { _ in
+          Task { await pollFlightsIfNeeded() }
+        }
     }
   }
 
@@ -104,6 +123,18 @@ struct StayTrackrV4App: App {
   private func runMigrations() {
     let context = ModelContext(container)
     V4Migrations.backfillExpenseCurrency(in: context)
+  }
+
+  // MARK: - Flight Polling
+
+  @MainActor
+  private func pollFlightsIfNeeded() async {
+    let ctx = ModelContext(container)
+    let desc = FetchDescriptor<STBooking>()
+    guard let bookings = try? ctx.fetch(desc) else { return }
+    for booking in bookings where V4FlightManager.shouldPoll(booking) {
+      await V4FlightManager.updateBooking(booking, context: ctx)
+    }
   }
 
   // MARK: - Seeder

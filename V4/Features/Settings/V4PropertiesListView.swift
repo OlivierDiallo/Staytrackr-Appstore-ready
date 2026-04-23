@@ -18,6 +18,7 @@ struct V4PropertiesListView: View {
 
   @State private var showingAdd = false
   @State private var showPaywall = false
+  @State private var showProLimit = false
   @State private var propertyToDelete: STProperty?
   @State private var showDeleteConfirmation = false
 
@@ -85,6 +86,8 @@ struct V4PropertiesListView: View {
         Button {
           if properties.count >= 1 && !store.isPremium {
             showPaywall = true
+          } else if properties.count >= 20 && store.isPremium {
+            showProLimit = true
           } else {
             showingAdd = true
           }
@@ -97,6 +100,11 @@ struct V4PropertiesListView: View {
     }
     .sheet(isPresented: $showPaywall) {
       V4PaywallView().environment(store)
+    }
+    .alert("Property Limit Reached", isPresented: $showProLimit) {
+      Button("OK", role: .cancel) { }
+    } message: {
+      Text("Premium supports up to 20 properties. A Pro plan with unlimited properties is coming soon.")
     }
     .alert("Delete Property?", isPresented: $showDeleteConfirmation, presenting: propertyToDelete) { p in
       Button("Delete", role: .destructive) { confirmDelete(p) }

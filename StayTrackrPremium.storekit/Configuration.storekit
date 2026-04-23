@@ -1,0 +1,272 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : "https://getstaytrackr.com/privacy"
+      }
+    ]
+  },
+  "consumableProducts" : [
+
+  ],
+  "identifier" : "B9E3F1A2-4C5D-6E7F-8A9B-0C1D2E3F4A5B",
+  "nonConsumableProducts" : [
+
+  ],
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_appstoreConnectManagedByXcode" : true,
+    "_askToBuyEnabled" : true,
+    "_billingGracePeriodEnabled" : true,
+    "_billingIssuesEnabled" : false,
+    "_billingRetryEnabled" : true,
+    "_deletedOriginalApplicationUsername" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_localReceiptValidationEnabled" : false,
+    "_renewalBillingIssuesEnabled" : true,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : {
+          "index" : 1,
+          "type" : "purchase"
+        },
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : {
+          "index" : 0,
+          "type" : "verification"
+        },
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : {
+          "index" : 0,
+          "type" : "refund request"
+        },
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : {
+          "index" : 4,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ],
+    "_timeRate" : 0,
+    "_timeSyncEnabled" : false,
+    "_transactionExpirationEnabled" : true
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "STAYTRACKR_PREMIUM_GROUP",
+      "localizations" : [
+        {
+          "description" : "Full access to all StayTrackr premium rental management features.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Accès complet à toutes les fonctionnalités premium de gestion locative StayTrackr.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "fr"
+        },
+        {
+          "description" : "Plný přístup ke všem prémiovým funkcím správy pronájmů StayTrackr.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "cs"
+        },
+        {
+          "description" : "Acceso completo a todas las funciones premium de gestión de alquileres de StayTrackr.",
+          "displayName" : "StayTrackr Premium",
+          "locale" : "es_ES"
+        }
+      ],
+      "name" : "StayTrackr Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "7.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "MONTHLY_INTERNAL_001",
+          "introductoryOffer" : {
+            "billingPlanType" : "BILLED_UPFRONT",
+            "displayPrice" : "0.00",
+            "internalID" : "FREE_TRIAL_7_DAYS_MONTHLY",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "introductoryOffers" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "displayPrice" : "0.00",
+              "internalID" : "FREE_TRIAL_7_DAYS_MONTHLY",
+              "numberOfPeriods" : 1,
+              "paymentMode" : "free",
+              "subscriptionPeriod" : "P1W"
+            }
+          ],
+          "localizations" : [
+            {
+              "description" : "Unlock up to 20 properties, CSV export, revenue charts, recurring bills, custom notifications, and FX rates.",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Débloquez jusqu'à 20 propriétés, export CSV, graphiques de revenus, factures récurrentes, notifications personnalisées et taux de change.",
+              "displayName" : "Mensuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Odemkněte až 20 nemovitostí, export CSV, grafy příjmů, opakující se účty, vlastní upozornění a správu směnných kurzů.",
+              "displayName" : "Měsíční",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Desbloquea hasta 20 propiedades, exportación CSV, gráficos de ingresos, facturas recurrentes, notificaciones personalizadas y tipos de cambio.",
+              "displayName" : "Mensual",
+              "locale" : "es_ES"
+            }
+          ],
+          "productID" : "com.olivierdiallo.staytrackrv3.premium.monthlyy",
+          "promotionalImageID" : "012A8F92",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "STAYTRACKR_PREMIUM_GROUP",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "59.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "ANNUAL_INTERNAL_001",
+          "introductoryOffer" : {
+            "billingPlanType" : "BILLED_UPFRONT",
+            "displayPrice" : "0.00",
+            "internalID" : "FREE_TRIAL_7_DAYS_ANNUAL",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "introductoryOffers" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "displayPrice" : "0.00",
+              "internalID" : "FREE_TRIAL_7_DAYS_ANNUAL",
+              "numberOfPeriods" : 1,
+              "paymentMode" : "free",
+              "subscriptionPeriod" : "P1W"
+            }
+          ],
+          "localizations" : [
+            {
+              "description" : "Unlock up to 20 properties, CSV export, revenue charts, recurring bills, custom notifications, and FX rates. Best value.",
+              "displayName" : "Annual",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Débloquez jusqu'à 20 propriétés, export CSV, graphiques de revenus, factures récurrentes, notifications personnalisées et taux de change. Meilleur rapport qualité-prix.",
+              "displayName" : "Annuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Odemkněte až 20 nemovitostí, export CSV, grafy příjmů, opakující se účty, vlastní upozornění a správu směnných kurzů. Nejlepší hodnota.",
+              "displayName" : "Roční",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Desbloquea hasta 20 propiedades, exportación CSV, gráficos de ingresos, facturas recurrentes, notificaciones personalizadas y tipos de cambio. Mejor valor.",
+              "displayName" : "Anual",
+              "locale" : "es_ES"
+            }
+          ],
+          "productID" : "com.olivierdiallo.staytrackrv3.premium.annual.v1",
+          "promotionalImageID" : "012A8F92",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Annual",
+          "subscriptionGroupID" : "STAYTRACKR_PREMIUM_GROUP",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}

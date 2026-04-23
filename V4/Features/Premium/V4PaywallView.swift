@@ -25,7 +25,7 @@ struct V4PaywallView: View {
     .init(icon: "house.fill",                label: "1 property",                        isPremium: false),
     .init(icon: "calendar",                  label: "Booking calendar",                  isPremium: false),
     .init(icon: "creditcard",                label: "Expense tracking & guests",          isPremium: false),
-    .init(icon: "house.fill",                label: "Unlimited properties",              isPremium: true),
+    .init(icon: "house.fill",                label: "Up to 20 properties",              isPremium: true),
     .init(icon: "arrow.down.doc.fill",       label: "CSV export",                        isPremium: true),
     .init(icon: "chart.bar.fill",            label: "Revenue charts",                    isPremium: true),
     .init(icon: "icloud.fill",               label: "iCloud sync",                       isPremium: true),
@@ -48,6 +48,7 @@ struct V4PaywallView: View {
           purchaseButton
           restoreButton
           dismissLink
+          legalLinks
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -74,7 +75,13 @@ struct V4PaywallView: View {
       .onChange(of: store.purchaseError) { _, err in
         if err != nil { showError = true }
       }
-      .onAppear { V4TelemetryManager.signal(.paywallViewed) }
+      .onAppear {
+        V4TelemetryManager.signal(.paywallViewed)
+        // Retry loading if products are empty when paywall appears
+        if store.products.isEmpty && !store.isLoadingProducts {
+          Task { await store.loadProducts() }
+        }
+      }
       .onChange(of: store.isPremium) { _, isPremium in
         if isPremium {
           V4TelemetryManager.signal(.premiumPurchased)
@@ -193,19 +200,31 @@ struct V4PaywallView: View {
       ZStack(alignment: .topTrailing) {
         HStack {
           VStack(alignment: .leading, spacing: 4) {
-            Text(isAnnual ? "Annual" : "Monthly")
+            Text(isAnnual ? "Annual — 1-year subscription" : "Monthly — 1-month subscription")
               .font(.headline)
             if let trial = trialText {
               Text(trial)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(V4Theme.Brand.primary)
-              Text("then " + product.displayPrice + (isAnnual ? " / year" : " / month"))
-                .font(.caption)
-                .foregroundStyle(.secondary)
+              if isAnnual {
+                Text("then \(product.displayPrice) billed yearly")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              } else {
+                Text("then \(product.displayPrice) billed monthly")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
             } else {
-              Text(product.displayPrice + (isAnnual ? " / year" : " / month"))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+              if isAnnual {
+                Text("\(product.displayPrice) billed yearly")
+                  .font(.subheadline)
+                  .foregroundStyle(.secondary)
+              } else {
+                Text("\(product.displayPrice) billed monthly")
+                  .font(.subheadline)
+                  .foregroundStyle(.secondary)
+              }
             }
             if isAnnual, let savings {
               Text("Save \(savings) vs monthly")
@@ -258,37 +277,65 @@ struct V4PaywallView: View {
       return hasTrial ? "Start Free Trial" : "Subscribe Now"
     }()
     let isAnnual = selectedProduct?.id == STStoreManager.annualID
-    let period   = isAnnual ? "year" : "month"
 
     return VStack(spacing: 10) {
-      Button {
-        guard let product = selectedProduct else { return }
-        Task { await store.purchase(product) }
-      } label: {
-        ZStack {
-          if store.isPurchasing {
-            ProgressView().tint(.white)
-          } else {
-            Text(buttonLabel)
+      // ── Load failed state ────────────────────────────────────────────
+      if store.loadFailed {
+        VStack(spacing: 8) {
+          Text("Could not load prices. Check your connection and try again.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+          Button {
+            Task { await store.loadProducts() }
+          } label: {
+            Text("Retry")
               .font(.headline)
               .foregroundStyle(.white)
+              .frame(maxWidth: .infinity)
+              .frame(height: 54)
+              .background(V4Theme.Brand.primary,
+                          in: RoundedRectangle(cornerRadius: 16, style: .continuous))
           }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 54)
-        .background(
-          selectedProduct != nil ? V4Theme.Brand.primary : Color.secondary,
-          in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-      }
-      .disabled(selectedProduct == nil || store.isPurchasing)
+      } else {
+        // ── Normal purchase button ───────────────────────────────────────
+        Button {
+          guard let product = selectedProduct else { return }
+          Task { await store.purchase(product) }
+        } label: {
+          ZStack {
+            if store.isLoadingProducts || store.isPurchasing {
+              ProgressView().tint(.white)
+            } else {
+              Text(buttonLabel)
+                .font(.headline)
+                .foregroundStyle(.white)
+            }
+          }
+          .frame(maxWidth: .infinity)
+          .frame(height: 54)
+          .background(
+            selectedProduct != nil ? V4Theme.Brand.primary : Color.secondary,
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+          )
+        }
+        .disabled(selectedProduct == nil || store.isPurchasing || store.isLoadingProducts)
 
-      // Trial disclaimer
-      if hasTrial, let product = selectedProduct {
-        Text("7 days free, then \(product.displayPrice) / \(period). Cancel anytime.")
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          .multilineTextAlignment(.center)
+        // Trial disclaimer
+        if hasTrial, let product = selectedProduct {
+          if isAnnual {
+            Text("7 days free, then \(product.displayPrice) / year. Cancel anytime.")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+              .multilineTextAlignment(.center)
+          } else {
+            Text("7 days free, then \(product.displayPrice) / month. Cancel anytime.")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+              .multilineTextAlignment(.center)
+          }
+        }
       }
     }
   }
@@ -314,6 +361,28 @@ struct V4PaywallView: View {
       Text("Continue with Free")
         .font(.footnote)
         .foregroundStyle(.secondary)
+    }
+  }
+
+  // MARK: - Legal Links
+
+  private var legalLinks: some View {
+    VStack(spacing: 8) {
+      Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel your subscription in App Store Settings.")
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+        .multilineTextAlignment(.center)
+      HStack(spacing: 12) {
+        if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
+          Link("Privacy Policy", destination: privacyURL)
+        }
+        Text("·").foregroundStyle(.secondary)
+        if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+          Link("Terms of Use (EULA)", destination: eulaURL)
+        }
+      }
+      .font(.caption2)
+      .foregroundStyle(V4Theme.Brand.primary)
     }
   }
 }

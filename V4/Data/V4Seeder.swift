@@ -2,170 +2,98 @@
 //  V4Seeder.swift
 //  StayTrackr V3 (V4)
 //
-//  Seeds demo data once for development/TestFlight.
+//  Seeds minimal demo data for development / TestFlight / App Store review.
+//  Guarded at the call site with #if DEBUG.
 //
 
 import Foundation
 import SwiftData
 
 enum V4Seeder {
+
   @MainActor
   static func seed(into context: ModelContext) {
 
-    // MARK: - Properties (with per-property currency)
+    let cal = Calendar.current
+    let now = Date()
+
+    let m0 = cal.date(from: cal.dateComponents([.year, .month], from: now))!   // this month
+    let m1 = cal.date(byAdding: .month, value: -1, to: m0)!                    // last month
+    let mN = cal.date(byAdding: .month, value:  1, to: m0)!                    // next month
+
+    func d(_ base: Date, _ days: Int) -> Date {
+      cal.date(byAdding: .day, value: days, to: base)!
+    }
+
+    // MARK: - Property (1)
 
     let p1 = STProperty(
       id: UUID(),
-      name: "Costa Adeje",
-      purchasePrice: 240_000,
-      mortgageAPR: 0.035,
+      name: "Casa Azul",
+      purchasePrice: 285_000,
+      mortgageAPR: 0.034,
       mortgageYears: 20,
-      commissionPct: 0.10,
+      commissionPct: 0.14,
       emoji: "🏖️",
-      colorHex: "#34C759",
+      colorHex: "#1FB86E",
       isArchived: false,
       trackMortgage: true,
       currencyCode: "EUR"
     )
 
-    let p2 = STProperty(
-      id: UUID(),
-      name: "Prague Old Town",
-      purchasePrice: 310_000,
-      mortgageAPR: 0.039,
-      mortgageYears: 25,
-      commissionPct: 0.12,
-      emoji: "🏙️",
-      colorHex: "#007AFF",
-      isArchived: false,
-      trackMortgage: true,
-      currencyCode: "CZK"
-    )
-
     context.insert(p1)
-    context.insert(p2)
 
-    // MARK: - Guests
+    // MARK: - Guests (2)
 
-    let g1 = STGuest(id: UUID(), name: "Jason Smith", email: "jason@example.com", phone: "+44 123 456 789")
-    let g2 = STGuest(id: UUID(), name: "Maria Gomez", email: "maria@example.com", phone: "+34 987 654 321")
+    let g1 = STGuest(id: UUID(), name: "Sophie Laurent", email: "sophie@example.com", phone: "+33 6 12 34 56 78")
+    let g2 = STGuest(id: UUID(), name: "James Wilson",   email: "james@example.com",  phone: "+44 7700 900 123")
 
     context.insert(g1)
     context.insert(g2)
 
-    // MARK: - Bookings
+    // MARK: - Bookings (4)
+    // 1 completed last month, 1 current month paid, 1 current month upcoming, 1 next month
 
-    let cal = Calendar.current
-    let now = Date()
+    let bookings: [STBooking] = [
+      STBooking(id: UUID(), property: p1, guest: g1,
+                checkIn: d(m1, 10), checkOut: d(m1, 16),
+                nightlyRate: 145, platformFeePct: 0.14, isPaid: true,
+                note: "Late arrival, key in lockbox"),
 
-    let b1 = STBooking(
-      id: UUID(),
-      property: p1,
-      guest: g1,
-      checkIn: cal.date(byAdding: .day, value: 2, to: now)!,
-      checkOut: cal.date(byAdding: .day, value: 6, to: now)!,
-      nightlyRate: 120,            // EUR
-      platformFeePct: 0.14,
-      isPaid: true
-    )
+      STBooking(id: UUID(), property: p1, guest: g2,
+                checkIn: d(m0, 3),  checkOut: d(m0, 8),
+                nightlyRate: 155, platformFeePct: 0.14, isPaid: true),
 
-    let b2 = STBooking(
-      id: UUID(),
-      property: p1,
-      guest: g2,
-      checkIn: cal.date(byAdding: .day, value: 6, to: now)!,
-      checkOut: cal.date(byAdding: .day, value: 9, to: now)!,
-      nightlyRate: 140,            // EUR
-      platformFeePct: 0.14,
-      isPaid: false
-    )
+      STBooking(id: UUID(), property: p1, guest: g1,
+                checkIn: d(m0, 18), checkOut: d(m0, 23),
+                nightlyRate: 160, platformFeePct: 0.14, isPaid: false,
+                note: "Arrives 3pm, early check-in requested"),
 
-    let b3 = STBooking(
-      id: UUID(),
-      property: p2,
-      guest: g2,
-      checkIn: cal.date(byAdding: .day, value: 12, to: now)!,
-      checkOut: cal.date(byAdding: .day, value: 15, to: now)!,
-      nightlyRate: 2_800,          // CZK (example)
-      platformFeePct: 0.12,
-      isPaid: false
-    )
+      STBooking(id: UUID(), property: p1, guest: g2,
+                checkIn: d(mN, 5),  checkOut: d(mN, 11),
+                nightlyRate: 170, platformFeePct: 0.14, isPaid: false),
+    ]
 
-    context.insert(b1)
-    context.insert(b2)
-    context.insert(b3)
+    bookings.forEach { context.insert($0) }
 
-    // MARK: - Expenses
-    // NOTE: currencyCode auto-defaults to property.currencyCode (see STExpense init).
+    // MARK: - Expenses (4)
 
-    let e1 = STExpense(
-      id: UUID(),
-      property: p1,
-      date: now,
-      amount: 60,                  // EUR
-      category: .cleaning,
-      note: "Turnover"
-    )
+    let expenses: [STExpense] = [
+      STExpense(id: UUID(), property: p1, date: d(m1, 12), amount: 65,  category: .cleaning,  note: "Post-checkout turnover"),
+      STExpense(id: UUID(), property: p1, date: d(m1, 10), amount: 120, category: .utilities, note: "Electricity & water"),
+      STExpense(id: UUID(), property: p1, date: d(m0, 4),  amount: 65,  category: .cleaning,  note: "Turnover clean"),
+      STExpense(id: UUID(), property: p1, date: d(m0, 8),  amount: 240, category: .repairs,   note: "Pool pump service"),
+    ]
 
-    let e2 = STExpense(
-      id: UUID(),
-      property: p1,
-      date: now,
-      amount: 120,                 // EUR
-      category: .utilities,
-      note: "Electricity"
-    )
+    expenses.forEach { context.insert($0) }
 
-    let e3 = STExpense(
-      id: UUID(),
-      property: p2,
-      date: now,
-      amount: 1_900,               // CZK (example)
-      category: .repairs,
-      note: "Door handle"
-    )
+    // MARK: - Recurring Bills (2)
 
-    context.insert(e1)
-    context.insert(e2)
-    context.insert(e3)
+    let bills: [STRecurringBill] = [
+      STRecurringBill(id: UUID(), property: p1, name: "Electricity",      amount: 125, category: .utilities, dayOfMonth: 1,  note: nil,             isActive: true),
+      STRecurringBill(id: UUID(), property: p1, name: "Cleaning Service", amount: 65,  category: .cleaning,  dayOfMonth: 1,  note: "After each stay", isActive: true),
+    ]
 
-    // MARK: - Recurring bills
-
-    let r1 = STRecurringBill(
-      id: UUID(),
-      property: p1,
-      name: "Electricity",
-      amount: 120,                 // EUR
-      category: .utilities,
-      dayOfMonth: 10,
-      note: nil,
-      isActive: true
-    )
-
-    let r2 = STRecurringBill(
-      id: UUID(),
-      property: p1,
-      name: "Water",
-      amount: 35,                  // EUR
-      category: .utilities,
-      dayOfMonth: 15,
-      note: nil,
-      isActive: true
-    )
-
-    let r3 = STRecurringBill(
-      id: UUID(),
-      property: p2,
-      name: "Internet",
-      amount: 650,                 // CZK (example)
-      category: .utilities,
-      dayOfMonth: 12,
-      note: "Fiber",
-      isActive: true
-    )
-
-    context.insert(r1)
-    context.insert(r2)
-    context.insert(r3)
+    bills.forEach { context.insert($0) }
   }
 }

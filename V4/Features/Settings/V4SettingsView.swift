@@ -22,6 +22,17 @@ struct V4SettingsView: View {
     NavigationStack {
       List {
 
+        // MARK: — Profile
+        Section {
+          NavigationLink {
+            V4UserProfileView()
+          } label: {
+            settingsRow(icon: "person.crop.circle.fill", color: .blue, label: "Profile")
+          }
+        } header: {
+          sectionHeader("Account")
+        }
+
         // MARK: — Account / Premium
         premiumSection
 
@@ -146,7 +157,12 @@ struct V4SettingsView: View {
             Text(appVersion)
               .foregroundStyle(.secondary)
           }
-          if let privacyURL = URL(string: "https://olivierdiallo.com/staytrackr/privacy") {
+          if let websiteURL = URL(string: "https://getstaytrackr.com") {
+            Link(destination: websiteURL) {
+              settingsRow(icon: "globe", color: .blue, label: "Website")
+            }
+          }
+          if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
             Link(destination: privacyURL) {
               settingsRow(icon: "hand.raised.fill", color: .gray, label: "Privacy Policy")
             }
