@@ -298,7 +298,8 @@ struct V4ImportView: View {
                 Label("Connect Apple Calendar", systemImage: "calendar.badge.plus")
             }
 
-        case .restricted, .denied:
+        case .restricted, .denied, .writeOnly:
+            // .writeOnly means we can create events but not read them — not useful for import
             HStack(spacing: 10) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(.orange)
@@ -312,7 +313,7 @@ struct V4ImportView: View {
             }
             .padding(.vertical, 4)
 
-        case .fullAccess, .authorized:
+        case .fullAccess:
             if availableCalendars.isEmpty {
                 HStack {
                     ProgressView()
@@ -398,7 +399,7 @@ struct V4ImportView: View {
     }
 
     private func loadCalendars() {
-        guard let store = eventStore ?? (calAuthStatus == .fullAccess || calAuthStatus == .authorized ? EKEventStore() : nil) else { return }
+        guard let store = eventStore ?? (calAuthStatus == .fullAccess ? EKEventStore() : nil) else { return }
         if eventStore == nil { eventStore = store }
         // Show all event calendars; user can choose which to import from
         let cals = store.calendars(for: .event)
