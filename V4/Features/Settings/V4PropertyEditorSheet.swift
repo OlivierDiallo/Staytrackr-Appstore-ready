@@ -16,6 +16,7 @@ struct V4PropertyEditorSheet: View {
 
   @Environment(\.dismiss) private var dismiss
   @Environment(\.modelContext) private var context
+  @Query(sort: \STProperty.name) private var allProperties: [STProperty]
 
   // Basic
   @State private var name: String = ""
@@ -38,6 +39,13 @@ struct V4PropertyEditorSheet: View {
   // Photo
   @State private var photoData: Data? = nil
   @State private var photoItem: PhotosPickerItem? = nil
+
+  private var usedColors: Set<String> {
+    let editingID = propertyToEdit?.id
+    return Set(allProperties.compactMap { p in
+      p.id == editingID ? nil : p.colorHex
+    })
+  }
 
   private let currencyOptions = ["EUR", "CZK", "USD", "GBP", "CHF", "PLN", "SEK", "NOK", "DKK"]
   private let emojiOptions = ["🏖️","🏙️","🏠","🏡","🗝️","🌴","⛰️","🏢"]
@@ -135,10 +143,13 @@ struct V4PropertyEditorSheet: View {
               spacing: 8
             ) {
               ForEach(colorOptions, id: \.self) { hex in
-                Button { colorHex = hex } label: {
+                let isUsed = usedColors.contains(hex)
+                Button {
+                  if !isUsed { colorHex = hex }
+                } label: {
                   ZStack {
                     Circle()
-                      .fill(V4Color.hex(hex))
+                      .fill(V4Color.hex(hex).opacity(isUsed ? 0.3 : 1.0))
                       .frame(width: 34, height: 34)
                     if colorHex == hex {
                       Circle()
@@ -147,10 +158,15 @@ struct V4PropertyEditorSheet: View {
                       Image(systemName: "checkmark")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundStyle(.white)
+                    } else if isUsed {
+                      Image(systemName: "xmark")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.8))
                     }
                   }
                 }
                 .buttonStyle(.plain)
+                .disabled(isUsed)
               }
             }
           }
@@ -221,7 +237,7 @@ struct V4PropertyEditorSheet: View {
       // Add defaults
       name = ""
       emoji = "🏠"
-      colorHex = "#007AFF"
+      colorHex = colorOptions.first(where: { !usedColors.contains($0) }) ?? "#007AFF"
       currencyCode = "EUR"
       isArchived = false
       commissionPct = 0.10

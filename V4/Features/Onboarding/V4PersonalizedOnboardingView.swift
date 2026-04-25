@@ -181,7 +181,11 @@ struct V4PersonalizedOnboardingView: View {
       if let credential = auth.credential as? ASAuthorizationAppleIDCredential {
         settings.appleUserID = credential.user
         UserDefaults.standard.set(true, forKey: "v4_didSeed")
-        withAnimation { settings.hasSeenOnboarding = true }
+        // Delay the root-view transition so the Sign in with Apple sheet can
+        // fully dismiss first — avoids the app freezing on iPad (Apple review 2.1(a)).
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+          withAnimation { settings.hasSeenOnboarding = true }
+        }
       }
     case .failure(let error):
       if (error as? ASAuthorizationError)?.code != .canceled {

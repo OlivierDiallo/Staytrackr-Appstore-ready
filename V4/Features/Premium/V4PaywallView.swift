@@ -46,9 +46,9 @@ struct V4PaywallView: View {
           featureList
           pricingCards
           purchaseButton
-          legalLinks
           restoreButton
           dismissLink
+          legalLinks
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -284,6 +284,25 @@ struct V4PaywallView: View {
           }
         }
       } else {
+        // ── Billing terms — shown above button so price is clear before tapping ──
+        if let product = selectedProduct {
+          if hasTrial {
+            Text(isAnnual
+                 ? "7-day free trial, then \(product.displayPrice) billed yearly. Cancel anytime."
+                 : "7-day free trial, then \(product.displayPrice) billed monthly. Cancel anytime.")
+              .font(.footnote.weight(.medium))
+              .foregroundStyle(.primary.opacity(0.75))
+              .multilineTextAlignment(.center)
+          } else {
+            Text(isAnnual
+                 ? "\(product.displayPrice) billed yearly. Cancel anytime."
+                 : "\(product.displayPrice) billed monthly. Cancel anytime.")
+              .font(.footnote.weight(.medium))
+              .foregroundStyle(.primary.opacity(0.75))
+              .multilineTextAlignment(.center)
+          }
+        }
+
         // ── Normal purchase button ───────────────────────────────────────
         Button {
           guard let product = selectedProduct else { return }
@@ -306,21 +325,6 @@ struct V4PaywallView: View {
           )
         }
         .disabled(selectedProduct == nil || store.isPurchasing || store.isLoadingProducts)
-
-        // Trial disclaimer
-        if hasTrial, let product = selectedProduct {
-          if isAnnual {
-            Text("7 days free, then \(product.displayPrice) / year. Cancel anytime.")
-              .font(.caption)
-              .foregroundStyle(.secondary)
-              .multilineTextAlignment(.center)
-          } else {
-            Text("7 days free, then \(product.displayPrice) / month. Cancel anytime.")
-              .font(.caption)
-              .foregroundStyle(.secondary)
-              .multilineTextAlignment(.center)
-          }
-        }
       }
     }
   }
@@ -352,22 +356,24 @@ struct V4PaywallView: View {
   // MARK: - Legal Links
 
   private var legalLinks: some View {
-    VStack(spacing: 8) {
-      Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel your subscription in App Store Settings.")
-        .font(.caption2)
-        .foregroundStyle(.secondary)
-        .multilineTextAlignment(.center)
-      HStack(spacing: 12) {
+    VStack(spacing: 10) {
+      // Privacy & EULA links — required by App Store guidelines, shown prominently
+      HStack(spacing: 16) {
         if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
           Link("Privacy Policy", destination: privacyURL)
         }
         Text("·").foregroundStyle(.secondary)
         if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
-          Link("Terms of Use (EULA)", destination: eulaURL)
+          Link("Terms of Use", destination: eulaURL)
         }
       }
-      .font(.caption2)
+      .font(.footnote)
       .foregroundStyle(V4Theme.Brand.primary)
+
+      Text("Payment charged to your Apple ID at purchase confirmation. Subscription renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel in App Store Settings.")
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+        .multilineTextAlignment(.center)
     }
   }
 }

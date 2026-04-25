@@ -21,12 +21,17 @@ struct V4SettingsView: View {
   var body: some View {
     List {
 
-      // MARK: — Profile
+      // MARK: — Account
       Section {
         NavigationLink {
           V4UserProfileView()
         } label: {
           settingsRow(icon: "person.crop.circle.fill", color: .blue, label: "Profile")
+        }
+        NavigationLink {
+          V4GuestsView(prefs: prefs)
+        } label: {
+          settingsRow(icon: "person.2.fill", color: .teal, label: "Guests")
         }
       } header: {
         sectionHeader("Account")
@@ -182,7 +187,7 @@ struct V4SettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .navigationTitle("More")
+    .navigationTitle("Settings")
     .sheet(isPresented: $showPaywall) {
       V4PaywallView().environment(store)
     }
