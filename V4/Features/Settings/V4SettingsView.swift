@@ -19,166 +19,170 @@ struct V4SettingsView: View {
   private let commonCurrencies = ["EUR","CZK","USD","GBP","CHF","PLN","SEK","NOK","DKK"]
 
   var body: some View {
-    NavigationStack {
-      List {
+    List {
 
-        // MARK: — Profile
-        Section {
-          NavigationLink {
-            V4UserProfileView()
-          } label: {
-            settingsRow(icon: "person.crop.circle.fill", color: .blue, label: "Profile")
-          }
-        } header: {
-          sectionHeader("Account")
+      // MARK: — Profile
+      Section {
+        NavigationLink {
+          V4UserProfileView()
+        } label: {
+          settingsRow(icon: "person.crop.circle.fill", color: .blue, label: "Profile")
+        }
+      } header: {
+        sectionHeader("Account")
+      }
+
+      // MARK: — Account / Premium
+      premiumSection
+
+      // MARK: — Properties & Bills
+      Section {
+        NavigationLink {
+          V4PropertiesListView(prefs: prefs)
+        } label: {
+          settingsRow(icon: "house.fill", color: V4Theme.Brand.primary, label: "Properties")
         }
 
-        // MARK: — Account / Premium
-        premiumSection
+        NavigationLink {
+          V4RecurringBillsView()
+        } label: {
+          settingsRow(icon: "repeat.circle.fill", color: .orange, label: "Recurring Bills")
+        }
+      } header: {
+        sectionHeader("Properties")
+      }
 
-        // MARK: — Properties & Bills
-        Section {
-          NavigationLink {
-            V4PropertiesListView(prefs: prefs)
-          } label: {
-            settingsRow(icon: "house.fill", color: V4Theme.Brand.primary, label: "Properties")
-          }
-
-          NavigationLink {
-            V4RecurringBillsView()
-          } label: {
-            settingsRow(icon: "repeat.circle.fill", color: .orange, label: "Recurring Bills")
-          }
-        } header: {
-          sectionHeader("Properties")
+      // MARK: — Finance
+      Section {
+        NavigationLink {
+          V4FXRatesView()
+        } label: {
+          settingsRow(icon: "arrow.left.arrow.right", color: .blue, label: "FX Rates")
         }
 
-        // MARK: — Finance
-        Section {
-          NavigationLink {
-            V4FXRatesView()
-          } label: {
-            settingsRow(icon: "arrow.left.arrow.right", color: .blue, label: "FX Rates")
+        // Reporting currency inline
+        HStack(spacing: 12) {
+          ZStack {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+              .fill(Color.purple.opacity(0.15))
+              .frame(width: 32, height: 32)
+            Image(systemName: "dollarsign.circle.fill")
+              .font(.system(size: 16))
+              .foregroundStyle(.purple)
           }
-
-          // Reporting currency inline
-          HStack(spacing: 12) {
-            ZStack {
-              RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.purple.opacity(0.15))
-                .frame(width: 32, height: 32)
-              Image(systemName: "dollarsign.circle.fill")
-                .font(.system(size: 16))
-                .foregroundStyle(.purple)
-            }
-            Text("Reporting Currency")
-            Spacer()
-            Picker("", selection: Binding(
-              get: { settings.reportingCurrencyCode },
-              set: { settings.reportingCurrencyCode = $0 }
-            )) {
-              ForEach(commonCurrencies, id: \.self) { c in
-                Text(c).tag(c)
-              }
-            }
-            .pickerStyle(.menu)
-            .tint(V4Theme.Brand.primary)
-          }
-        } header: {
-          sectionHeader("Finance")
-        } footer: {
-          Text("Totals will convert bookings and expenses into \(settings.reportingCurrencyCode) using your FX rates.")
-            .font(.caption)
-        }
-
-        // MARK: — Data & Export
-        Section {
-          NavigationLink {
-            V4ExportView()
-          } label: {
-            settingsRow(icon: "arrow.down.doc.fill", color: .teal, label: "Export CSV")
-          }
-        } header: {
-          sectionHeader("Data & Export")
-        }
-
-        // MARK: — Personalization
-        Section {
-          // Theme
-          HStack(spacing: 12) {
-            ZStack {
-              RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.indigo.opacity(0.15))
-                .frame(width: 32, height: 32)
-              Image(systemName: "paintbrush.fill")
-                .font(.system(size: 16))
-                .foregroundStyle(.indigo)
-            }
-            Picker("Theme", selection: Binding(
-              get: { settings.colorSchemeRaw },
-              set: { settings.colorSchemeRaw = $0 }
-            )) {
-              Label("System", systemImage: "circle.lefthalf.filled").tag("system")
-              Label("Light",  systemImage: "sun.max").tag("light")
-              Label("Dark",   systemImage: "moon").tag("dark")
-            }
-            .tint(V4Theme.Brand.primary)
-          }
-
-          // Notifications inline toggle
-          Toggle(isOn: Binding(
-            get: { settings.notificationsEnabled },
-            set: { settings.notificationsEnabled = $0 }
+          Text("Reporting Currency")
+          Spacer()
+          Picker("", selection: Binding(
+            get: { settings.reportingCurrencyCode },
+            set: { settings.reportingCurrencyCode = $0 }
           )) {
-            HStack(spacing: 12) {
-              ZStack {
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                  .fill(Color.red.opacity(0.15))
-                  .frame(width: 32, height: 32)
-                Image(systemName: "bell.badge.fill")
-                  .font(.system(size: 16))
-                  .foregroundStyle(.red)
-              }
-              Text("Enable Notifications")
+            ForEach(commonCurrencies, id: \.self) { c in
+              Text(c).tag(c)
             }
+          }
+          .pickerStyle(.menu)
+          .tint(V4Theme.Brand.primary)
+        }
+      } header: {
+        sectionHeader("Finance")
+      } footer: {
+        Text("Totals will convert bookings and expenses into \(settings.reportingCurrencyCode) using your FX rates.")
+          .font(.caption)
+      }
+
+      // MARK: — Data & Export
+      Section {
+        NavigationLink {
+          V4ImportView()
+        } label: {
+          settingsRow(icon: "square.and.arrow.down.fill", color: .indigo, label: "Import Bookings")
+        }
+
+        NavigationLink {
+          V4ExportView()
+        } label: {
+          settingsRow(icon: "arrow.down.doc.fill", color: .teal, label: "Export CSV")
+        }
+      } header: {
+        sectionHeader("Data & Export")
+      }
+
+      // MARK: — Personalization
+      Section {
+        // Theme
+        HStack(spacing: 12) {
+          ZStack {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+              .fill(Color.indigo.opacity(0.15))
+              .frame(width: 32, height: 32)
+            Image(systemName: "paintbrush.fill")
+              .font(.system(size: 16))
+              .foregroundStyle(.indigo)
+          }
+          Picker("Theme", selection: Binding(
+            get: { settings.colorSchemeRaw },
+            set: { settings.colorSchemeRaw = $0 }
+          )) {
+            Label("System", systemImage: "circle.lefthalf.filled").tag("system")
+            Label("Light",  systemImage: "sun.max").tag("light")
+            Label("Dark",   systemImage: "moon").tag("dark")
           }
           .tint(V4Theme.Brand.primary)
-
-          if settings.notificationsEnabled {
-            notificationSubsection
-          }
-        } header: {
-          sectionHeader("Personalization")
         }
 
-        // MARK: — About
-        Section {
-          LabeledContent("Version") {
-            Text(appVersion)
-              .foregroundStyle(.secondary)
-          }
-          if let websiteURL = URL(string: "https://getstaytrackr.com") {
-            Link(destination: websiteURL) {
-              settingsRow(icon: "globe", color: .blue, label: "Website")
+        // Notifications inline toggle
+        Toggle(isOn: Binding(
+          get: { settings.notificationsEnabled },
+          set: { settings.notificationsEnabled = $0 }
+        )) {
+          HStack(spacing: 12) {
+            ZStack {
+              RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.red.opacity(0.15))
+                .frame(width: 32, height: 32)
+              Image(systemName: "bell.badge.fill")
+                .font(.system(size: 16))
+                .foregroundStyle(.red)
             }
+            Text("Enable Notifications")
           }
-          if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
-            Link(destination: privacyURL) {
-              settingsRow(icon: "hand.raised.fill", color: .gray, label: "Privacy Policy")
-            }
-          }
-          if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
-            Link(destination: eulaURL) {
-              settingsRow(icon: "doc.text.fill", color: .gray, label: "Terms of Use")
-            }
-          }
-        } header: {
-          sectionHeader("About")
         }
+        .tint(V4Theme.Brand.primary)
+
+        if settings.notificationsEnabled {
+          notificationSubsection
+        }
+      } header: {
+        sectionHeader("Personalization")
       }
-      .listStyle(.insetGrouped)
-      .navigationTitle("More")
+
+      // MARK: — About
+      Section {
+        LabeledContent("Version") {
+          Text(appVersion)
+            .foregroundStyle(.secondary)
+        }
+        if let websiteURL = URL(string: "https://getstaytrackr.com") {
+          Link(destination: websiteURL) {
+            settingsRow(icon: "globe", color: .blue, label: "Website")
+          }
+        }
+        if let privacyURL = URL(string: "https://getstaytrackr.com/privacy") {
+          Link(destination: privacyURL) {
+            settingsRow(icon: "hand.raised.fill", color: .gray, label: "Privacy Policy")
+          }
+        }
+        if let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+          Link(destination: eulaURL) {
+            settingsRow(icon: "doc.text.fill", color: .gray, label: "Terms of Use")
+          }
+        }
+      } header: {
+        sectionHeader("About")
+      }
     }
+    .listStyle(.insetGrouped)
+    .navigationTitle("More")
     .sheet(isPresented: $showPaywall) {
       V4PaywallView().environment(store)
     }

@@ -586,14 +586,14 @@ struct V4PersonalizedOnboardingView: View {
 
   // MARK: - Reusable UI
 
-  private func questionHeader(_ title: String) -> some View {
+  private func questionHeader(_ title: LocalizedStringKey) -> some View {
     Text(title)
       .font(.title2.weight(.bold))
       .multilineTextAlignment(.center)
       .padding(.horizontal, 24)
   }
 
-  private func primaryButton(_ label: String, action: @escaping () -> Void) -> some View {
+  private func primaryButton(_ label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
     Button(action: action) {
       Text(label)
         .font(.headline)

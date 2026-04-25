@@ -46,9 +46,9 @@ struct V4PaywallView: View {
           featureList
           pricingCards
           purchaseButton
+          legalLinks
           restoreButton
           dismissLink
-          legalLinks
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -114,17 +114,10 @@ struct V4PaywallView: View {
       VStack(spacing: 6) {
         Text("StayTrackr Premium")
           .font(.title2.weight(.bold))
-        if store.isEligibleForTrial {
-          Text("Try free for 7 days.\nUnlock every feature, cancel anytime.")
+        Text("Unlock every feature for your\nrental management workflow.")
             .font(.subheadline)
             .foregroundStyle(.secondary)
             .multilineTextAlignment(.center)
-        } else {
-          Text("Unlock every feature for your\nrental management workflow.")
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
-        }
       }
     }
   }
@@ -200,32 +193,24 @@ struct V4PaywallView: View {
       ZStack(alignment: .topTrailing) {
         HStack {
           VStack(alignment: .leading, spacing: 4) {
-            Text(isAnnual ? "Annual — 1-year subscription" : "Monthly — 1-month subscription")
+            // Plan name + length
+            Text(isAnnual ? "Annual" : "Monthly")
               .font(.headline)
+
+            // Price — always the hero text
+            Text(isAnnual ? "\(product.displayPrice) / year" : "\(product.displayPrice) / month")
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(.primary)
+
+            // Trial is secondary context, not the headline
             if let trial = trialText {
-              Text(trial)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(V4Theme.Brand.primary)
-              if isAnnual {
-                Text("then \(product.displayPrice) billed yearly")
-                  .font(.caption)
-                  .foregroundStyle(.secondary)
-              } else {
-                Text("then \(product.displayPrice) billed monthly")
-                  .font(.caption)
-                  .foregroundStyle(.secondary)
-              }
-            } else {
-              if isAnnual {
-                Text("\(product.displayPrice) billed yearly")
-                  .font(.subheadline)
-                  .foregroundStyle(.secondary)
-              } else {
-                Text("\(product.displayPrice) billed monthly")
-                  .font(.subheadline)
-                  .foregroundStyle(.secondary)
-              }
+              Text(verbatim: trial + String(localized: isAnnual
+                   ? ", then renews yearly"
+                   : ", then renews monthly"))
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
+
             if isAnnual, let savings {
               Text("Save \(savings) vs monthly")
                 .font(.caption.weight(.medium))

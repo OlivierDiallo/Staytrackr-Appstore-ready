@@ -58,6 +58,11 @@
 		C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 		DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */; };
+		A1B2C3D4E5F601020304AA01 /* ImportedBooking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */; };
+		A1B2C3D4E5F601020304AA02 /* ICalParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA11 /* ICalParser.swift */; };
+		A1B2C3D4E5F601020304AA03 /* AirbnbCSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */; };
+		A1B2C3D4E5F601020304AA04 /* ImportDeduplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */; };
+		A1B2C3D4E5F601020304AA05 /* V4ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +119,11 @@
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
 		D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4TelemetryManager.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportedBooking.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA11 /* ICalParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICalParser.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirbnbCSVParser.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDeduplicator.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ImportView.swift; sourceTree = "<group>"; };
 		EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXManager.swift; sourceTree = "<group>"; };
 		FF11AA22BB33CC44DD55EE66 /* StayTrackr V3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StayTrackr V3.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,8 +168,20 @@
 				505AF27A2F0D650200FC5DFF /* Features */,
 				505AF27B2F0D650B00FC5DFF /* UI */,
 				505AF27C2F0D651200FC5DFF /* Utils */,
+				A1B2C3D4E5F601020304BB00 /* Import */,
 			);
 			path = V4;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F601020304BB00 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */,
+				A1B2C3D4E5F601020304AA11 /* ICalParser.swift */,
+				A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */,
+				A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */,
+			);
+			path = Import;
 			sourceTree = "<group>";
 		};
 		505AF2772F0D64DF00FC5DFF /* App */ = {
@@ -281,6 +303,7 @@
 				505AF2C12F14F61500FC5DFF /* V4EditPropertyView.swift */,
 				505AF2952F0D6E0200FC5DFF /* V4SettingsView.swift */,
 				C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */,
+				A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -506,6 +529,11 @@
 				137C607CAC784F108475EFDA /* V4ExportView.swift in Sources */,
 				505AF2C02F0FCAD900FC5DFF /* V4FX.swift in Sources */,
 				DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */,
+				A1B2C3D4E5F601020304AA01 /* ImportedBooking.swift in Sources */,
+				A1B2C3D4E5F601020304AA02 /* ICalParser.swift in Sources */,
+				A1B2C3D4E5F601020304AA03 /* AirbnbCSVParser.swift in Sources */,
+				A1B2C3D4E5F601020304AA04 /* ImportDeduplicator.swift in Sources */,
+				A1B2C3D4E5F601020304AA05 /* V4ImportView.swift in Sources */,
 				505AF2BC2F0FC81C00FC5DFF /* Currency.swift in Sources */,
 				505AF2B32F0D961600FC5DFF /* V4Format.swift in Sources */,
 				505AF2982F0D6E3800FC5DFF /* V4ExpensesView.swift in Sources */,

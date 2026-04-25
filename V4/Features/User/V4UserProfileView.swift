@@ -8,6 +8,7 @@ struct V4UserProfileView: View {
   @Environment(V4AppSettings.self) private var settings
   @Environment(STStoreManager.self) private var store
   @Environment(\.modelContext) private var context
+  @Environment(\.colorScheme) private var colorScheme
 
   @State private var showPaywall = false
   @State private var showSignInError = false
@@ -15,22 +16,20 @@ struct V4UserProfileView: View {
   @State private var showDeleteConfirm = false
 
   var body: some View {
-    NavigationStack {
-      List {
+    List {
 
-        // MARK: — Profile Header
-        profileHeaderSection
+      // MARK: — Profile Header
+      profileHeaderSection
 
-        // MARK: — Account & iCloud
-        accountSection
+      // MARK: — Account & iCloud
+      accountSection
 
-        // MARK: — Premium
-        premiumSection
+      // MARK: — Premium
+      premiumSection
 
-      }
-      .listStyle(.insetGrouped)
-      .navigationTitle("Profile")
     }
+    .listStyle(.insetGrouped)
+    .navigationTitle("Profile")
     .sheet(isPresented: $showPaywall) {
       V4PaywallView().environment(store)
     }
@@ -180,11 +179,14 @@ struct V4UserProfileView: View {
         }
         .padding(.vertical, 4)
 
-        SignInWithAppleButtonView { result in
+        SignInWithAppleButton(.signIn) { request in
+          request.requestedScopes = [.fullName, .email]
+        } onCompletion: { result in
           handleSignIn(result)
         }
         .frame(height: 44)
         .padding(.vertical, 4)
+        .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
       }
     } header: {
       sectionHeader("Account & iCloud")
@@ -297,69 +299,5 @@ struct V4UserProfileView: View {
       .font(.footnote.weight(.semibold))
       .foregroundStyle(.secondary)
       .textCase(.uppercase)
-  }
-}
-
-// MARK: - Sign In With Apple Button (UIViewRepresentable)
-
-/// Wraps ASAuthorizationAppleIDButton for use in SwiftUI.
-/// Adapts its style automatically to light/dark mode.
-private struct SignInWithAppleButtonView: UIViewRepresentable {
-  var onCompletion: (Result<ASAuthorization, Error>) -> Void
-
-  @Environment(\.colorScheme) private var colorScheme
-
-  func makeCoordinator() -> Coordinator { Coordinator(onCompletion: onCompletion) }
-
-  func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
-    let style: ASAuthorizationAppleIDButton.Style = colorScheme == .dark ? .white : .black
-    let button = ASAuthorizationAppleIDButton(type: .signIn, style: style)
-    button.addTarget(context.coordinator, action: #selector(Coordinator.handleTap), for: .touchUpInside)
-    return button
-  }
-
-  func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
-    uiView.backgroundColor = colorScheme == .dark ? .white : .black
-    uiView.tintColor       = colorScheme == .dark ? .black : .white
-  }
-
-  // MARK: Coordinator
-
-  final class Coordinator: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    var onCompletion: (Result<ASAuthorization, Error>) -> Void
-
-    init(onCompletion: @escaping (Result<ASAuthorization, Error>) -> Void) {
-      self.onCompletion = onCompletion
-    }
-
-    @objc func handleTap() {
-      let provider = ASAuthorizationAppleIDProvider()
-      let request = provider.createRequest()
-      request.requestedScopes = [.fullName, .email]
-
-      let controller = ASAuthorizationController(authorizationRequests: [request])
-      controller.delegate = self
-      controller.presentationContextProvider = self
-      controller.performRequests()
-    }
-
-    func authorizationController(controller: ASAuthorizationController,
-                                  didCompleteWithAuthorization authorization: ASAuthorization) {
-      onCompletion(.success(authorization))
-    }
-
-    func authorizationController(controller: ASAuthorizationController,
-                                  didCompleteWithError error: Error) {
-      onCompletion(.failure(error))
-    }
-
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-      // Avoids deprecated UIWindow() / ASPresentationAnchor() no-arg init (iOS 26).
-      // Sign In with Apple is only triggered from a visible UI, so a window always exists.
-      let allWindows = UIApplication.shared.connectedScenes
-        .compactMap { $0 as? UIWindowScene }
-        .flatMap { $0.windows }
-      return allWindows.first(where: { $0.isKeyWindow }) ?? allWindows.first!
-    }
   }
 }

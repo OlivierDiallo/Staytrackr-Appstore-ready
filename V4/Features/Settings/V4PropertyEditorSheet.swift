@@ -24,6 +24,10 @@ struct V4PropertyEditorSheet: View {
   @State private var currencyCode: String = "EUR"
   @State private var isArchived: Bool = false
 
+  // iCal sync URLs
+  @State private var airbnbICalURL: String = ""
+  @State private var bookingComICalURL: String = ""
+
   // Finance
   @State private var commissionPct: Double = 0.10
   @State private var purchasePrice: Double = 0
@@ -171,6 +175,17 @@ struct V4PropertyEditorSheet: View {
           Slider(value: $commissionPct, in: 0...0.30, step: 0.005)
         }
 
+        Section("iCal Sync") {
+          TextField("Airbnb calendar URL", text: $airbnbICalURL)
+            .keyboardType(.URL)
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+          TextField("Booking.com calendar URL", text: $bookingComICalURL)
+            .keyboardType(.URL)
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+        }
+
         Section("Mortgage") {
           Toggle("Track mortgage", isOn: $trackMortgage)
 
@@ -232,6 +247,9 @@ struct V4PropertyEditorSheet: View {
     mortgageYears = p.mortgageYears
 
     photoData = p.photoData
+
+    airbnbICalURL    = p.airbnbICalURL    ?? ""
+    bookingComICalURL = p.bookingComICalURL ?? ""
   }
 
   private func save() {
@@ -254,6 +272,8 @@ struct V4PropertyEditorSheet: View {
         currencyCode: currencyCode,
         photoData: photoData
       )
+      p.airbnbICalURL    = airbnbICalURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : airbnbICalURL.trimmingCharacters(in: .whitespacesAndNewlines)
+      p.bookingComICalURL = bookingComICalURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : bookingComICalURL.trimmingCharacters(in: .whitespacesAndNewlines)
       context.insert(p)
 
     case .edit:
@@ -271,6 +291,9 @@ struct V4PropertyEditorSheet: View {
       p.mortgageYears = mortgageYears
 
       p.photoData = photoData
+
+      p.airbnbICalURL    = airbnbICalURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : airbnbICalURL.trimmingCharacters(in: .whitespacesAndNewlines)
+      p.bookingComICalURL = bookingComICalURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : bookingComICalURL.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     do {

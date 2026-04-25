@@ -46,16 +46,20 @@ struct V4RootView: View {
             .onAppear { V4TelemetryManager.signal(.tabTotals) }
         }
         Tab("Profile", systemImage: "person.crop.circle.fill") {
-          V4UserProfileView()
-            .onAppear { V4TelemetryManager.signal(.tabProfile) }
+          NavigationStack {
+            V4UserProfileView()
+          }
+          .onAppear { V4TelemetryManager.signal(.tabProfile) }
         }
         Tab("Guests", systemImage: "person.2.fill") {
           V4GuestsView(prefs: prefs)
             .onAppear { V4TelemetryManager.signal(.tabGuests) }
         }
         Tab("More", systemImage: "ellipsis") {
-          V4SettingsView(prefs: prefs)
-            .onAppear { V4TelemetryManager.signal(.tabSettings) }
+          NavigationStack {
+            V4SettingsView(prefs: prefs)
+          }
+          .onAppear { V4TelemetryManager.signal(.tabSettings) }
         }
       }
       .tabViewStyle(.sidebarAdaptable)
@@ -74,13 +78,13 @@ struct V4RootView: View {
         V4TotalsView(prefs: prefs)
           .tabItem { Label("Totals", systemImage: "chart.bar") }
           .onAppear { V4TelemetryManager.signal(.tabTotals) }
-        V4UserProfileView()
+        NavigationStack { V4UserProfileView() }
           .tabItem { Label("Profile", systemImage: "person.crop.circle.fill") }
           .onAppear { V4TelemetryManager.signal(.tabProfile) }
         V4GuestsView(prefs: prefs)
           .tabItem { Label("Guests", systemImage: "person.2.fill") }
           .onAppear { V4TelemetryManager.signal(.tabGuests) }
-        V4SettingsView(prefs: prefs)
+        NavigationStack { V4SettingsView(prefs: prefs) }
           .tabItem { Label("More", systemImage: "ellipsis") }
           .onAppear { V4TelemetryManager.signal(.tabSettings) }
       }

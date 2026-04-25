@@ -319,7 +319,7 @@ struct V4CalendarView: View {
               isToday: cal.isDateInToday(day),
               hasArrival: m.hasArrival,
               hasDeparture: m.hasDeparture,
-              occupantColor: m.occupantColor
+              occupantColors: m.occupantColors
             )
             .onTapGesture {
               withAnimation(.easeInOut(duration: 0.15)) {
@@ -343,9 +343,9 @@ struct V4CalendarView: View {
   // MARK: - Day Meta (O(1) lookup built once per render instead of O(n) per cell)
 
   private struct CalDayMeta {
-    var hasArrival   = false
-    var hasDeparture = false
-    var occupantColor: Color? = nil
+    var hasArrival    = false
+    var hasDeparture  = false
+    var occupantColors: [Color] = []
   }
 
   /// Builds a dictionary keyed on startOfDay(date) containing arrival/departure/occupant info.
@@ -366,14 +366,16 @@ struct V4CalendarView: View {
       dict[arrDay, default: CalDayMeta()].hasArrival   = true
       dict[depDay, default: CalDayMeta()].hasDeparture = true
 
-      // Fill occupant color for every day the booking is in-residence within the current month
+      // Fill occupant colors for every day the booking is in-residence within the current month.
+      // Multiple bookings on the same day (different properties) each add their color.
       let color     = V4Color.hex(b.property.colorHex)
       let scanStart = max(arrDay,  monthStart)
       let scanEnd   = min(depDay,  monthEnd)
       var cursor    = scanStart
       while cursor < scanEnd {
-        if dict[cursor]?.occupantColor == nil {
-          dict[cursor, default: CalDayMeta()].occupantColor = color
+        let existing = dict[cursor]?.occupantColors ?? []
+        if !existing.contains(color) {
+          dict[cursor, default: CalDayMeta()].occupantColors.append(color)
         }
         guard let next = cal.date(byAdding: .day, value: 1, to: cursor) else { break }
         cursor = next
@@ -457,7 +459,7 @@ struct V4CalendarView: View {
 
   @ViewBuilder
   private func statusBadge(_ status: STBookingStatus) -> some View {
-    let (label, color): (String, Color) = {
+    let (label, color): (LocalizedStringKey, Color) = {
       switch status {
       case .upcoming:  return ("Upcoming", .blue)
       case .active:    return ("Active",   V4Theme.Brand.primary)
@@ -526,7 +528,7 @@ private struct DayCellView: View {
   let isToday: Bool
   let hasArrival: Bool
   let hasDeparture: Bool
-  let occupantColor: Color?
+  let occupantColors: [Color]
 
   var body: some View {
     VStack(spacing: 2) {
@@ -558,18 +560,26 @@ private struct DayCellView: View {
           .fill(Color.orange)
           .frame(width: 4, height: 4)
           .opacity(hasDeparture ? 1 : 0)
-        // Always reserve space so cells have equal height
         if !hasArrival && !hasDeparture {
           Color.clear.frame(width: 4, height: 4)
         }
       }
       .frame(height: 5)
 
-      // Occupancy bar (property accent color)
-      RoundedRectangle(cornerRadius: 1.5)
-        .fill(occupantColor ?? Color.clear)
+      // Occupancy bar — one stripe per property, up to 4
+      if occupantColors.isEmpty {
+        Color.clear.frame(height: 3).padding(.horizontal, 4)
+      } else {
+        HStack(spacing: 1) {
+          ForEach(Array(occupantColors.prefix(4).enumerated()), id: \.offset) { _, color in
+            RoundedRectangle(cornerRadius: 1.5)
+              .fill(color)
+              .frame(maxWidth: .infinity, maxHeight: 3)
+          }
+        }
         .frame(height: 3)
         .padding(.horizontal, 4)
+      }
     }
     .padding(.vertical, 3)
     .frame(maxWidth: .infinity)

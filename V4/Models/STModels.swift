@@ -89,6 +89,10 @@ final class STProperty {
   // Photo (stored as raw JPEG data, optional)
   var photoData: Data?
 
+  // iCal sync URLs (set in property editor, used by ICalParser)
+  var airbnbICalURL: String?
+  var bookingComICalURL: String?
+
   // Relationships
   @Relationship(deleteRule: .cascade, inverse: \STBooking.property)
   var bookings: [STBooking] = []
@@ -176,6 +180,10 @@ final class STBooking {
 
   // Notes (host instructions, cleaning notes, etc.)
   var note: String?
+
+  // Import provenance — set when booking is created via iCal/CSV import
+  var platformID: String?       // Airbnb confirmation code, Booking.com reservation ID, or iCal UID
+  var platformSource: String?   // "Airbnb" | "Booking.com" | "Manual"
 
   // Flight tracking (Premium feature — polled from AviationStack)
   var flightNumber: String?          // e.g. "BA456"
