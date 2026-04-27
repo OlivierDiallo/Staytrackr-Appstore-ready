@@ -10,6 +10,7 @@ import EventKit
 struct V4ImportView: View {
 
     @Environment(\.modelContext) private var context
+    @Environment(STStoreManager.self) private var store
     @Query(sort: \STProperty.name) private var properties: [STProperty]
 
     // iCal / CSV state
@@ -76,15 +77,55 @@ struct V4ImportView: View {
                     .foregroundStyle(.secondary)
             }
 
-            // ── Apple Calendar Import ──────────────────────────────────────
+            // ── Apple Calendar Import (Premium) ───────────────────────────
             Section {
-                appleCalendarContent
+                if store.isPremium {
+                    appleCalendarContent
+                } else {
+                    HStack(spacing: 14) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(V4Theme.Brand.primary.opacity(0.12))
+                                .frame(width: 44, height: 44)
+                            Image(systemName: "lock.fill")
+                                .font(.system(size: 20))
+                                .foregroundStyle(V4Theme.Brand.primary)
+                        }
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Premium Feature")
+                                .font(.subheadline.weight(.semibold))
+                            Text("Upgrade to import bookings directly from Apple Calendar.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        NavigationLink {
+                            V4PaywallView()
+                                .environment(store)
+                        } label: {
+                            Text("Upgrade")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(V4Theme.Brand.primary)
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
             } header: {
-                Text("Apple Calendar Import")
+                HStack {
+                    Text("Apple Calendar Import")
+                    Spacer()
+                    if !store.isPremium {
+                        Image(systemName: "lock.fill")
+                            .font(.caption)
+                            .foregroundStyle(V4Theme.Brand.primary)
+                    }
+                }
             } footer: {
-                Text("StayTrackr reads booking-type events from your selected calendars (Airbnb, Booking.com subscriptions, etc.) and skips flights and other non-booking events. Only multi-night events are imported.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if store.isPremium {
+                    Text("StayTrackr reads booking-type events from your selected calendars (Airbnb, Booking.com subscriptions, etc.) and skips flights and other non-booking events. Only multi-night events are imported.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             // ── Result banner ──────────────────────────────────────────────
