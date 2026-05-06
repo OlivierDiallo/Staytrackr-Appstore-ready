@@ -52,5 +52,29 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+
+	<!-- AviationStack API key — value injected from Secrets.xcconfig at build time -->
+	<key>AviationStackKey</key>
+	<string>$(AVIATION_STACK_KEY)</string>
+	<key>AviationStackScheme</key>
+	<string>$(AVIATION_STACK_SCHEME)</string>
+
+	<!-- ATS exception for AviationStack free plan (HTTP only).
+	     Remove this entire block once upgraded to Standard plan ($29.99/mo) and
+	     AVIATION_STACK_SCHEME is switched to https in Secrets.xcconfig. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.aviationstack.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
+
 </dict>
 </plist>

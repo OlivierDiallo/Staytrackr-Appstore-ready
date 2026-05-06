@@ -49,19 +49,23 @@ struct V4FlightInfo {
 
 enum V4FlightManager {
 
-    // IMPORTANT: Replace with your AviationStack access key.
-    // Free plan: 100 calls/month via HTTP only.
-    // Standard plan ($29.99/mo): 10,000 calls/month via HTTPS.
-    private static let apiKey = "199daa4d33023cc11774215515d895f7"
-
-    // Free tier = HTTP (requires NSAppTransportSecurity exception in Info.plist).
-    // Paid tier = change to "https".
-    private static let scheme = "http"
+    // Keys are injected from Config/Secrets.xcconfig → Info.plist at build time.
+    // To rotate: update AVIATION_STACK_KEY in Config/Secrets.xcconfig (never commit that file).
+    // To upgrade to HTTPS: set AVIATION_STACK_SCHEME = https in Secrets.xcconfig and
+    // remove the NSAppTransportSecurity block from Info.plist.
+    private static var apiKey: String {
+        Bundle.main.object(forInfoDictionaryKey: "AviationStackKey") as? String ?? ""
+    }
+    private static var scheme: String {
+        Bundle.main.object(forInfoDictionaryKey: "AviationStackScheme") as? String ?? "https"
+    }
 
     // MARK: - Check Flight
 
     /// Fetches the current status for a flight IATA code (e.g. "BA456").
     static func checkFlight(_ rawNumber: String) async throws -> V4FlightInfo {
+        guard !apiKey.isEmpty else { throw FlightError.apiKeyNotSet }
+
         let iata = rawNumber
             .replacingOccurrences(of: " ", with: "")
             .uppercased()

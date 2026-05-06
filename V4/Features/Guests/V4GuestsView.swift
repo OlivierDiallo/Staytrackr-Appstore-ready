@@ -108,38 +108,36 @@ struct V4GuestsView: View {
   // MARK: Body
 
   var body: some View {
-    NavigationStack {
-      List {
-        if filteredGuests.isEmpty {
-          Section {
-            Text(guests.isEmpty
-                 ? "No guests yet. Tap + to add one."
-                 : "No results for \"\(searchText)\".")
-              .foregroundStyle(.secondary)
-          }
-        } else if sortOrder == .byProperty {
-          byPropertySections
-        } else {
-          flatSection
+    List {
+      if filteredGuests.isEmpty {
+        Section {
+          Text(guests.isEmpty
+               ? "No guests yet. Tap + to add one."
+               : "No results for \"\(searchText)\".")
+            .foregroundStyle(.secondary)
         }
+      } else if sortOrder == .byProperty {
+        byPropertySections
+      } else {
+        flatSection
       }
-      .searchable(text: $searchText, prompt: "Search guests")
-      .navigationTitle("Guests")
-      .toolbar {
-        ToolbarItem(placement: .topBarLeading) {
-          sortMenu
-        }
-        ToolbarItem(placement: .topBarTrailing) {
-          Button { showAdd = true } label: { Image(systemName: "plus") }
-            .accessibilityLabel("Add guest")
-        }
+    }
+    .searchable(text: $searchText, prompt: "Search guests")
+    .navigationTitle("Guests")
+    .toolbar {
+      ToolbarItem(placement: .topBarLeading) {
+        sortMenu
       }
-      .sheet(isPresented: $showAdd) {
-        V4GuestEditorSheet(mode: .add)
+      ToolbarItem(placement: .topBarTrailing) {
+        Button { showAdd = true } label: { Image(systemName: "plus") }
+          .accessibilityLabel("Add guest")
       }
-      .sheet(item: $guestToEdit) { g in
-        V4GuestEditorSheet(mode: .edit(g))
-      }
+    }
+    .sheet(isPresented: $showAdd) {
+      V4GuestEditorSheet(mode: .add)
+    }
+    .sheet(item: $guestToEdit) { g in
+      V4GuestEditorSheet(mode: .edit(g))
     }
   }
 

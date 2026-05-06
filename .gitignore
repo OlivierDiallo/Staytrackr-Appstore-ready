@@ -48,3 +48,8 @@ Pods/
 # ========================
 *.orig
 Untitled.swift
+
+# ========================
+# Secrets (never commit)
+# ========================
+Config/Secrets.xcconfig

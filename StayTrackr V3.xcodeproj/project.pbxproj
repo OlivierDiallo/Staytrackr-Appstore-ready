@@ -52,17 +52,18 @@
 		73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */; };
 		86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */; };
 		A03D1488782C4FF18A947EF9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C5704C85909B44449280C130 /* Localizable.xcstrings */; };
+		A1B2C3D4E5F601020304AA01 /* ImportedBooking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */; };
+		A1B2C3D4E5F601020304AA02 /* ICalParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA11 /* ICalParser.swift */; };
+		A1B2C3D4E5F601020304AA03 /* AirbnbCSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */; };
+		A1B2C3D4E5F601020304AA04 /* ImportDeduplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */; };
+		A1B2C3D4E5F601020304AA05 /* V4ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */; };
 		AA11BB22CC33DD44EE55FF77 /* V4PersonalizedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF66 /* V4PersonalizedOnboardingView.swift */; };
 		B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C331B2DE384275AADC8C65 /* STStoreManager.swift */; };
 		BB22CC33DD4455EE00FF1122 /* V4FlightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */; };
 		C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */; };
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 		DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */; };
-		A1B2C3D4E5F601020304AA01 /* ImportedBooking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */; };
-		A1B2C3D4E5F601020304AA02 /* ICalParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA11 /* ICalParser.swift */; };
-		A1B2C3D4E5F601020304AA03 /* AirbnbCSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */; };
-		A1B2C3D4E5F601020304AA04 /* ImportDeduplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */; };
-		A1B2C3D4E5F601020304AA05 /* V4ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */; };
+		CC11DD22EE33FF0011223388 /* STKeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11DD22EE33FF0011223377 /* STKeychainHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +113,11 @@
 		50E7A2142F548C1300A3D311 /* STFXRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFXRate.swift; sourceTree = "<group>"; };
 		50E97DD879C64018932250E9 /* V4RecurringBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4RecurringBillsView.swift; sourceTree = "<group>"; };
 		91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PaywallView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportedBooking.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA11 /* ICalParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICalParser.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirbnbCSVParser.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDeduplicator.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ImportView.swift; sourceTree = "<group>"; };
 		AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FlightManager.swift; sourceTree = "<group>"; };
 		AA11BB22CC33DD44EE55FF66 /* V4PersonalizedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4PersonalizedOnboardingView.swift; sourceTree = "<group>"; };
 		B7C331B2DE384275AADC8C65 /* STStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STStoreManager.swift; sourceTree = "<group>"; };
@@ -119,13 +125,11 @@
 		C907E1B0438E4F11BBB9EE1B /* V4ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ExportView.swift; sourceTree = "<group>"; };
 		C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4NotificationManager.swift; sourceTree = "<group>"; };
 		D7E8F901A2B34C6D9E012345 /* V4TelemetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4TelemetryManager.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportedBooking.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F601020304AA11 /* ICalParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICalParser.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirbnbCSVParser.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDeduplicator.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F601020304AA14 /* V4ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4ImportView.swift; sourceTree = "<group>"; };
 		EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXManager.swift; sourceTree = "<group>"; };
 		FF11AA22BB33CC44DD55EE66 /* StayTrackr V3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StayTrackr V3.entitlements"; sourceTree = "<group>"; };
+		CC11DD22EE33FF0011223344 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		CC11DD22EE33FF0011223355 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
+		CC11DD22EE33FF0011223377 /* STKeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKeychainHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,17 +175,6 @@
 				A1B2C3D4E5F601020304BB00 /* Import */,
 			);
 			path = V4;
-			sourceTree = "<group>";
-		};
-		A1B2C3D4E5F601020304BB00 /* Import */ = {
-			isa = PBXGroup;
-			children = (
-				A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */,
-				A1B2C3D4E5F601020304AA11 /* ICalParser.swift */,
-				A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */,
-				A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */,
-			);
-			path = Import;
 			sourceTree = "<group>";
 		};
 		505AF2772F0D64DF00FC5DFF /* App */ = {
@@ -253,6 +246,7 @@
 				505AF2B02F0D95E100FC5DFF /* V4Color.swift */,
 				C98F1FEBCD9F4DE68B7B2FE2 /* V4NotificationManager.swift */,
 				AA11BB22CC334455DDEEFF00 /* V4FlightManager.swift */,
+				CC11DD22EE33FF0011223377 /* STKeychainHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -371,6 +365,7 @@
 		5076A64B2EA2E03000FE143A = {
 			isa = PBXGroup;
 			children = (
+				CC11DD22EE33FF0011223366 /* Config */,
 				509450502F5F861D00C6C855 /* StayTrackrPremium.storekit */,
 				505AF2752F0D62BA00FC5DFF /* V4 */,
 				505AF2A22F0D731A00FC5DFF /* Core */,
@@ -416,12 +411,32 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F601020304BB00 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F601020304AA10 /* ImportedBooking.swift */,
+				A1B2C3D4E5F601020304AA11 /* ICalParser.swift */,
+				A1B2C3D4E5F601020304AA12 /* AirbnbCSVParser.swift */,
+				A1B2C3D4E5F601020304AA13 /* ImportDeduplicator.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
 		BBA4182FF8E245029BBE3790 /* Premium */ = {
 			isa = PBXGroup;
 			children = (
 				91319FC66D0B44AB85CAF916 /* V4PaywallView.swift */,
 			);
 			path = Premium;
+			sourceTree = "<group>";
+		};
+		CC11DD22EE33FF0011223366 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CC11DD22EE33FF0011223344 /* Secrets.xcconfig */,
+				CC11DD22EE33FF0011223355 /* Secrets.xcconfig.example */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -550,6 +565,7 @@
 				505AF2AF2F0D95A800FC5DFF /* V4Card.swift in Sources */,
 				86328366C1B746928DD2DE46 /* V4NotificationManager.swift in Sources */,
 				BB22CC33DD4455EE00FF1122 /* V4FlightManager.swift in Sources */,
+				CC11DD22EE33FF0011223388 /* STKeychainHelper.swift in Sources */,
 				C3A1F2D8E9074B5C8F123456 /* V4TelemetryManager.swift in Sources */,
 				B4E0E8DB3F174AD8BB5D54C4 /* STStoreManager.swift in Sources */,
 				73A57B02EDDD431C9B83D90E /* V4PaywallView.swift in Sources */,
@@ -689,6 +705,7 @@
 		};
 		5076A6602EA2E03100FE143A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC11DD22EE33FF0011223344 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -696,7 +713,7 @@
 				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -726,6 +743,7 @@
 		};
 		5076A6612EA2E03100FE143A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC11DD22EE33FF0011223344 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -733,7 +751,7 @@
 				CODE_SIGN_ENTITLEMENTS = "StayTrackr V3/StayTrackr V3.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = DP244QQXCD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;

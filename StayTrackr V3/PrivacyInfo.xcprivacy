@@ -12,17 +12,56 @@
   <array/>
 
   <!-- ── Data collection ──────────────────────────────────────────────── -->
-  <!-- All data is stored on-device via SwiftData. Nothing is uploaded    -->
-  <!-- to any server, shared with third parties, or used for advertising. -->
+  <!-- App data is stored on-device via SwiftData / iCloud (CloudKit).   -->
+  <!-- TelemetryDeck SDK sends anonymous, hashed usage signals to        -->
+  <!-- telemetrydeck.com for product analytics. No raw PII is sent:      -->
+  <!-- identifiers are SHA-256 hashed before transmission.               -->
   <key>NSPrivacyCollectedDataTypes</key>
-  <array/>
+  <array>
+
+    <!-- Product interaction — tab views, booking/expense creation,      -->
+    <!-- paywall views, purchase events. Sent to TelemetryDeck.          -->
+    <dict>
+      <key>NSPrivacyCollectedDataType</key>
+      <string>NSPrivacyCollectedDataTypeProductInteraction</string>
+      <!-- Not linked to the user's identity (TelemetryDeck hashes IDs). -->
+      <key>NSPrivacyCollectedDataTypeLinked</key>
+      <false/>
+      <!-- Not used for advertising or cross-app tracking.               -->
+      <key>NSPrivacyCollectedDataTypeTracking</key>
+      <false/>
+      <key>NSPrivacyCollectedDataTypePurposes</key>
+      <array>
+        <!-- Analytics — understanding feature usage to improve the app. -->
+        <string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
+      </array>
+    </dict>
+
+    <!-- Device ID — TelemetryDeck derives a hashed, anonymous signal    -->
+    <!-- identifier from a salted combination of device/app attributes.  -->
+    <!-- The raw identifier is never stored or transmitted.              -->
+    <dict>
+      <key>NSPrivacyCollectedDataType</key>
+      <string>NSPrivacyCollectedDataTypeDeviceID</string>
+      <key>NSPrivacyCollectedDataTypeLinked</key>
+      <false/>
+      <key>NSPrivacyCollectedDataTypeTracking</key>
+      <false/>
+      <key>NSPrivacyCollectedDataTypePurposes</key>
+      <array>
+        <string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
+      </array>
+    </dict>
+
+  </array>
 
   <!-- ── Required-reason APIs ─────────────────────────────────────────── -->
   <key>NSPrivacyAccessedAPITypes</key>
   <array>
 
-    <!-- UserDefaults — @AppStorage("v4_didSeed") seed-guard flag.        -->
-    <!-- Reason CA92.1: read/write info used only to support the app.     -->
+    <!-- UserDefaults — app preferences (currency, theme, notifications, -->
+    <!-- onboarding state). Reason CA92.1: used only on-device to        -->
+    <!-- support app functionality, not for fingerprinting.              -->
     <dict>
       <key>NSPrivacyAccessedAPIType</key>
       <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
@@ -32,15 +71,26 @@
       </array>
     </dict>
 
-    <!-- File timestamps — FileManager temp-directory writes for CSV      -->
-    <!-- export (PrivacyInfo.xcprivacy, SwiftData store).                 -->
-    <!-- Reason C617.1: display accurate file info to the user.           -->
+    <!-- File timestamps — FileManager temp-directory writes for CSV     -->
+    <!-- export. Reason C617.1: display accurate file info to the user.  -->
     <dict>
       <key>NSPrivacyAccessedAPIType</key>
       <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
       <key>NSPrivacyAccessedAPITypeReasons</key>
       <array>
         <string>C617.1</string>
+      </array>
+    </dict>
+
+    <!-- System boot time — accessed by TelemetryDeck SDK to calculate   -->
+    <!-- session duration. Reason 35F9.1: measure time on task within    -->
+    <!-- the app to support app functionality (session analytics).        -->
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>35F9.1</string>
       </array>
     </dict>
 

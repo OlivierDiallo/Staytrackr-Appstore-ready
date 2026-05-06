@@ -182,8 +182,7 @@ struct V4PaywallView: View {
     let isSelected = selectedIndex == index
     let isAnnual   = product.id == STStoreManager.annualID
     let savings    = isAnnual ? store.annualSavingsPercent : nil
-
-    let trialText = store.isEligibleForTrial ? store.trialLabel(for: product) : nil
+    let trialDays  = store.isEligibleForTrial ? store.trialLabel(for: product) : nil
 
     return Button {
       withAnimation(.easeInOut(duration: 0.15)) {
@@ -191,24 +190,33 @@ struct V4PaywallView: View {
       }
     } label: {
       ZStack(alignment: .topTrailing) {
-        HStack {
-          VStack(alignment: .leading, spacing: 4) {
-            // Plan name + length
-            Text(isAnnual ? "Annual" : "Monthly")
-              .font(.headline)
+        HStack(alignment: .center, spacing: 12) {
 
-            // Price — always the hero text
-            Text(isAnnual ? "\(product.displayPrice) / year" : "\(product.displayPrice) / month")
-              .font(.subheadline.weight(.semibold))
+          VStack(alignment: .leading, spacing: 3) {
+            // Plan name — small label, clearly subordinate
+            Text(isAnnual ? "Annual Plan" : "Monthly Plan")
+              .font(.caption.weight(.medium))
+              .foregroundStyle(.secondary)
+              .textCase(.uppercase)
+
+            // ── BILLED AMOUNT — the visual hero ──────────────────────────
+            Text(product.displayPrice)
+              .font(.title2.weight(.bold))
               .foregroundStyle(.primary)
 
-            // Trial is secondary context, not the headline
-            if let trial = trialText {
-              Text(verbatim: trial + String(localized: isAnnual
-                   ? ", then renews yearly"
-                   : ", then renews monthly"))
+            // Billing period — one size down, still prominent
+            Text(isAnnual ? "per year" : "per month")
+              .font(.subheadline.weight(.medium))
+              .foregroundStyle(.primary.opacity(0.7))
+
+            // Trial and savings — clearly subordinate (caption, secondary colour)
+            if let trial = trialDays {
+              Text(verbatim: trial + (isAnnual
+                   ? String(localized: ", then \(product.displayPrice)/yr")
+                   : String(localized: ", then \(product.displayPrice)/mo")))
                 .font(.caption)
                 .foregroundStyle(.secondary)
+                .padding(.top, 2)
             }
 
             if isAnnual, let savings {
@@ -217,7 +225,9 @@ struct V4PaywallView: View {
                 .foregroundStyle(V4Theme.Brand.primary)
             }
           }
+
           Spacer()
+
           Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
             .font(.title3)
             .foregroundStyle(isSelected ? V4Theme.Brand.primary : Color.secondary)
@@ -234,7 +244,7 @@ struct V4PaywallView: View {
             )
         )
 
-        // "Best Value" badge on annual card
+        // "Best Value" badge — decorative only, not a pricing element
         if isAnnual {
           Text("Best Value")
             .font(.caption2.weight(.bold))
@@ -284,22 +294,31 @@ struct V4PaywallView: View {
           }
         }
       } else {
-        // ── Billing terms — shown above button so price is clear before tapping ──
+        // ── Billing summary — price is the lead element, trial is secondary ──
         if let product = selectedProduct {
-          if hasTrial {
+          VStack(spacing: 2) {
+            // Price is the first and largest text the user reads
             Text(isAnnual
-                 ? "7-day free trial, then \(product.displayPrice) billed yearly. Cancel anytime."
-                 : "7-day free trial, then \(product.displayPrice) billed monthly. Cancel anytime.")
-              .font(.footnote.weight(.medium))
-              .foregroundStyle(.primary.opacity(0.75))
+                 ? "\(product.displayPrice) / year"
+                 : "\(product.displayPrice) / month")
+              .font(.footnote.weight(.bold))
+              .foregroundStyle(.primary)
               .multilineTextAlignment(.center)
-          } else {
-            Text(isAnnual
-                 ? "\(product.displayPrice) billed yearly. Cancel anytime."
-                 : "\(product.displayPrice) billed monthly. Cancel anytime.")
-              .font(.footnote.weight(.medium))
-              .foregroundStyle(.primary.opacity(0.75))
-              .multilineTextAlignment(.center)
+
+            // Trial detail is subordinate: smaller, secondary colour, appears below
+            if hasTrial {
+              Text(isAnnual
+                   ? "Includes a 7-day free trial. Cancel anytime."
+                   : "Includes a 7-day free trial. Cancel anytime.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            } else {
+              Text("Cancel anytime in App Store Settings.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            }
           }
         }
 

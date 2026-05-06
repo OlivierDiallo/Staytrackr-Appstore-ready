@@ -27,20 +27,23 @@ struct StayTrackrV4App: App {
   /// `true` when the container was created with CloudKit sync enabled.
   private let isCloudSyncEnabled: Bool
 
+  /// Set to `true` during `init()` when the corrupt store was wiped and replaced.
+  /// The view layer reads this to show a one-time recovery alert.
+  @State private var showStoreResetAlert = false
+  private let storeWasReset: Bool
+
   init() {
     let schema = Schema(Self.modelTypes)
 
-    // 1. Try CloudKit-backed store (requires iCloud capability + container in Xcode).
-    //    Falls back gracefully if the device has no iCloud account or entitlement is missing.
-    let cloudConfig = ModelConfiguration(
-      "StayTrackrV6",
-      schema: schema,
-      isStoredInMemoryOnly: false,
-      cloudKitDatabase: .automatic
-    )
+    // CloudKit sync is only enabled when the user has signed in with Apple.
+    // This prevents silently syncing guest PII and financial data to iCloud
+    // before the user has explicitly consented by signing in.
+    // Check both Keychain (current) and UserDefaults (pre-migration fallback).
+    let hasSignedInWithApple =
+      STKeychainHelper.load(forKey: "v4_appleUserID") != nil ||
+      UserDefaults.standard.string(forKey: "v4_appleUserID") != nil
 
-    // 2. Local-only fallback — explicitly opt out of CloudKit so SwiftData skips
-    //    CloudKit schema validation even when iCloud entitlements are present.
+    // Local-only config — no CloudKit.
     let localConfig = ModelConfiguration(
       "StayTrackrV6",
       schema: schema,
@@ -48,21 +51,36 @@ struct StayTrackrV4App: App {
       cloudKitDatabase: .none
     )
 
-    if let c = Self.makeContainer(schema: schema, config: cloudConfig) {
+    // CloudKit-backed config — only attempted when user has signed in.
+    let cloudConfig = ModelConfiguration(
+      "StayTrackrV6",
+      schema: schema,
+      isStoredInMemoryOnly: false,
+      cloudKitDatabase: .automatic
+    )
+
+    if hasSignedInWithApple, let c = Self.makeContainer(schema: schema, config: cloudConfig) {
       container = c
       isCloudSyncEnabled = true
-      print("[StayTrackr] ✅ ModelContainer created WITH CloudKit sync")
+      storeWasReset = false
+      print("[StayTrackr] ✅ ModelContainer created WITH CloudKit sync (user signed in)")
     } else if let c = Self.makeContainer(schema: schema, config: localConfig) {
       container = c
       isCloudSyncEnabled = false
-      print("[StayTrackr] ⚠️ CloudKit failed — using LOCAL-ONLY store")
+      storeWasReset = false
+      print("[StayTrackr] ℹ️ Using LOCAL-ONLY store (no Sign in with Apple yet)")
     } else {
-      // Store is completely unreadable — wipe it and start fresh so the app never hard-crashes.
+      // Store is completely unreadable.
+      // Back up the corrupt files to Documents/Backups/ before wiping so data
+      // can potentially be recovered, then start fresh so the app never hard-crashes.
+      Self.backupStore(named: "StayTrackrV6")
       Self.deleteStore(named: "StayTrackrV6")
       if let c = Self.makeContainer(schema: schema, config: localConfig) {
         container = c
         isCloudSyncEnabled = false
-        print("[StayTrackr] ⚠️ Store wiped — using LOCAL-ONLY store")
+        storeWasReset = true
+        print("[StayTrackr] ⚠️ Corrupt store backed up and reset — LOCAL-ONLY store created")
+        V4TelemetryManager.signal(.appLaunched, parameters: ["store_reset": "true"])
       } else {
         fatalError("Failed to create SwiftData ModelContainer after store wipe.")
       }
@@ -80,6 +98,34 @@ struct StayTrackrV4App: App {
       print("[StayTrackr] ModelContainer failed (cloudKit=\(config.cloudKitDatabase)): \(error)")
       return nil
     }
+  }
+
+  /// Copies the SwiftData store files to Documents/StayTrackrBackups/<timestamp>/
+  /// before a destructive wipe, giving the user a chance to recover data manually.
+  private static func backupStore(named name: String) {
+    guard
+      let appSupport = FileManager.default
+        .urls(for: .applicationSupportDirectory, in: .userDomainMask).first,
+      let documents = FileManager.default
+        .urls(for: .documentDirectory, in: .userDomainMask).first
+    else { return }
+
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyyMMdd_HHmmss"
+    let stamp = formatter.string(from: Date())
+    let backupDir = documents
+      .appendingPathComponent("StayTrackrBackups")
+      .appendingPathComponent(stamp)
+
+    try? FileManager.default.createDirectory(at: backupDir,
+                                             withIntermediateDirectories: true)
+
+    for ext in ["", "-wal", "-shm"] {
+      let src = appSupport.appendingPathComponent("\(name).store\(ext)")
+      let dst = backupDir.appendingPathComponent("\(name).store\(ext)")
+      try? FileManager.default.copyItem(at: src, to: dst)
+    }
+    print("[StayTrackr] Store backed up to \(backupDir.path)")
   }
 
   private static func deleteStore(named name: String) {
@@ -108,11 +154,23 @@ struct StayTrackrV4App: App {
           #endif
           runMigrations()
           await notifManager.requestAuthorization()
+          // Surface the store-reset alert after the view hierarchy is ready.
+          if storeWasReset { showStoreResetAlert = true }
         }
         .onReceive(NotificationCenter.default.publisher(
           for: UIApplication.willEnterForegroundNotification
         )) { _ in
           Task { await pollFlightsIfNeeded() }
+        }
+        .alert("Data Reset", isPresented: $showStoreResetAlert) {
+          Button("OK", role: .cancel) {}
+        } message: {
+          Text(
+            "StayTrackr encountered a database problem and had to reset. " +
+            "A backup of your data was saved to the Files app under " +
+            "StayTrackr → StayTrackrBackups. " +
+            "If you had iCloud sync enabled, your data will restore automatically."
+          )
         }
     }
   }

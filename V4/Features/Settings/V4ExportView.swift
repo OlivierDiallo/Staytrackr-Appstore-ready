@@ -232,8 +232,13 @@ struct V4ExportView: View {
   }
 
   /// Wraps a field in quotes if it contains commas, quotes, or newlines.
+  /// Also prefixes formula-injection characters (=, +, -, @) with a tab so
+  /// Excel / Google Sheets / LibreOffice never interpret the cell as a formula.
   private func csvEscape(_ s: String) -> String {
-    guard s.contains(",") || s.contains("\"") || s.contains("\n") else { return s }
-    return "\"" + s.replacingOccurrences(of: "\"", with: "\"\"") + "\""
+    // Neutralise spreadsheet formula injection.
+    let formulaStarters: Set<Character> = ["=", "+", "-", "@"]
+    let safe = (s.first.map { formulaStarters.contains($0) } == true) ? "\t" + s : s
+    guard safe.contains(",") || safe.contains("\"") || safe.contains("\n") else { return safe }
+    return "\"" + safe.replacingOccurrences(of: "\"", with: "\"\"") + "\""
   }
 }

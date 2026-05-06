@@ -11,6 +11,8 @@ final class V4AppSettings {
   private static let arrivalNoticeKey       = "v4_arrivalNoticeHours"
   private static let departureNoticeKey     = "v4_departureNoticeHours"
   private static let onboardingKey          = "v4_hasSeenOnboarding"
+  // appleUserID is stored in the Keychain (not UserDefaults) per Apple's
+  // Sign in with Apple guidelines — UserDefaults is unencrypted and leaks in backups.
   private static let appleUserIDKey         = "v4_appleUserID"
 
   // MARK: - Reporting currency
@@ -50,8 +52,15 @@ final class V4AppSettings {
   // MARK: - Sign in with Apple
 
   /// Stores the Apple User ID after a successful Sign in with Apple.
+  /// Persisted in the Keychain (encrypted, excluded from unencrypted backups).
   var appleUserID: String? {
-    didSet { UserDefaults.standard.set(appleUserID, forKey: Self.appleUserIDKey) }
+    didSet {
+      if let id = appleUserID {
+        STKeychainHelper.save(id, forKey: Self.appleUserIDKey)
+      } else {
+        STKeychainHelper.delete(forKey: Self.appleUserIDKey)
+      }
+    }
   }
 
   // MARK: - Notifications
@@ -113,7 +122,12 @@ final class V4AppSettings {
     let onboardingDefault = UserDefaults.standard.object(forKey: Self.onboardingKey) as? Bool
     self.hasSeenOnboarding = onboardingDefault ?? false
 
-    // Sign in with Apple
-    self.appleUserID = UserDefaults.standard.string(forKey: Self.appleUserIDKey)
+    // Sign in with Apple — read from Keychain, not UserDefaults
+    // Migration: if old value exists in UserDefaults, move it and delete.
+    if let legacy = UserDefaults.standard.string(forKey: Self.appleUserIDKey) {
+      STKeychainHelper.save(legacy, forKey: Self.appleUserIDKey)
+      UserDefaults.standard.removeObject(forKey: Self.appleUserIDKey)
+    }
+    self.appleUserID = STKeychainHelper.load(forKey: Self.appleUserIDKey)
   }
 }

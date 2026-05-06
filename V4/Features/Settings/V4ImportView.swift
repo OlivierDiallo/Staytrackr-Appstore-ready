@@ -250,20 +250,24 @@ struct V4ImportView: View {
 
                 // Airbnb feed
                 if let urlString = property.airbnbICalURL,
-                   let url = URL(string: urlString) {
+                   let url = Self.sanitisedICalURL(urlString) {
                     let imported = try await ICalParser.shared.fetch(url: url, platform: .airbnb)
                     let dedup = ImportDeduplicator().deduplicate(imported, against: existing)
                     let (ins, upd) = ImportDeduplicator.commit(result: dedup, property: property, context: context)
                     totalInserted += ins; totalUpdated += upd; totalSkipped += dedup.skippedCount
+                } else if property.airbnbICalURL != nil {
+                    errorMessage = "\(property.name): Airbnb iCal URL must use https:// or webcal://"
                 }
 
                 // Booking.com feed
                 if let urlString = property.bookingComICalURL,
-                   let url = URL(string: urlString) {
+                   let url = Self.sanitisedICalURL(urlString) {
                     let imported = try await ICalParser.shared.fetch(url: url, platform: .bookingCom)
                     let dedup = ImportDeduplicator().deduplicate(imported, against: property.bookings)
                     let (ins, upd) = ImportDeduplicator.commit(result: dedup, property: property, context: context)
                     totalInserted += ins; totalUpdated += upd; totalSkipped += dedup.skippedCount
+                } else if property.bookingComICalURL != nil {
+                    errorMessage = "\(property.name): Booking.com iCal URL must use https:// or webcal://"
                 }
 
                 try context.save()
@@ -275,6 +279,22 @@ struct V4ImportView: View {
         result = ImportResult(inserted: totalInserted, updated: totalUpdated, skipped: totalSkipped)
         syncState = .idle
         UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+
+    // MARK: - iCal URL validation
+
+    /// Accepts https:// and webcal:// URLs (Airbnb/Booking.com both use webcal).
+    /// webcal is rewritten to https so URLSession can fetch it.
+    /// Any other scheme (file://, http://, javascript:, etc.) returns nil.
+    private static func sanitisedICalURL(_ raw: String) -> URL? {
+        guard var url = URL(string: raw) else { return nil }
+        if url.scheme == "webcal" {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            components?.scheme = "https"
+            url = components?.url ?? url
+        }
+        guard url.scheme == "https" else { return nil }
+        return url
     }
 
     // MARK: - CSV import
