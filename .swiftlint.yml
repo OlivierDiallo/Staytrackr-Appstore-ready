@@ -1,0 +1,83 @@
+# SwiftLint configuration for StayTrackr
+# https://github.com/realm/SwiftLint
+
+included:
+  - StayTrackr V3
+  - V4
+  - Core
+
+excluded:
+  - Pods
+  - .build
+  - DerivedData
+
+opt_in_rules:
+  - array_init
+  - closure_spacing
+  - collection_alignment
+  - contains_over_filter_count
+  - contains_over_first_not_nil
+  - empty_collection_literal
+  - empty_string
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - force_unwrapping
+  - identical_operands
+  - joined_default_parameter
+  - last_where
+  - lower_acl_than_parent
+  - modifier_order
+  - operator_usage_whitespace
+  - overridden_super_call
+  - pattern_matching_keywords
+  - prefer_self_type_over_type_of_self
+  - prefer_zero_over_explicit_init
+  - prohibited_super_call
+  - reduce_into
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - sorted_first_last
+  - toggle_bool
+  - unavailable_function
+  - unowned_variable_capture
+  - untyped_error_in_catch
+  - weak_delegate
+  - yoda_condition
+
+disabled_rules:
+  - todo
+  - trailing_whitespace
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_comments: true
+  ignores_urls: true
+
+file_length:
+  warning: 400
+  error: 600
+
+type_body_length:
+  warning: 250
+  error: 350
+
+function_body_length:
+  warning: 40
+  error: 60
+
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+
+identifier_name:
+  min_length:
+    warning: 2
+  excluded:
+    - id
+    - x
+    - y
+
+force_cast: error
+force_unwrapping: warning
