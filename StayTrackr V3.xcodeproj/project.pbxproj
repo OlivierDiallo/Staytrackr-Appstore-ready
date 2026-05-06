@@ -64,6 +64,11 @@
 		D42109A2D9584483A8E0F37F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2588837013D34CA3BA44AF32 /* PrivacyInfo.xcprivacy */; };
 		DD11EE22FF3344AA55BB6677 /* V4FXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE22FF3344AA55BB6677CC88 /* V4FXManager.swift */; };
 		CC11DD22EE33FF0011223388 /* STKeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11DD22EE33FF0011223377 /* STKeychainHelper.swift */; };
+		BB0011223344556600000001 /* V4FinanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011223344556600000011 /* V4FinanceTests.swift */; };
+		BB0011223344556600000002 /* ICalParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011223344556600000012 /* ICalParserTests.swift */; };
+		BB0011223344556600000003 /* ImportDeduplicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011223344556600000013 /* ImportDeduplicatorTests.swift */; };
+		BB0011223344556600000004 /* V4FXManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011223344556600000014 /* V4FXManagerTests.swift */; };
+		BB0011223344556600000005 /* V4MigrationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011223344556600000015 /* V4MigrationsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,7 +135,23 @@
 		CC11DD22EE33FF0011223344 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		CC11DD22EE33FF0011223355 /* Secrets.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
 		CC11DD22EE33FF0011223377 /* STKeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKeychainHelper.swift; sourceTree = "<group>"; };
+		BB0011223344556600000011 /* V4FinanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FinanceTests.swift; sourceTree = "<group>"; };
+		BB0011223344556600000012 /* ICalParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICalParserTests.swift; sourceTree = "<group>"; };
+		BB0011223344556600000013 /* ImportDeduplicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDeduplicatorTests.swift; sourceTree = "<group>"; };
+		BB0011223344556600000014 /* V4FXManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4FXManagerTests.swift; sourceTree = "<group>"; };
+		BB0011223344556600000015 /* V4MigrationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V4MigrationsTests.swift; sourceTree = "<group>"; };
+		BB0011223344556600000020 /* StayTrackrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StayTrackrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXContainerItemProxy section */
+		BB0011223344556600000021 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5076A64C2EA2E03000FE143A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5076A6532EA2E03000FE143A;
+			remoteInfo = "StayTrackr V3";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5076A6512EA2E03000FE143A /* Frameworks */ = {
@@ -370,6 +391,7 @@
 				505AF2752F0D62BA00FC5DFF /* V4 */,
 				505AF2A22F0D731A00FC5DFF /* Core */,
 				5076A6722EA2F3F800FE143A /* StayTrackr V3 */,
+				BB0011223344556600000030 /* StayTrackrTests */,
 				5094504D2F5F854E00C6C855 /* Frameworks */,
 				5076A6552EA2E03000FE143A /* Products */,
 			);
@@ -379,8 +401,21 @@
 			isa = PBXGroup;
 			children = (
 				5076A6542EA2E03000FE143A /* StayTrackr V3.app */,
+				BB0011223344556600000020 /* StayTrackrTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BB0011223344556600000030 /* StayTrackrTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB0011223344556600000011 /* V4FinanceTests.swift */,
+				BB0011223344556600000012 /* ICalParserTests.swift */,
+				BB0011223344556600000013 /* ImportDeduplicatorTests.swift */,
+				BB0011223344556600000014 /* V4FXManagerTests.swift */,
+				BB0011223344556600000015 /* V4MigrationsTests.swift */,
+			);
+			path = StayTrackrTests;
 			sourceTree = "<group>";
 		};
 		5076A6722EA2F3F800FE143A /* StayTrackr V3 */ = {
@@ -463,6 +498,22 @@
 			productReference = 5076A6542EA2E03000FE143A /* StayTrackr V3.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BB0011223344556600000040 /* StayTrackr V3 Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB0011223344556600000050 /* Build configuration list for PBXNativeTarget "StayTrackr V3 Tests" */;
+			buildPhases = (
+				BB0011223344556600000041 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB0011223344556600000022 /* PBXTargetDependency */,
+			);
+			name = "StayTrackr V3 Tests";
+			productName = "StayTrackr V3 Tests";
+			productReference = BB0011223344556600000020 /* StayTrackrTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -475,6 +526,10 @@
 				TargetAttributes = {
 					5076A6532EA2E03000FE143A = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					BB0011223344556600000040 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 5076A6532EA2E03000FE143A;
 					};
 				};
 			};
@@ -499,6 +554,7 @@
 			projectRoot = "";
 			targets = (
 				5076A6532EA2E03000FE143A /* StayTrackr V3 */,
+				BB0011223344556600000040 /* StayTrackr V3 Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -575,7 +631,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB0011223344556600000041 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0011223344556600000001 /* V4FinanceTests.swift in Sources */,
+				BB0011223344556600000002 /* ICalParserTests.swift in Sources */,
+				BB0011223344556600000003 /* ImportDeduplicatorTests.swift in Sources */,
+				BB0011223344556600000004 /* V4FXManagerTests.swift in Sources */,
+				BB0011223344556600000005 /* V4MigrationsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB0011223344556600000022 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5076A6532EA2E03000FE143A /* StayTrackr V3 */;
+			targetProxy = BB0011223344556600000021 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5076A65D2EA2E03100FE143A /* Debug */ = {
@@ -779,6 +855,50 @@
 			};
 			name = Release;
 		};
+		BB0011223344556600000051 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DP244QQXCD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.olivierdiallo.staytrackrv3.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StayTrackr V3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StayTrackr V3";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BB0011223344556600000052 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DP244QQXCD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.olivierdiallo.staytrackrv3.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StayTrackr V3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StayTrackr V3";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -796,6 +916,15 @@
 			buildConfigurations = (
 				5076A6602EA2E03100FE143A /* Debug */,
 				5076A6612EA2E03100FE143A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB0011223344556600000050 /* Build configuration list for PBXNativeTarget "StayTrackr V3 Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB0011223344556600000051 /* Debug */,
+				BB0011223344556600000052 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
