@@ -1,0 +1,89 @@
+# Fastfile for StayTrackr
+#
+# Lanes:
+#   bundle exec fastlane build        — verify build locally
+#   bundle exec fastlane beta         — upload to TestFlight
+#   bundle exec fastlane release      — submit to App Store
+
+PROJECT = "StayTrackr V3.xcodeproj"
+SCHEME  = "StayTrackr V3"
+
+default_platform(:ios)
+
+before_all do
+  ensure_git_status_clean unless ENV["CI"]
+end
+
+platform :ios do
+
+  desc "Build the app (no upload — use for local verification)"
+  lane :build do
+    build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      skip_package_ipa: true,
+      include_symbols: false
+    )
+  end
+
+  desc "Increment build number, build, and upload to TestFlight"
+  lane :beta do
+    increment_build_number(
+      build_number: ENV["BUILD_NUMBER"] || latest_testflight_build_number + 1
+    )
+
+    match(type: "appstore", readonly: is_ci)
+
+    build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      include_symbols: true,
+      include_bitcode: false
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      notify_external_testers: false,
+      changelog: ENV["TESTFLIGHT_CHANGELOG"] || "Internal beta build"
+    )
+
+    slack(
+      message: "StayTrackr build #{lane_context[SharedValues::BUILD_NUMBER]} uploaded to TestFlight ✅",
+      channel: "#releases",
+      slack_url: ENV["SLACK_URL"]
+    ) if ENV["SLACK_URL"]
+  end
+
+  desc "Build and submit to App Store (manual review trigger)"
+  lane :release do
+    ensure_git_branch(branch: "main")
+
+    increment_version_number(
+      version_number: ENV["RELEASE_VERSION"]
+    ) if ENV["RELEASE_VERSION"]
+
+    match(type: "appstore", readonly: is_ci)
+
+    build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      include_symbols: true,
+      include_bitcode: false
+    )
+
+    upload_to_app_store(
+      force: true,
+      reject_if_possible: true,
+      skip_metadata: false,
+      skip_screenshots: false,
+      submit_for_review: false
+    )
+  end
+
+end
